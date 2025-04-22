@@ -5,7 +5,7 @@ int main()
 {
     string FirstName;
     string LastName;
-    int Age;
+    short Age;
     string City;
     string Country;
     float MonthlySalary;

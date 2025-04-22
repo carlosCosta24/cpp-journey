@@ -3,7 +3,7 @@ using namespace std;
 
 int main()
 {
-     int FirstNum, SecondNum, ThirdNum;
+     short FirstNum, SecondNum, ThirdNum;
 
      cout << "Enter the first number: ";
      cin >> FirstNum;

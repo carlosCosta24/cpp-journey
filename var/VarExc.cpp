@@ -5,7 +5,7 @@ int main()
 {
     // FIRST PART
     string FullName = "carlos costa";
-    int Age = 26;
+    short Age = 26;
     string City = "Aracaju";
     string Country = "Brazil";
     float MonthlySalary = 10000;
@@ -24,9 +24,9 @@ int main()
     cout << "*******************************" << endl;
 
     // second part
-    int twenty = 20;
-    int thirty = 30;
-    int ten = 10;
+    short twenty = 20;
+    short thirty = 30;
+    short ten = 10;
 
     cout << "20 + \n";
     cout << "30 + \n";
@@ -37,7 +37,7 @@ int main()
 
     // third part
 
-    int _Age = 25;
+    short _Age = 25;
     cout << "After 5 years you will be " << _Age + 5 << " years old." << endl;
 
     return 0;
