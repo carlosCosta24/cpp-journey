@@ -16,4 +16,5 @@ int main()
     cout << "we are printing a double quote\'" << endl;
     // a bill
     cout << "\a" << endl;
+    return 0;
 }
