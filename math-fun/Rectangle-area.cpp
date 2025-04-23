@@ -13,4 +13,5 @@ int main()
     cin >> length;
     short area = length * sqrt(pow(diagonal, 2) - pow(length, 2));
     cout << "Rectangle area is: " << area << endl;
+    return 0;
 }

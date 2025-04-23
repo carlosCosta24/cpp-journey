@@ -11,4 +11,5 @@ int main()
     cin >> length;
     float area = (pi * pow(length, 2)) / 4;
     cout << "circle area is: " << area << endl;
+    return 0;
 }

@@ -11,4 +11,5 @@ int main()
     cin >> diagonal;
     float area = pi * pow(diagonal, 2);
     cout << "circle area is: " << area << endl;
+    return 0;
 }
