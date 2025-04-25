@@ -8,6 +8,8 @@ int main()
 
     cout << "Please enter a string >> ";
     getline(cin, user_str);
+    // to use getline with spaces we should ignore the first line
+    // cin.ignore(1, '\n');
 
     cout << "Please enter a string 1 >> ";
     cin >> str_1;
