@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    const float pi = 3.14;
+    short diagonal;
+
+    cout << "Enter the diagonal: ";
+    cin >> diagonal;
+    float area = pi * (diagonal * diagonal) / 4;
+    cout << "circle area is: " << area << endl;
+    return 0;
+}
