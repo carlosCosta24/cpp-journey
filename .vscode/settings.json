@@ -45,6 +45,6 @@
         "streambuf": "cpp",
         "typeinfo": "cpp"
     },
-    "editor.cursorStyle": "line-thin",
+    "editor.cursorStyle": "line",
     "editor.cursorBlinking": "blink"
 }
