@@ -16,7 +16,7 @@ int ReadNumber()
 void Printer(int Num)
 {
     int Remainder = 0;
-    while (Num > 0)
+    while (Remainder > 0)
     {
         Remainder = Num % 10;
         Num /= 10;
