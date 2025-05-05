@@ -25,30 +25,38 @@ void RandomArray(int arr[100], int &Num)
 }
 void ArrPrinter(int arr[100], int Length)
 {
-    cout << "Array Elements: ";
+    int counter = 0;
     for (int i = 0; i < Length; i++)
     {
         cout << arr[i] << " ";
+        counter++;
+        if (counter == 10)
+        {
+
+            cout << endl;
+            counter = 0;
+        }
     }
     cout << endl;
 }
-int ArrayMax(int arr[100], int Length)
+void ArrayCopier(int arr[100], int Length, int Copy[100])
 {
-    int Max = 0;
     for (int i = 0; i < Length; i++)
     {
-        if (arr[i] > Max)
-            Max = arr[i];
+        Copy[i] = arr[i];
     }
-    return Max;
 }
 int main()
 {
     srand((unsigned)time(NULL));
     int Array[100];
+    int Copy[100];
     int Number = ReadNumber("Enter the number of elements:");
-    RandomArray(Array, Number);
-    ArrPrinter(Array, Number);
     cout << endl;
-    cout << "Max Number is: " << ArrayMax(Array, Number) << endl;
+    RandomArray(Array, Number);
+    cout << "Array 1 elements: ";
+    ArrPrinter(Array, Number);
+    ArrayCopier(Array, Number, Copy);
+    cout << "Array 2 elements: ";
+    ArrPrinter(Copy, Number);
 }

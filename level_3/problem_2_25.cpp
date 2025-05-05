@@ -32,15 +32,15 @@ void ArrPrinter(int arr[100], int Length)
     }
     cout << endl;
 }
-int ArrayMax(int arr[100], int Length)
+int ArrayMin(int arr[100], int Length)
 {
-    int Max = 0;
+    int Min = arr[0];
     for (int i = 0; i < Length; i++)
     {
-        if (arr[i] > Max)
-            Max = arr[i];
+        if (arr[i] < Min)
+            Min = arr[i];
     }
-    return Max;
+    return Min;
 }
 int main()
 {
@@ -50,5 +50,5 @@ int main()
     RandomArray(Array, Number);
     ArrPrinter(Array, Number);
     cout << endl;
-    cout << "Max Number is: " << ArrayMax(Array, Number) << endl;
+    cout << "Min Number is: " << ArrayMin(Array, Number) << endl;
 }

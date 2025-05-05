@@ -25,30 +25,49 @@ void RandomArray(int arr[100], int &Num)
 }
 void ArrPrinter(int arr[100], int Length)
 {
-    cout << "Array Elements: ";
+
+    int counter = 0;
     for (int i = 0; i < Length; i++)
     {
         cout << arr[i] << " ";
+        counter++;
+        if (counter == 10)
+        {
+
+            cout << endl;
+            counter = 0;
+        }
     }
     cout << endl;
 }
-int ArrayMax(int arr[100], int Length)
+void ArraySummer(int arr1[100], int arr2[100], int Result[100], int Length)
 {
-    int Max = 0;
     for (int i = 0; i < Length; i++)
     {
-        if (arr[i] > Max)
-            Max = arr[i];
+        Result[i] = arr1[i] + arr2[i];
     }
-    return Max;
 }
 int main()
 {
     srand((unsigned)time(NULL));
-    int Array[100];
+    int Array1[100], Array2[100], Sum[100];
     int Number = ReadNumber("Enter the number of elements:");
-    RandomArray(Array, Number);
-    ArrPrinter(Array, Number);
     cout << endl;
-    cout << "Max Number is: " << ArrayMax(Array, Number) << endl;
+
+    RandomArray(Array1, Number);
+    RandomArray(Array2, Number);
+    cout << endl;
+
+    cout << "Array 1 elements: ";
+    ArrPrinter(Array1, Number);
+    cout << endl;
+
+    cout << "Array 2 elements: ";
+    ArrPrinter(Array2, Number);
+    cout << endl;
+
+    ArraySummer(Array1, Array2, Sum, Number);
+    cout << "Sum of 2 arrays is: ";
+
+    ArrPrinter(Sum, Number);
 }

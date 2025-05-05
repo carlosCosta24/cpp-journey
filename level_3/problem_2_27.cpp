@@ -25,22 +25,30 @@ void RandomArray(int arr[100], int &Num)
 }
 void ArrPrinter(int arr[100], int Length)
 {
-    cout << "Array Elements: ";
+    cout << "Array Elements: " << endl;
+    int counter = 0;
     for (int i = 0; i < Length; i++)
     {
         cout << arr[i] << " ";
+        counter++;
+        if (counter == 10)
+        {
+
+            cout << endl;
+            counter = 0;
+        }
     }
     cout << endl;
 }
-int ArrayMax(int arr[100], int Length)
+int ArrayAverage(int arr[100], int Length)
 {
-    int Max = 0;
+    int Sum = 0;
     for (int i = 0; i < Length; i++)
     {
-        if (arr[i] > Max)
-            Max = arr[i];
+        Sum += arr[i];
     }
-    return Max;
+    int Avg = Sum / Length;
+    return (float)Avg;
 }
 int main()
 {
@@ -50,5 +58,5 @@ int main()
     RandomArray(Array, Number);
     ArrPrinter(Array, Number);
     cout << endl;
-    cout << "Max Number is: " << ArrayMax(Array, Number) << endl;
+    cout << "average of all Number is: " << ArrayAverage(Array, Number) << endl;
 }
