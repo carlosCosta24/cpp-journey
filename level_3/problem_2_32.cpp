@@ -16,22 +16,6 @@ int RandomNumber(int From, int To)
     int randNum = rand() % (To - From + 1) + From;
     return randNum;
 }
-
-void Swab(int &N1, int &N2)
-{
-    int temp;
-    temp = N1;
-    N1 = N2;
-    N2 = temp;
-}
-
-void ShuffleArray(int arr[100], int length)
-{
-    for (int i = 0; i < length; i++)
-    {
-        swap(arr[RandomNumber(1, length) - 1], arr[RandomNumber(1, length) - 1]);
-    }
-}
 void ArrPrinter(int arr[100], int Length)
 
 {
@@ -51,11 +35,20 @@ void ArrPrinter(int arr[100], int Length)
     cout << endl;
 }
 
-void OrderedArray(int ordered[100], int Length)
+void RandomArray(int arr[100], int Length)
 {
     for (int i = 0; i <= Length; i++)
     {
-        ordered[i] = i + 1;
+        arr[i] = RandomNumber(1, 100);
+    }
+}
+
+void ReverseArray(int arr[100], int rev[100], int length)
+{
+
+    for (int i = 0; i < length; i++)
+    {
+        rev[i] = arr[length - i - 1];
     }
 }
 
@@ -63,15 +56,16 @@ int main()
 {
     srand((unsigned)time(NULL));
     int Ordered[100];
+    int Reversed[100];
     int UserInput = ReadNumber("Enter the length of an array: ");
 
-    OrderedArray(Ordered, UserInput);
+    RandomArray(Ordered, UserInput);
 
-    cout << "Array elements before shuffle: ";
+    cout << "Array elements: " << endl;
     ArrPrinter(Ordered, UserInput);
 
-    ShuffleArray(Ordered, UserInput);
+    ReverseArray(Ordered, Reversed, UserInput);
 
-    cout << "Array elements after shuffle: ";
-    ArrPrinter(Ordered, UserInput);
+    cout << "Array elements after reverse: " << endl;
+    ArrPrinter(Reversed, UserInput);
 }
