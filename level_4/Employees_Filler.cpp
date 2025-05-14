@@ -32,13 +32,23 @@ void EmployeesFiller(vector<stEmployee> & Employee ) {
 
     } while (Yes[0] == 'Y' || Yes[0] == 'y');
 }
-
+void GraphicPrinter(string Header = "BasicHeader"  , string Footer = "BasicFooter") {
+    if (Header == "Header") cout << "|---------------|-----------------|-----------|\n";
+    else if (Footer == "Footer") cout << "*---------------*-----------------*-----------*\n";
+    else cout << " ";
+}
 void VectorPrinter(vector<stEmployee> & employees) {
+    GraphicPrinter("Header");
+    cout <<setw(5)<< "First Name " <<setw(22) <<"Second Name" << setw(10) << "Age\n"  ;
+    GraphicPrinter("Header");
 
     for (stEmployee &temp : employees) {
-        cout << temp.FirstName << " " << temp.LastName << " " << temp.Age << endl;
+        cout << temp.FirstName << setw(22) << temp.LastName << setw(14)<< temp.Age << "\n";
+        GraphicPrinter("Header");
+
 
     }
+    GraphicPrinter(" ","Footer");
 }
 
 int main() {
