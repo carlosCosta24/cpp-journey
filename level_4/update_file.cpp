@@ -4,50 +4,57 @@
 #include<vector>
 using namespace std;
 
-void LoadDataToVector(string File, vector<string> &vDestination) {
+void LoadToVector(string File , vector<string> &vVec) {
 
     fstream file;
+    file.open(File, ios::in);
 
-    file.open(File, ios::in);//read mode
+    if (file.is_open()) {
+
+        string Line;
+        while (getline(file, Line)) {
+            vVec.push_back(Line);
+        }
+        file.close();
+    }
+
+
+}
+void SaveVectorToFile(string FileName, vector <string> vFileContent)
+{
+    fstream MyFile;
+    MyFile.open(FileName, ios::out);
+    if (MyFile.is_open())
+    {
+        for (string Line : vFileContent)
+        {
+            if (Line != "")
+            {
+                MyFile << Line << endl;
+            }
+        }
+        MyFile.close();
+    }
+}
+
+void EditFile(string File , string From, string To ,vector<string> vVec) {
+    fstream file;
+    file.open(File, ios::in);
     if (file.is_open()) {
         string Line;
         while (getline(file, Line)) {
-            vDestination.push_back(Line);
+            for (string &Item : vVec) {
+
+                if (Item == From) {
+                    Item = To;
+                    vVec.push_back(Item);
+
+                }
+            }
         }
+        file.close();
     }
-    file.close();
-}
-
-void SaveDataToVector(string File, vector<string> &vSource) {
-
-    fstream file;
-
-    file.open(File, ios::out);//writ mode
-
-    if (file.is_open()) {
-
-        for (string &Line: vSource) {
-
-           if (Line != "") file<< Line<<endl;
-        }
-    }
-    file.close();
-}
-
-void EditFile(string File, vector<string> &vSource, string From , string To) {
-
-    fstream file;
-
-    file.open(File, ios::out);//writ mode
-
-    if (file.is_open()) {
-
-        for (string &Line: vSource) {
-
-            if (From == To) Line = To;
-        }
-    }
-    file.close();
+    SaveVectorToFile(File, vVec);
 }
 
 void PrintFileContent(string FileName)
@@ -66,9 +73,9 @@ void PrintFileContent(string FileName)
 }
 
 int main() {
-    vector<string> vDestination;
+
+    vector<string> vTemp;
+    LoadToVector("file.txt", vTemp);
+    EditFile("file.txt", "megahed", "carlos",vTemp);
     PrintFileContent("file.txt");
-    EditFile("file.txt", vDestination, "carlos", "cost");
-    PrintFileContent("file.txt");
-    return 0;
 }
