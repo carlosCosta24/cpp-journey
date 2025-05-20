@@ -18,32 +18,31 @@ void TakinUserInput(float &FirstNumber,float& SecondNumber) {
 
 }
 
-float Calculator(float FirstNUmber,float SecondNumber,  enOperation OperationCode) {
-    float result = 0;
+float Calculator(float FirstNumber,float SecondNumber,  enOperation OperationCode) {
     switch(OperationCode) {
 
         case enOperation::add:
-             result = FirstNUmber + SecondNumber;
-            break;
+             return FirstNumber + SecondNumber;
+
         case enOperation::sub:
-             result =FirstNUmber - SecondNumber;
-            break;
+             return FirstNumber - SecondNumber;
+
         case enOperation::mul:
-             result=FirstNUmber * SecondNumber;
-            break;
+             return FirstNumber * SecondNumber;
+
         case enOperation::divs:
             if (SecondNumber == 0) {
-                cout << "Division by zero is not allowed!!"<< endl;
+                Messanger("Division by zero is not allowed!!");
                 return 0;
             }else {
-                 result= FirstNUmber / SecondNumber;
-            break;
+                 return FirstNumber / SecondNumber;
         default:
-             result = FirstNUmber + SecondNumber;
+             Messanger("Default is addition!!");
+             return FirstNumber + SecondNumber;
 
             }
     }
-    return result;
+
 }
 
 void Printer(float Number) {
@@ -58,7 +57,7 @@ void CalculatorRunner() {
     TakinUserInput(FirstNumber, SecondNumber);
 
     int Options;
-    Messanger("Please enter the operation type(1:addition, 2:subtraction, 3:division, 4:multiplication)? ");
+    Messanger("Please enter the operation type(1:addition, 2:subtraction, 3:multiplication, 4:division)? ");
     cin >> Options;
         enOperation Operation = static_cast<enOperation>(Options);
         float Result = Calculator(FirstNumber, SecondNumber, Operation);
