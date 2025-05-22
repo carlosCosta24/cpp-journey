@@ -34,7 +34,8 @@ void ColumnSummer(int arr[3][3]) {
         for (int j = 0; j < 3; j++) {
             sum += arr[j][i];
         }
-        cout << sum << endl;
+
+        cout <<"column ["<< i+1 <<"] sum: " << sum << endl;
     }
 }
 
