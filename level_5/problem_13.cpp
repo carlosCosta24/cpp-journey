@@ -24,7 +24,8 @@ bool UnityChecker(int arr[3][3]) {
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (i == j && arr[i][j] != 1) {
+            if (i == j && arr[i][j] != 1)
+            {
                  return false;
             }
             else if (i != j && arr[i][j] != 0) {
