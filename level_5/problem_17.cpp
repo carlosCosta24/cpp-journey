@@ -14,26 +14,23 @@ void MatrixFiller(int arr[3][3]) {
 
     for (int i =0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            arr[i][j] = RandomGenerator(0,1);
+            arr[i][j] = RandomGenerator(0,4);
         }
     }
 
 }
 
-bool ScalarChecker(int arr[3][3]) {
+bool NumberFinder(int Arr[3][3], short Target){
 
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (i == j && arr[i][j] != 1)
-            {
-                 return false;
-            }
-            else if (i != j && arr[i][j] != 0) {
-                return false;
+            if (Arr[i][j] == Target) {
+                return true;
             }
         }
     }
-    return true;
+
+    return false;
 }
 
 void MatrixPrinter(int arr[3][3]) {
@@ -48,12 +45,14 @@ void MatrixPrinter(int arr[3][3]) {
     cout << "--------------------------------"<<endl;
 }
 
-
-
-int main() {
+int main(){
     srand((unsigned)time(NULL));
     int arr[3][3];
+    short Target;
     MatrixFiller(arr);
     MatrixPrinter(arr);
-    (ScalarChecker(arr))? cout<< "Its a unity Matrix :-)": cout << "It's Not a Unity Matrix :-("<<endl;
+    cout << "Enter the number to look for? "<<endl;
+    cin >> Target;
+    (NumberFinder(arr, Target))? cout << "Number is in array :-)" : cout<< "Number is not in array :-(" <<endl;
+    return 0;
 }

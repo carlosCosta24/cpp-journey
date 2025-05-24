@@ -14,7 +14,7 @@ void MatrixFiller(int arr[3][3]) {
 
     for (int i =0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            arr[i][j] = RandomGenerator(0,1);
+            arr[i][j] = RandomGenerator(0,9);
         }
     }
 
@@ -22,11 +22,12 @@ void MatrixFiller(int arr[3][3]) {
 
 bool ScalarChecker(int arr[3][3]) {
 
+    int reference = arr[0][0];
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (i == j && arr[i][j] != 1)
+            if (i == j && arr[i][j] != reference)
             {
-                 return false;
+                return false;
             }
             else if (i != j && arr[i][j] != 0) {
                 return false;
@@ -52,8 +53,9 @@ void MatrixPrinter(int arr[3][3]) {
 
 int main() {
     srand((unsigned)time(NULL));
-    int arr[3][3];
-    MatrixFiller(arr);
+    //int arr[3][3];
+    int arr[3][3] = { {9,0,0},{0,9,0},{0,0,9} };
+    //MatrixFiller(arr);
     MatrixPrinter(arr);
-    (ScalarChecker(arr))? cout<< "Its a unity Matrix :-)": cout << "It's Not a Unity Matrix :-("<<endl;
+    (ScalarChecker(arr))? cout<< "Its a scalar Matrix :-)": cout << "It's Not a scalar Matrix :-("<<endl;
 }

@@ -14,26 +14,22 @@ void MatrixFiller(int arr[3][3]) {
 
     for (int i =0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            arr[i][j] = RandomGenerator(0,1);
+            arr[i][j] = RandomGenerator(0,9);
         }
     }
 
 }
 
-bool ScalarChecker(int arr[3][3]) {
-
+short RepeaterCounter(int Arr[3][3], int Target) {
+    short Counter = 0;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (i == j && arr[i][j] != 1)
-            {
-                 return false;
-            }
-            else if (i != j && arr[i][j] != 0) {
-                return false;
+            if (Arr[i][j] == Target) {
+                Counter++;
             }
         }
     }
-    return true;
+    return Counter;
 }
 
 void MatrixPrinter(int arr[3][3]) {
@@ -50,10 +46,14 @@ void MatrixPrinter(int arr[3][3]) {
 
 
 
-int main() {
+int main(){
     srand((unsigned)time(NULL));
+    short Number;
     int arr[3][3];
     MatrixFiller(arr);
     MatrixPrinter(arr);
-    (ScalarChecker(arr))? cout<< "Its a unity Matrix :-)": cout << "It's Not a Unity Matrix :-("<<endl;
+    cout << "Enter the Number to count? ";
+    cin >> Number;
+    cout << "Number "<< Number << " count int matrix is " << RepeaterCounter(arr, Number);
+    return 0;
 }

@@ -14,26 +14,26 @@ void MatrixFiller(int arr[3][3]) {
 
     for (int i =0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            arr[i][j] = RandomGenerator(0,1);
+            arr[i][j] = RandomGenerator(0,4);
         }
     }
 
 }
 
-bool ScalarChecker(int arr[3][3]) {
-
+bool SparceChecker(int Arr[3][3]) {
+    short ZeroCounter = 0;
+    short NumberCounter = 0;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
-            if (i == j && arr[i][j] != 1)
-            {
-                 return false;
-            }
-            else if (i != j && arr[i][j] != 0) {
-                return false;
+            if (Arr[i][j] == 0) {
+                ZeroCounter++;
+            }else {
+                NumberCounter++;
             }
         }
     }
-    return true;
+
+    return (ZeroCounter > NumberCounter);
 }
 
 void MatrixPrinter(int arr[3][3]) {
@@ -47,13 +47,20 @@ void MatrixPrinter(int arr[3][3]) {
     }
     cout << "--------------------------------"<<endl;
 }
+/*
+bool IsSparseMatrix(int Matrix1[3][3], short Rows, short Cols)
+{
+short MatrixSize = Rows * Cols;
+return (CountNumberInMatrix(Matrix1, 0, 3, 3) >= ceil((float)
+MatrixSize / 2));
+}*/
 
 
-
-int main() {
+int main(){
     srand((unsigned)time(NULL));
     int arr[3][3];
     MatrixFiller(arr);
     MatrixPrinter(arr);
-    (ScalarChecker(arr))? cout<< "Its a unity Matrix :-)": cout << "It's Not a Unity Matrix :-("<<endl;
+    (SparceChecker(arr))? cout << "matrix is sparce :-)" : cout<< "matrix is not sparce :-(" <<endl;
+    return 0;
 }
