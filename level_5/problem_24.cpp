@@ -12,18 +12,19 @@ string Read() {
     return str;
 }
 
-void FirstLetterPrinter(string String ) {
+void CapitalFirstLetter(string String ) {
     bool IsFirstLetter = true;
 
     for (int i =0; i < String.length(); i++) {
         if (String[i] != ' ' && IsFirstLetter) {
-            cout << String[i]<< endl;
+            String[i] = toupper(String[i]);
         }
         IsFirstLetter = (String[i] == ' ' ? true : false);
+        cout << String[i] ;
     }
 }
 
 int main() {
-    FirstLetterPrinter(Read());
+    CapitalFirstLetter(Read());
     return 0;
 }
