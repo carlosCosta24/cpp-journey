@@ -20,6 +20,12 @@ string CaseInventer(string String ) {
     return String ;
 }
 
+//letter case inverter
+char InvertLetterCase(char char1) {
+    return isupper(char1) ? tolower(char1) : toupper(char1);
+}
+
+
 int main() {
     string str = Read();
     cout << "String before edit: "<< endl;
