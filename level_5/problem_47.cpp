@@ -73,7 +73,7 @@ void AddClint() {
         ClearScreen();
         stClint stNewClint=  Filler();
         string NewClint = AccountRecord(stNewClint, "/*/");
-        SaveToFile(NewClint, "bank.text");
+        SaveToFile(NewClint, "bank.txt");
         ClearScreen();
         cout << "Clint added successfully, Do You Want TO Add More Clint (Yes/No) ? " << endl;
         cin >> AddMore;
