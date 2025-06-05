@@ -40,6 +40,10 @@ stClint ConvertLinetoRecord(string Line, string Seperator ="/*/")
     stClint Client;
     vector<string> vClientData;
     vClientData = SplitString(Line, Seperator);
+    if (vClientData.size() != 5) {
+        cerr << "Invalid line format!! " << Line << endl;
+        return Client; // Return empty/default client to avoid crash
+    }
     Client.AccountNumber = vClientData[0];
     Client.Pin = vClientData[1];
     Client.Name = vClientData[2];
@@ -107,10 +111,11 @@ void SaveToFile(string FileName, const vector<stClint> &vClients) {
 }
 stClint Filler() {
     stClint stNewClint;
+
     cout<< "Please enter account Data\n"<< endl;
-    cin.ignore();
 
     cout<< "Enter Account Pin: ";
+    cin.ignore();
     getline(cin, stNewClint.Pin);
 
     cout<< "Enter Account Holder Name: ";
@@ -127,8 +132,8 @@ stClint Filler() {
 void EditClintData(vector<stClint> &vClients, string Account) {
     for (stClint &Client : vClients) {
         if (Client.AccountNumber == Account) {
+            Client = Filler();
             Client.AccountNumber = Account;
-             Client = Filler();
         }
     }
 }
