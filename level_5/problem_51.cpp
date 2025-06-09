@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <limits>
 using namespace std;
 
 struct stClint {
@@ -51,7 +52,7 @@ stClint ConvertLinetoRecord(string Line, string Seperator ="/*/")
     Client.Amount = stod(vClientData[4]);//cast string to double
     return Client;
 }
-vector <stClint> LoadCleintsDataFromFile(string FileName)
+vector <stClint> LoadClientsDataFromFile(string FileName)
 {
     vector <stClint> vClients;
     fstream MyFile;
@@ -115,7 +116,7 @@ stClint Filler() {
     cout<< "Please enter account Data\n"<< endl;
 
     cout<< "Enter Account Pin: ";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     getline(cin, stNewClint.Pin);
 
     cout<< "Enter Account Holder Name: ";
@@ -137,35 +138,39 @@ void EditClintData(vector<stClint> &vClients, string Account) {
         }
     }
 }
+void EditClientAccount(stClint &Record, vector<stClint> &vClients,string &AccountNumber) {
+    if(!Record.AccountNumber.empty()) {
+        TablePrinter(AccountNumber);
+        PrintClientRecord(Record);
+        char Confirmation;
+        cout << endl;
+        cout << "Are you sure you want to edit this account? Y/n?";
+        cin >> Confirmation;
+
+        if(Confirmation == 'Y' || Confirmation == 'y') {
+            EditClintData(vClients, AccountNumber);
+            SaveToFile("bank.txt",vClients);
+            cout<< "Clint account has been Updated!!";
+        }else {
+
+            cout << "Edit canceled by user !!";
+
+        }
+    }else {
+        cout << "Account (" << AccountNumber << ") not found";
+    }
+
+}
 
 int main() {
     string Account;
-    vector<stClint> vClients = LoadCleintsDataFromFile("bank.txt");
+    vector<stClint> vClients = LoadClientsDataFromFile("bank.txt");
 
     cout << "Please enter AccountNumber?: ";
     cin>> Account;
 
     stClint SearchResult = Finder(vClients, Account);
-    if(!SearchResult.AccountNumber.empty()) {
-        char Edit;
-        TablePrinter(Account);
-        PrintClientRecord(SearchResult);
-        cout << endl;
-        cout << "Are you sure you want to edit this account? Y/n?";
-        cin >> Edit;
-
-        if(Edit == 'Y' || Edit == 'y') {
-                EditClintData(vClients, Account);
-                SaveToFile("bank.txt",vClients);
-                cout<< "Clint account has been Updated!!";
-        }else {
-
-                cout << "Edit canceled by user !!";
-
-        }
-    }else {
-        cout << "Account (" << Account << ") not found";
-    }
+    EditClientAccount(SearchResult, vClients, Account);
     return 0;
 
 

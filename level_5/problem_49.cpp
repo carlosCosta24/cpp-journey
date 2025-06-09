@@ -17,7 +17,7 @@ vector<string> SplitString(string S1, string Delim)
     vector<string> vString;
     short pos = 0;
     string sWord; // define a string variable
-    // use find() function to get the position of the delimiters
+    // use find() function to get the position of the delimiter s
     while ((pos = S1.find(Delim)) != std::string::npos)
     {
         sWord = S1.substr(0, pos); // store the word
@@ -45,7 +45,7 @@ stClint ConvertLinetoRecord(string Line, string Seperator ="/*/")
     Client.Amount = stod(vClientData[4]);//cast string to double
     return Client;
 }
-vector <stClint> LoadCleintsDataFromFile(string FileName)
+vector <stClint> LoadClientsDataFromFile(string FileName)
 {
     vector <stClint> vClients;
     fstream MyFile;
@@ -92,7 +92,7 @@ void TablePrinter(const string &Account) {
 }
 int main() {
     string Account;
-    vector<stClint> vClients = LoadCleintsDataFromFile("bank.txt");
+    vector<stClint> vClients = LoadClientsDataFromFile("bank.txt");
 
     cout << "Please enter AccountNumber?: ";
     cin>> Account;
