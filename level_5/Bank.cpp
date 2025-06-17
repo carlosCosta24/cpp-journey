@@ -30,10 +30,47 @@ void Menu() {
     system("pause");
 
 }
+vector<string> vReadFile(string FileName ) {
+    vector<string> vFileContent;
+    fstream file;
+    file.open(FileName, ios::in);
+    string Line;
+    if (file.is_open()) {
+        while (getline(file, Line)) {
+            vFileContent.push_back(Line);
+        }
+        file.close();
+    }
+    return vFileContent;
+}
+vector<string> vSpliter(string &s, string delim) {
+    vector<string> vResult;
+    int pos = 0;
+    string Line;
+    string Word = "";
+    while ((pos = s.find(delim)) != string::npos) {
+        Word = s.substr(0, pos);
+        vResult.push_back(Word);
+        s.erase(0, pos+delim.length());
+    }
+    if (!s.empty()) {
+        vResult.push_back(s);
+    }
 
+    return vResult;
+}
+vector<string> vSplitedFile(vector<string> &L, string delim) {
+    vector<string> vResult;
+    for (string s : L) {
+        vSpliter(s, delim);
+        vResult.push_back(s);
+    }
+    return vResult;
+
+}
 //Show Client list
-void clientsList(vector<stClient> &Clients) {
-    for (const stClient& client : Clients) {
+void clientsListPrinter(vector<stClient> &vClients) {
+    for (const stClient& client : vClients) {
         cout<<"|" <<left <<client.account<<endl;
         cout<<"|" <<left <<client.name<<endl;
         cout<<"|" <<left <<client.phone<<endl;
@@ -49,10 +86,12 @@ void TablePrinter(short Number) {
     cout << left << setw(15)<<"|Phone";
     cout << left << setw(15)<<"|Balance"<< endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
-
-
-
-
+}
+void PrintClint(stClient& Client ) {
+    cout << "Account Number    :"<<Client.account << endl;
+    cout << "Phone Number      :"<<Client.phone << endl;
+    cout << "Name of Client    :"<<Client.name << endl;
+    cout << "Balance of Client :"<<Client.balance << endl;
 }
 //Add New client
 void AddClient(vector<stClient>& List) {
@@ -77,13 +116,13 @@ void DeleteClient(vector<stClient>& List) {
     vector<stClient> NewList;
     for (stClient& Client : List) {
         if (Client.selected != true) {
-            NewList.pop_back();
+            NewList.push_back(Client);
         }
     }
 
  }
 //Update Client
-stClient ReadClint(vector<stClient>& ClientList) {
+void ReadClint(vector<stClient>& ClientList) {
     stClient Client;
     cout<< "Enter Password: ";
     getline(cin, Client.password);
@@ -121,11 +160,60 @@ void SearchClient(vector<stClient>& List, string AccountNumber) {
         }
     }
 }
-
-/*Exit
+//Exit
 /*system(pause)*/
+void Start() {
+    string DataBase;
+    vector<string> vData = vReadFile(DataBase);
+    vector<stClient> vDataList = vSplitedFile(vData, "/*/");
+    system("cls");
+    short Option;
+    Menu();
+    cin>> Option;
+    switch (Option) {
+        case 1:
+            short Length = vDataList.size();
+            TablePrinter(Length);
+            clientsListPrinter(vDataList);
+            system("Press any key to back to main menu...");
+            Menu();
+            break;
+        case 2:
+            AddClient(vDataList);
+            system("Press any key to back to main menu...");
+            Menu();
+            break;
+        case 3:
+            DeleteClient(vDataList);
+            system("Press any key to back to main menu...");
+            Menu();
+            break;
+        case 4:
+            UpdateClient(vDataList, DataBase);
+            system("Press any key to back to main menu...");
+            Menu();
+            break;
+        case 5:
+            string AccountNumber;
+            cout << "Enter Account Number: ";
+            cin >> AccountNumber;
+            SearchClient(vDataList, AccountNumber);
+            system("Press any key to back to main menu...");
+            Menu();
+            break;
+        case 6:
+            cout << "Good bye!" << endl;
+            break;
+        default:
+            short ListLength = vDataList.size();
+            TablePrinter(ListLength);
+            clientsListPrinter(vDataList);
+            system("Press any key to back to main menu...");
+            Menu();
+    }
+}
 
 int main() {
-    //Menu();
-    TablePrinter(5);
+    Start();
+    return 0;
 }
