@@ -163,7 +163,7 @@ void SearchClient(vector<stClient>& List, string AccountNumber) {
 //Exit
 /*system(pause)*/
 void Start() {
-    string DataBase;
+    const string DataBase = "bank.txt";
     vector<string> vData = vReadFile(DataBase);
     vector<stClient> vDataList = vSplitedFile(vData, "/*/");
     system("cls");
