@@ -19,7 +19,7 @@ short DayFinder(int Year, int Month, int Day ) {
     const int Y = Year - A;
     const int M = Month + (12 * A) - 2;
     const int D = (Day + Y + (Y/4)-(Y/100)+(Y/400)+ ((31 * M)/ 12 )) % 7;
-    return D ;
+    return  D ;
 }
 bool IsLongMonth(int month) {
 
