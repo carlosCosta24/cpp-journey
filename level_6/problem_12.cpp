@@ -2,14 +2,12 @@
 #include <string>
 using namespace std;
 void ReadInput(short& Year, short& Month, short& Day){
-
     cout << "Please enter a Day? ";
     cin >> Day;
     cout << "Please enter a Month? ";
     cin >> Month;
     cout << "Please enter a Year? ";
     cin >> Year;
-
 
 }
 void ReadInput(short& DaysToAdd) {
