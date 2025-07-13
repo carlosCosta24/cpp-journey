@@ -1,0 +1,89 @@
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+using namespace std;
+
+struct stDate {
+    short Year;
+    short Month;
+    short Day;
+};
+bool YearChecker(short Input) {
+
+    return (Input % 4 == 0 && Input % 100 != 0) || (Input % 400 == 0);
+}
+bool IsLongMonth(short month) {
+
+    return month == 1 || month == 3 || month == 5 ||
+           month == 7 || month == 8 || month == 10 || month == 12;
+}
+short NumberOfDays(short Year , short Month) {
+
+    if (Month < 1 || Month > 12) return 0;
+    return(Month == 2)
+    ?(YearChecker(Year)?  29 : 28)
+    : ((IsLongMonth(Month))? 31: 30);
+}
+bool IsLastDay(short Year, short Month, short Day) {
+    short NumberOfDaysInMonth = NumberOfDays(Year, Month);
+    return (NumberOfDaysInMonth == Day) ? true : false;
+}
+bool IsLastMonth(short Month) {
+    return (Month == 12 ) ? true : false;
+}
+stDate ReadDate() {
+    stDate Date;
+    cout << "Please enter your birthdate!! \n";
+    cout << "Please enter a day: ";
+    cin >> Date.Day;
+    cout << "Please enter a month: ";
+    cin >> Date.Month;
+    cout << "Please enter a year: ";
+    cin >> Date.Year;
+    return Date;
+}
+stDate IncreaseDayByOne(stDate Date) {
+    if (IsLastDay(Date.Year, Date.Month, Date.Day) && IsLastMonth(Date.Month)) {
+        Date.Year ++;
+        Date.Month = 1;
+        Date.Day = 1;
+    }else {
+        short TotalDaysInMonth = NumberOfDays(Date.Year, Date.Month);
+        if (Date.Day < TotalDaysInMonth) {
+            Date.Day ++;
+        }else {
+            Date.Month ++;
+            Date.Day = 1;
+        }
+    }
+    return Date;
+}
+bool IsDate1BeforeDate2(stDate First, stDate Second) {
+    return  (First.Year < Second.Year) ? true :
+    ((First.Year == Second.Year) ? (First.Month < Second.Month ? true :
+    (First.Month == Second.Month ? First.Day < Second.Day : false)) : false);
+}
+int DiffCalculate(stDate Date1, stDate Date2, bool IncludeLastDay = false) {
+    int DiffDays = 0;
+    while (IsDate1BeforeDate2(Date1, Date2)) {
+        DiffDays ++;
+        Date1 = IncreaseDayByOne(Date1);
+    }
+    return IncludeLastDay ? ++DiffDays : DiffDays;
+}
+stDate SystemDate() {
+    stDate Date;
+    const time_t t = time(nullptr);
+    const tm* Time = localtime(&t);
+    Date.Year = Time->tm_year + 1900;
+    Date.Month = Time->tm_mon + 1;
+    Date.Day = Time->tm_mday;
+    return Date;
+}
+
+int main() {
+    stDate Date1 = ReadDate();
+    stDate Date2 = SystemDate();
+    cout << "Your age in day(s) is: " << fixed << DiffCalculate(Date1, Date2, true)  << endl;
+    return 0;
+}
