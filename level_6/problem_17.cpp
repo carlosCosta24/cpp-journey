@@ -60,10 +60,6 @@ bool IsDate1BeforeDate2(stDate First, stDate Second) {
     ((First.Year == Second.Year) ? (First.Month < Second.Month ? true :
     (First.Month == Second.Month ? First.Day < Second.Day : false)) : false);
 }
-bool DateIsEqual(stDate First, stDate Second) {
-    return (First.Year == Second.Year) ?
-    ((First.Month == Second.Month) ? ((First.Day == Second.Day) ? true : false) : false) : false;
-}
 int DiffCalculate(stDate Date1, stDate Date2, bool IncludeLastDay = false) {
     int DiffDays = 0;
     while (IsDate1BeforeDate2(Date1, Date2)) {
