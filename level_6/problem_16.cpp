@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 using namespace std;
 
 struct stDate {
@@ -7,17 +6,6 @@ struct stDate {
     short Month;
     short Day;
 };
-void ReadInput(short& Year, short& Month, short& Day){
-
-    cout << "Please enter a Day? ";
-    cin >> Day;
-    cout << "Please enter a Month? ";
-    cin >> Month;
-    cout << "Please enter a Year? ";
-    cin >> Year;
-
-
-}
 bool YearChecker(short Input) {
 
     return (Input % 4 == 0 && Input % 100 != 0) || (Input % 400 == 0);
