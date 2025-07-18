@@ -84,19 +84,15 @@ int DiffCalculate(stDate Date1, stDate Date2, bool IncludeLastDay = false) {
     return IncludeLastDay ? ++DiffDays : DiffDays;
 }
 
-stPeriodLength PeriodCalculator(stPeriod Period) {
-    stPeriodLength Result;
-    Result.Length = DiffCalculate(Period.Start, Period.End);
-    Result.LengthLastDayIncluded = DiffCalculate(Period.Start, Period.End, true);
-    return Result;
+short PeriodCalculator(stPeriod Period, bool IncludeLastDay = false) {
+   return DiffCalculate(Period.Start, Period.End, IncludeLastDay);
 }
 
 
 int main() {
     stPeriod Period = ReadPeriod();
-    stPeriodLength PeriodLength = PeriodCalculator(Period);
-    cout << "Period Length: " << PeriodLength.Length << endl;
-    cout << "Period Length ( Including last day ): " << PeriodLength.LengthLastDayIncluded;
+    cout << "Period Length: " << PeriodCalculator(Period) << endl;
+    cout << "Period Length ( Including last day ): " << PeriodCalculator(Period, true);
    return 0;
 
 }
