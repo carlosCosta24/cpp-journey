@@ -134,7 +134,7 @@ void BalancesListHeader(short Number) {
     cout << left << setw(15)<<"|Balance"<< endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
 }
-void BalacesPrinter(vector<stClient>& vList) {
+void BalancesPrinter(vector<stClient>& vList) {
     double TotalBalance = 0;
     for (const stClient& client : vList) {
         cout << left << setw(18) << "|" + client.account;
@@ -395,7 +395,7 @@ void Start() {
                 case 3:
                 {
                     BalancesListHeader(vData.size());
-                    BalacesPrinter(vDataList);
+                    BalancesPrinter(vDataList);
                     cout<< "Press any key to back to main menu..."<< endl;
                     cin.ignore();
                     cin.get();
