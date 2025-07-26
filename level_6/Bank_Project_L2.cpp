@@ -15,10 +15,19 @@
 #include <limits>
 #include <unistd.h>
 using namespace std;
+struct Permissions {
+    bool showClintList = false;
+    bool AddNewClint = false;
+    bool DeleteClint = false;
+    bool UpdateClint = false;
+    bool FindClint = false;
+    bool ShowTransactions = false;
+    bool ManageUsers = false;
+};
 struct stUser {
     string Name;
     short Password;
-    short Permission;
+    struct Permissions;
 };
 struct stClient {
     string account;
@@ -117,6 +126,10 @@ bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
 }
 // user menu depending on permission
 void ShowMenu(short Permission ) {
+
+}
+//creating a new user
+void AddUser(vector<stUser> Users) {
 
 }
 //Show Client list
