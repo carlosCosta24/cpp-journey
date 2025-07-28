@@ -1,5 +1,5 @@
 /* requirements
- * log screen , user fill for user, default username: admin , password: 1234;
+ * log screen , user file for user, default username: admin , password: 1234; done;
  * Mange user option, logout;
  * mange user menu: list users, add new user, delete user, update user , find user, main menu;
  * use bitwise operation and to add the permissions
@@ -28,6 +28,7 @@ struct stUser {
     string Name;
     short Password;
     struct Permissions;
+    short PermissionsFlag;
 };
 struct stClient {
     string account;
@@ -52,9 +53,25 @@ void Menu() {
     cout<< "\t\t\t[4] Update Client Info."<<endl;
     cout<< "\t\t\t[5] Find Client."<<endl;
     cout<< "\t\t\t[6] Transaction Menu."<<endl;
-    cout<< "\t\t\t[7] Exit."<<endl;
+    cout<< "\t\t\t[7] Manage Users."<<endl;
+    cout<< "\t\t\t[7] Logout."<<endl;
     cout << "\t\t\t================================"<<endl;
     cout << "\t\t\tChoose What to do? [1 - 7]?"<<endl;
+}
+void ManageUsersMenu(){
+    cout << "\t\t\t================================"<<endl;
+    cout << "\t\t\t\t\t\tManage Users Menu Screen " << endl;
+    cout << "\t\t\t================================"<<endl;
+    cout<< "\t\t\t[1] List Users."<< endl;
+    cout<< "\t\t\t[2] Add New User."<<endl;
+    cout<< "\t\t\t[3] Delete User."<<endl;
+    cout<< "\t\t\t[4] Update User."<<endl;
+    cout<< "\t\t\t[5] Find User."<<endl;
+    cout<< "\t\t\t[6] Main Menu."<<endl;
+    cout << "\t\t\t================================"<<endl;
+    cout << "\t\t\tChoose What to do? [1 - 6]?"<<endl;
+
+
 }
 vector<string> vReadFile(string FileName ) {
     vector<string> vFileContent;
@@ -153,6 +170,23 @@ void TablePrinter(short Number) {
     cout << left << setw(15)<<"|Balance"<< endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
 }
+void UsersPrinter(short Number){
+    cout << "\t\t\t\t\t\t\t\t Users list (" << Number << ") User(s)" << endl;
+    cout << "_______________________________________________________________________________________________"<< endl;
+    cout << left << setw(18)<<"|User Name";
+    cout << left << setw(15)<<"|Password";
+    cout << left << setw(30)<<"|Permissions";
+    cout << "_______________________________________________________________________________________________"<< endl;
+
+}
+
+void UsersListPrinter(vector<stUser>& vUsers) {
+    for (const stUser& User : vUsers) {
+        cout << left << setw(18) << "|" + User.Name;
+        cout << left << setw(15) << "|" + User.Password;
+        cout << left << setw(30) << "|" + User.PermissionsFlag;
+    }
+    cout << "-----------------------------------------------------------------------------------------------" << endl;}
 void TransactionMenu() {
     cout << "\t\t\t================================"<<endl;
     cout << "\t\t\t\t\tTransaction Menu" << endl;
