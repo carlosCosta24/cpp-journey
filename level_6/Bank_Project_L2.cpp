@@ -1,11 +1,10 @@
 /* requirements
- * log screen , user file for user, default username: admin , password: 1234; done;
- * Mange user option, logout;
- * mange user menu: list users, add new user, delete user, update user , find user, main menu;
+ * log screen , user file for user, default username: admin , password: 1234 done;
+ * Mange user option, logout done;
+ * mange user menu: list users, add new user, delete user, update user , find user, main menu done;
  * use bitwise operation and to add the permissions
  * deny deleting the admin account
  *
-
 */
 #include <iostream>
 #include <string>
@@ -15,8 +14,9 @@
 #include <limits>
 #include <unistd.h>
 using namespace std;
-struct Permissions {
-    bool showClintList = false;
+struct stPermissions {
+    bool FullAccess = false;
+    bool ShowClintList = false;
     bool AddNewClint = false;
     bool DeleteClint = false;
     bool UpdateClint = false;
@@ -27,8 +27,9 @@ struct Permissions {
 struct stUser {
     string Name;
     short Password;
-    struct Permissions;
+    stPermissions Permissions;
     short PermissionsFlag;
+    bool Selected = false;
 };
 struct stClient {
     string account;
@@ -120,7 +121,7 @@ vector <stClient> vConvertLineToClients(vector<string> Lines) {
 };
 //login
 //check for user in users list
-bool IsUser(vector<stUser> Users, stirng UserName) {
+bool IsUser(vector<stUser> Users, string UserName) {
     for (const stUser &User : Users) {
         if (User.Name == UserName) {
             return true;
@@ -141,9 +142,11 @@ bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
 
     return false;
 }
-// user menu depending on permission
-void ShowMenu(short Permission ) {
-
+// Access denied
+void AccessDenied() {
+    cout << "\t\t\t================================"<<endl;
+    cout << "\t\t\t\t\t\tAccess denied" << endl;
+    cout << "\t\t\t================================"<<endl;
 }
 //creating a new user
 void AddUser(vector<stUser> Users) {
@@ -179,7 +182,6 @@ void UsersPrinter(short Number){
     cout << "_______________________________________________________________________________________________"<< endl;
 
 }
-
 void UsersListPrinter(vector<stUser>& vUsers) {
     for (const stUser& User : vUsers) {
         cout << left << setw(18) << "|" + User.Name;
@@ -264,6 +266,51 @@ void AddClient(vector<stClient>& List) {
     List.push_back(Client);
     cout<< "Client Added Successfully!" << endl;
 };
+//add New user
+bool UserExists(vector<stUser>& List, const string& UserName) {
+    for (const stUser& user : List) {
+        if(user.Name == UserName) return true;
+    }
+    return false;
+}
+void AddUser(vector<stUser>& List) {
+    stUser User;
+    string Answer = "";
+    cout<< "Enter Username: ";
+    cin >> User.Name;
+    if (UserExists(List, User.Name)) {
+    cout << "User already exists" << endl;
+    return;
+    }
+    cout<< "Enter Password: ";
+    cin >> User.Password;
+
+    cout << "Do you want to give full access? y/n? ";
+    cin >> Answer;
+    while(Answer != "Y" || Answer != "y") {
+        cout <<"Invalid Input! Do you want to give full access? y/n? ";
+        cin >> Answer;
+    }
+    if (User.Permissions.FullAccess == false) {
+        cout << "Do want to give access to:"<< endl;
+        cout << "Show Client List? y/n? ";
+        cin >> User.Permissions.ShowClintList;
+        cout << "Add New Client? y/n?";
+        cin >>  User.Permissions.AddNewClint;
+        cout << "Delete Client? y/n?";
+        cin >> User.Permissions.DeleteClint;
+        cout << "Update Client? y/n?";
+        cin >> User.Permissions.UpdateClint;
+        cout << "Find Client? y/n?";
+        cin >> User.Permissions.FindClint;
+        cout << "Show Transactions Menu? y/n?";
+        cin >> User.Permissions.ShowTransactions;
+        cout << "Manage Users? y/n? ";
+        cin >> User.Permissions.ManageUsers;
+    }
+    List.push_back(User);
+    cout << "User Added Successfully!" << endl;
+}
 //Delete Client
 void MarkForDeletion(vector<stClient>& List, string ClientAccount) {
     vector<stClient> vNewList;
@@ -285,6 +332,27 @@ void DeleteClient(vector<stClient>& List) {
     }
     List = NewList;
  }
+//Delete user
+void MarkForUserDeletion(vector<stUser>& List, string UserName) {
+    vector<stUser> vNewList;
+    for (stUser& User : List) {
+        if (User.Name == UserName) {
+            User.Selected = true;
+            cout<< "Deleting....";
+            return;
+        }
+    }
+    cout<< "User Not Found!"<<endl;
+}
+void DeleteUser(vector<stUser>& List) {
+    vector<stUser> NewList;
+    for (stUser& User : List) {
+        if (User.Selected == false) {
+            NewList.push_back(User);
+        }
+    }
+    List = NewList;
+}
 //Update Client
 void UpdateClintData(stClient &Client) {
     cout << "Enter New Password (current: " << Client.password << "): ";
@@ -308,6 +376,37 @@ void UpdateClient(vector<stClient>& List, string AccountNumber) {
     }
     cout << "Client not found!!" << endl;
 }
+//update user
+void UpdateUserInfo(stUser& User) {
+    cout << "Enter New Password (current: " << User.Password << "): ";
+    cin >> User.Password;
+    cout << "Do want to give access to:"<< endl;
+    cout << "Show Client List? y/n? ";
+    cin >> User.Permissions.ShowClintList;
+    cout << "Add New Client? y/n?";
+    cin >>  User.Permissions.AddNewClint;
+    cout << "Delete Client? y/n?";
+    cin >> User.Permissions.DeleteClint;
+    cout << "Update Client? y/n?";
+    cin >> User.Permissions.UpdateClint;
+    cout << "Find Client? y/n?";
+    cin >> User.Permissions.FindClint;
+    cout << "Show Transactions Menu? y/n?";
+    cin >> User.Permissions.ShowTransactions;
+    cout << "Manage Users? y/n? ";
+    cin >> User.Permissions.ManageUsers;
+}
+void UpdateUsers(vector<stUser>& List, string UserName) {
+    for (stUser& User : List) {
+        if (User.Name == UserName) {
+            UpdateUserInfo(User);
+            cout << "User Updated Successfully!" << endl;
+            return;
+        }
+    }
+    cout << "User Not Found!" << endl;
+
+}
 //Find Client
 void ClientCard(stClient Client) {
     cout << "The following are the client details: "<< endl;
@@ -328,6 +427,17 @@ void SearchClient(vector<stClient>& List, string AccountNumber) {
     }
     cout<< "Client not found!" << endl;
 }
+//user info card
+void UserCard(stUser User) {
+    cout << "The following are the User details: "<< endl;
+    cout<< "-----------------------------------------------"<< endl;
+    cout << "User Name  :" << User.Name << endl;
+    cout << "Password   :" << User.Password << endl;;
+    cout << "Permissions:" << User.PermissionsFlag << endl;
+    cout<< "-----------------------------------------------"<< endl;
+
+}
+
 void SaveClientsToFile(string fileName, vector<stClient> clients) {
     ofstream file(fileName);
     if (file.is_open()) {
