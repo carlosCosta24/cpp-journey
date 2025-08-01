@@ -26,10 +26,14 @@ struct stPermissions {
 };
 struct stUser {
     string Name;
-    short Password;
+    string Password;
     stPermissions Permissions;
-    short PermissionsFlag;
+    string PermissionsFlag;
     bool Selected = false;
+};
+struct stUserLogin {
+    string Username;
+    string Password;
 };
 struct stClient {
     string account;
@@ -39,10 +43,26 @@ struct stClient {
     double balance;
     bool selected;
 };
-void LoginScreen() {
+enum enPermissionValue {
+    FullAccess =-1,
+    ShowClintList=1,
+    AddNewClint=2,
+    DeleteClint=3,
+    UpdateClint=4,
+    FindClint=5,
+    ShowTransactions=6,
+    ManageUsers=7,
+};
+stUserLogin LoginScreen() {
+    stUserLogin Login;
     cout << "\t\t\t================================"<<endl;
     cout << "\t\t\t\t\t\tLogin: " << endl;
     cout << "\t\t\t================================"<<endl;
+    cout << "Enter Username? ";
+    cin>> Login.Username;
+    cout << "Enter Password? ";
+    cin>> Login.Password;
+    return Login;
 }
 void Menu() {
     cout << "\t\t\t================================"<<endl;
@@ -55,7 +75,7 @@ void Menu() {
     cout<< "\t\t\t[5] Find Client."<<endl;
     cout<< "\t\t\t[6] Transaction Menu."<<endl;
     cout<< "\t\t\t[7] Manage Users."<<endl;
-    cout<< "\t\t\t[7] Logout."<<endl;
+    cout<< "\t\t\t[8] Logout."<<endl;
     cout << "\t\t\t================================"<<endl;
     cout << "\t\t\tChoose What to do? [1 - 7]?"<<endl;
 }
@@ -119,11 +139,39 @@ vector <stClient> vConvertLineToClients(vector<string> Lines) {
     }
     return vClients;
 };
+vector <stUser> vConvertLineToUsers(vector<string> Lines) {
+    vector <stUser> vUsers;
+    for (string Line : Lines) {
+        vector<string> vUser = vSpliter(Line, "/*/");
+        if (vUser.size() >= 3) {
+            stUser User;
+            User.Name = vUser[0];
+            User.Password = vUser[1];
+            User.PermissionsFlag = vUser[2];
+            vUsers.push_back(User);
+        }
+    }
+    return vUsers;
+}
 //login
 //check for user in users list
 bool IsUser(vector<stUser> Users, string UserName) {
     for (const stUser &User : Users) {
         if (User.Name == UserName) {
+            return true;
+        }
+    }
+    return false;
+}
+bool UserExists(vector<stUser>& List, string& UserName) {
+    for (const stUser& user : List) {
+        if(user.Name == UserName) return true;
+    }
+    return false;
+}
+bool IsCorrect(vector<stUser> Users, string Password) {
+    for (const stUser &User : Users) {
+        if (User.Password == Password) {
             return true;
         }
     }
@@ -142,15 +190,21 @@ bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
 
     return false;
 }
+
 // Access denied
 void AccessDenied() {
     cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\t\tAccess denied" << endl;
+    cout << "\t\t\t\t\t\tAccess denied,\n "
+            "You don't have permission,\n "
+            "Contact your admin!!" << endl;
     cout << "\t\t\t================================"<<endl;
 }
 //creating a new user
-void AddUser(vector<stUser> Users) {
-
+void AddUserScreen(){
+    cout << "\t\t\t================================"<<endl;
+    cout << "\t\t\t\t\t\tAdd New User Screen" << endl;
+    cout << "\t\t\t================================"<<endl;
+    cout << "Adding New User:" << endl;
 }
 //Show Client list
 void clientsListPrinter(vector<stClient>& vClients) {
@@ -173,7 +227,8 @@ void TablePrinter(short Number) {
     cout << left << setw(15)<<"|Balance"<< endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
 }
-void UsersPrinter(short Number){
+//user listing
+void UsersHeaderPrinter(short Number){
     cout << "\t\t\t\t\t\t\t\t Users list (" << Number << ") User(s)" << endl;
     cout << "_______________________________________________________________________________________________"<< endl;
     cout << left << setw(18)<<"|User Name";
@@ -219,6 +274,7 @@ void PrintClint(string AccountNumber, vector<stClient>& vClients) {
     }
 cout << "Client not found" << endl;
 }
+
 void BalancesListHeader(short Number) {
     cout << "\t\t\t\t\t\t\t\t Client list (" << Number << ") Client(s)" << endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
@@ -267,15 +323,10 @@ void AddClient(vector<stClient>& List) {
     cout<< "Client Added Successfully!" << endl;
 };
 //add New user
-bool UserExists(vector<stUser>& List, const string& UserName) {
-    for (const stUser& user : List) {
-        if(user.Name == UserName) return true;
-    }
-    return false;
-}
+
 void AddUser(vector<stUser>& List) {
     stUser User;
-    string Answer = "";
+    char Answer = '';
     cout<< "Enter Username: ";
     cin >> User.Name;
     if (UserExists(List, User.Name)) {
@@ -286,11 +337,14 @@ void AddUser(vector<stUser>& List) {
     cin >> User.Password;
 
     cout << "Do you want to give full access? y/n? ";
-    cin >> Answer;
-    while(Answer != "Y" || Answer != "y") {
+    getline(cin >> ws, Answer );
+    Answer = toupper(Answer);
+    while(Answer != 'Y' && Answer != 'N') {
         cout <<"Invalid Input! Do you want to give full access? y/n? ";
         cin >> Answer;
     }
+    (Answer == 'Y')? User.Permissions.FullAccess = true : User.Permissions.FullAccess = false;
+    (User.Permissions.FullAccess == true)? User.PermissionsFlag = -1 : User.PermissionsFlag = 0;
     if (User.Permissions.FullAccess == false) {
         cout << "Do want to give access to:"<< endl;
         cout << "Show Client List? y/n? ";
@@ -307,6 +361,17 @@ void AddUser(vector<stUser>& List) {
         cin >> User.Permissions.ShowTransactions;
         cout << "Manage Users? y/n? ";
         cin >> User.Permissions.ManageUsers;
+    }
+    if (User.Permissions.FullAccess == true) {
+        User.PermissionsFlag = -1;
+    }else {
+        if (User.Permissions.ShowClintList  == true )  User.PermissionsFlag &=  enPermissionValue::ShowClintList;
+        if (User.Permissions.AddNewClint  == true )  User.PermissionsFlag &=  enPermissionValue::AddNewClint;
+        if (User.Permissions.DeleteClint  == true )  User.PermissionsFlag &=  enPermissionValue::DeleteClint;
+        if (User.Permissions.UpdateClint  == true )  User.PermissionsFlag &=  enPermissionValue::UpdateClint;
+        if (User.Permissions.FindClint  == true )  User.PermissionsFlag &=  enPermissionValue::FindClint;
+        if (User.Permissions.ShowTransactions  == true )  User.PermissionsFlag &=  enPermissionValue::ShowTransactions;
+
     }
     List.push_back(User);
     cout << "User Added Successfully!" << endl;
@@ -427,7 +492,7 @@ void SearchClient(vector<stClient>& List, string AccountNumber) {
     }
     cout<< "Client not found!" << endl;
 }
-//user info card
+//Find User & user info card
 void UserCard(stUser User) {
     cout << "The following are the User details: "<< endl;
     cout<< "-----------------------------------------------"<< endl;
@@ -437,7 +502,34 @@ void UserCard(stUser User) {
     cout<< "-----------------------------------------------"<< endl;
 
 }
+void FindUser(vector<stUser> UserList, string UserName) {
+    for (stUser& user:  UserList) {
+        if (user.Name == UserName) {
+            UserCard(user);
+        }
+    }
+    cout << "User Not Found!" << endl;
+}
+stUser GetUser(vector<stUser> UserList, string UserName) {
+    stUser TargetedUser;
+    for (stUser& user:  UserList) {
+        if (user.Name == UserName) {
+            TargetedUser = user;
+        }
+    }
+    return TargetedUser;
+}
+// check for permissions
+/*bool IsAllowed(vector<stUser>& List,string UserName, bool Permission) {
+    if (UserExists(List, UserName)) {
+        stUser TargetedUser = GetUser(List, UserName);
 
+        if (TargetedUser.Permissions.Permission == true) {
+
+        }
+
+    }
+}*/
 void SaveClientsToFile(string fileName, vector<stClient> clients) {
     ofstream file(fileName);
     if (file.is_open()) {
@@ -447,6 +539,18 @@ void SaveClientsToFile(string fileName, vector<stClient> clients) {
                  << client.name << "/*/"
                  << client.phone << "/*/"
                  << client.balance << endl;
+        }
+        file.close();
+    }
+}
+// save new users
+void SaveUserToFile(vector<stUser> UserList, string fileName) {
+    fstream file(fileName);
+    if (file.is_open()) {
+        for (stUser& user : UserList) {
+            file << user.Name << "/*/"
+            << user.Password << "/*/"
+            << user.PermissionsFlag << endl;
         }
         file.close();
     }
@@ -488,137 +592,237 @@ void Withdraw(vector<stClient>& List ,string AccountNumber) {
 
 void Start() {
     const string DataBase = "bank.txt";
+    const string Users = "users.txt";
     vector<string> vData = vReadFile(DataBase);
+    vector<string> vUsers = vReadFile(Users);
     vector<stClient> vDataList = vConvertLineToClients(vData);
+    vector<stUser> vUsersList = vConvertLineToUsers(vUsers);
     while (true) {
         ClearScreen();
+        stUserLogin UserCredentials = LoginScreen();
+        while (IsUser(vUsersList,UserCredentials.Username) != true  ||
+            IsCorrect(vUsersList, UserCredentials.Password) != true) {
+            cout << "Invalid Username/Password!" << endl;
+        }
+        stUser CurrentUser = GetUser(vUsersList, UserCredentials.Username);
+
         Menu();
         cout << endl;
-
-    short Option;
-    cin>> Option;
-    cin.ignore();
+        short Option;
+        cin>> Option;
+        cin.ignore();
 
     switch (Option) {
         case 1: {
             ClearScreen();
-            short Length = vDataList.size();
-            TablePrinter(Length);
-            clientsListPrinter(vDataList);
-            cout << "Press any key to back to main menu..."<<endl;
-            cin.get();
+            if (!CurrentUser.Permissions.ShowClintList) {
+
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+            } else {
+
+                short Length = vDataList.size();
+                TablePrinter(Length);
+                clientsListPrinter(vDataList);
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+            }
             break;
         }
         case 2: {
 
             ClearScreen();
-            AddClient(vDataList);
-            SaveClientsToFile(DataBase, vDataList);
-            cout << "Press any key to back to main menu..."<<endl;
-            cin.get();
+            if (!CurrentUser.Permissions.AddNewClint) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+
+            }else {
+                AddClient(vDataList);
+
+                SaveClientsToFile(DataBase, vDataList);
+
+                cout << "Press any key to back to main menu..."<<endl;
+
+                cin.get();
+
+            }
             break;
         }
         case 3: {
 
             ClearScreen();
-            string AccountNumber;
-            cout<< "Enter Account Number to Delete: "<< endl;
-            cin >> AccountNumber;
-            char Answer ;
-            SearchClient(vDataList, AccountNumber);
-            cout << "Are you sure You want to delete this account ?";
-            cin >> Answer;
-            if (Answer == 'Y' || Answer == 'y') {
-            MarkForDeletion(vDataList, AccountNumber);
-            DeleteClient(vDataList);
-            SaveClientsToFile(DataBase, vDataList);
+            if (!CurrentUser.Permissions.DeleteClint) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+
+            }else {
+
+                string AccountNumber;
+                char Answer ;
+                cout<< "Enter Account Number to Delete: "<< endl;
+                cin >> AccountNumber;
+                SearchClient(vDataList, AccountNumber);
+                cout << "Are you sure You want to delete this account ?";
+                cin >> Answer;
+                if (toupper(Answer) == 'Y') {
+                    MarkForDeletion(vDataList, AccountNumber);
+                    DeleteClient(vDataList);
+                    SaveClientsToFile(DataBase, vDataList);
+                    cout << "Press any key to back to main menu..."<<endl;
+                    cin.ignore();
+                    cin.get();
+                }
             }
-            cout << "Press any key to back to main menu..."<<endl;
-            cin.ignore();
-            cin.get();
             break;
         }
         case 4: {
             ClearScreen();
-            string ClientAccount;
-            cout << "Enter Client Account: "<<endl;
-            cin >> ClientAccount;
-            UpdateClient(vDataList, ClientAccount);
-            SaveClientsToFile(DataBase, vDataList);
-            cout << "Press any key to back to main menu..."<<endl;
-            cin.ignore();
-            cin.get();
+            if (!CurrentUser.Permissions.UpdateClint) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+            }else {
+                string ClientAccount;
+                cout << "Enter Client Account: "<<endl;
+                cin >> ClientAccount;
+                UpdateClient(vDataList, ClientAccount);
+                SaveClientsToFile(DataBase, vDataList);
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.ignore();
+                cin.get();
+            }
             break;
         }
         case 5: {
 
             ClearScreen();
-            string ClientIdentifier;
-            cout << "Enter Account Number: "<<endl;
-            cin >> ClientIdentifier;
-            SearchClient(vDataList, ClientIdentifier);
-            cout<< "Press any key to back to main menu..."<< endl;
-            cin.ignore();
-            cin.get();
+            if (!CurrentUser.Permissions.FindClint) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+            }else {
+
+                string ClientIdentifier;
+                cout << "Enter Account Number: "<<endl;
+                cin >> ClientIdentifier;
+                SearchClient(vDataList, ClientIdentifier);
+                cout<< "Press any key to back to main menu..."<< endl;
+                cin.ignore();
+                cin.get();
+            }
+
             break;
         }
         case 6: {
             ClearScreen();
-            TransactionMenu();
-            short Choice;
-            cin >> Choice;
-            switch (Choice) {
-                case 1: {
-                    string ClientAccount;
-                    cout << "Enter Account Number: "<<endl;
-                    cin >> ClientAccount;
-                    SearchClient(vDataList, ClientAccount);
-                    Deposit(vDataList, ClientAccount);
-                    SaveClientsToFile(DataBase, vDataList);
-                    cout<< "Press any key to back to main menu..."<< endl;
-                    cin.ignore();
-                    cin.get();
-                    break;
-                }
-                case 2: {
-                    string ClientAccount;
-                    cout<< "Enter Account Number: "<<endl;
-                    cin >> ClientAccount;
-                    SearchClient(vDataList, ClientAccount);
-                    Withdraw(vDataList, ClientAccount);
-                    SaveClientsToFile(DataBase, vDataList);
-                    cout<< "Press any key to back to main menu..."<< endl;
-                    cin.ignore();
-                    cin.get();
-                    break;
+            if (!CurrentUser.Permissions.ShowTransactions) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.get();
+            }else {
+                TransactionMenu();
+                short Choice;
+                cin >> Choice;
+                switch (Choice) {
+                    case 1: {
+                        string ClientAccount;
+                        cout << "Enter Account Number: "<<endl;
+                        cin >> ClientAccount;
+                        SearchClient(vDataList, ClientAccount);
+                        Deposit(vDataList, ClientAccount);
+                        SaveClientsToFile(DataBase, vDataList);
+                        cout<< "Press any key to back to main menu..."<< endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+                    }
+                    case 2: {
+                        string ClientAccount;
+                        cout<< "Enter Account Number: "<<endl;
+                        cin >> ClientAccount;
+                        SearchClient(vDataList, ClientAccount);
+                        Withdraw(vDataList, ClientAccount);
+                        SaveClientsToFile(DataBase, vDataList);
+                        cout<< "Press any key to back to main menu..."<< endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
 
-                }
-                case 3:
-                {
-                    BalancesListHeader(vData.size());
-                    BalancesPrinter(vDataList);
-                    cout<< "Press any key to back to main menu..."<< endl;
-                    cin.ignore();
-                    cin.get();
-                    break;
-                }
-                case 4: {
-                    Menu();
-                    break;
-                }
-                default: {
-                    cout << "Invalid Option! Please try again." << endl;
-                    cout << "Press any key to continue..."<< endl;
-                    cin.ignore();
-                    cin.get();
-                    break;
+                    }
+                    case 3:
+                    {
+                        BalancesListHeader(vData.size());
+                        BalancesPrinter(vDataList);
+                        cout<< "Press any key to back to main menu..."<< endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+                    }
+                    case 4: {
+                        Menu();
+                        break;
+                    }
+                    default: {
+                        cout << "Invalid Option! Please try again." << endl;
+                        cout << "Press any key to continue..."<< endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+                    }
                 }
             }
             break;
-
         }
         case 7: {
+            if (!CurrentUser.Permissions.ManageUsers) {
+                AccessDenied();
+                cout << "Press any key to back to main menu..."<<endl;
+                cin.ignore();
+            }else {
+                short Choice;
+                cin >> Choice;
+                switch (Choice) {
+                    case 1: {
+                        short UsersNumber = vUsersList.size();
+                        UsersHeaderPrinter(UsersNumber);
+                        UsersListPrinter(vUsersList);
+                        cout << "Press any key to back to main menu..."<<endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+                    }
+                    case 2: {
+                        AddUser(vUsersList);
+                        SaveUserToFile(vUsersList, Users);
+                        cout << "Press any key to back to main menu..."<<endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+                    }
+                    case 3: {
+                        string UserName;
+                        char Answer ;
+                        cout<< "Enter User Name to Delete: "<< endl;
+                        cin >> UserName;
+                        FindUser(vUsersList, UserName);
+                        cout << "Are you sure You want to delete this account ?";
+                        cin >> Answer;
+                        if (toupper(Answer) == 'Y') {
+                            MarkForUserDeletion(vUsersList, UserName);
+                            DeleteUser(vUsersList);
+                            SaveUserToFile(vUsersList, Users);
+                            cout << "Press any key to back to main menu..."<<endl;
+                            cin.ignore();
+                            cin.get();
 
+                    }
+                }
+
+
+            }
             cout << "Good bye!" << endl;
             return;;
         }
