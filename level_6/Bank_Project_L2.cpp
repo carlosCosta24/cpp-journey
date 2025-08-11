@@ -179,9 +179,9 @@ bool IsCorrect(vector<stUser> Users, string Password) {
 }
 // check if password is correct
 bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
-    for (const stUser &User : Users) {
+    for (stUser &User : Users) {
         if (User.Name == UserName) {
-            short UserPassword = User.Password;
+            string UserPassword = User.Password;
             if (UserPassword == Password) {
                 return true;
             }
@@ -337,7 +337,7 @@ void AddUser(vector<stUser>& List) {
     cin >> User.Password;
 
     cout << "Do you want to give full access? y/n? ";
-    getline(cin >> ws, Answer );
+    cin >>  Answer;
     Answer = toupper(Answer);
     while(Answer != 'Y' && Answer != 'N') {
         cout <<"Invalid Input! Do you want to give full access? y/n? ";
@@ -777,6 +777,7 @@ void Start() {
             break;
         }
         case 7: {
+            ClearScreen();
             if (!CurrentUser.Permissions.ManageUsers) {
                 AccessDenied();
                 cout << "Press any key to back to main menu..."<<endl;
@@ -786,6 +787,7 @@ void Start() {
                 cin >> Choice;
                 switch (Choice) {
                     case 1: {
+                        ClearScreen();
                         short UsersNumber = vUsersList.size();
                         UsersHeaderPrinter(UsersNumber);
                         UsersListPrinter(vUsersList);
@@ -795,6 +797,7 @@ void Start() {
                         break;
                     }
                     case 2: {
+                        ClearScreen();
                         AddUser(vUsersList);
                         SaveUserToFile(vUsersList, Users);
                         cout << "Press any key to back to main menu..."<<endl;
@@ -803,6 +806,7 @@ void Start() {
                         break;
                     }
                     case 3: {
+                        ClearScreen();
                         string UserName;
                         char Answer ;
                         cout<< "Enter User Name to Delete: "<< endl;
@@ -817,14 +821,54 @@ void Start() {
                             cout << "Press any key to back to main menu..."<<endl;
                             cin.ignore();
                             cin.get();
+                            break;
+                        }
 
+                    }
+                    case 4: {
+                            ClearScreen();
+                           string TargetedUser;
+                           cout << "Enter user name?";
+                           cin >> TargetedUser;
+                           FindUser(vUsersList, TargetedUser);
+                           stUser UserToUpdate = GetUser(vUsersList,TargetedUser);
+                           UpdateUserInfo(UserToUpdate);
+                           SaveUserToFile(vUsersList, Users);
+                           cout << "Press any key to back to main menu..."<<endl;
+                           cin.ignore();
+                           cin.get();
+                    }
+                    case 5: {
+                        ClearScreen();
+                        string UserToFind;
+                        cout << "Enter user name?";
+                        cin >> UserToFind;
+                        FindUser(vUsersList, UserToFind);
+                        cout<< "Press any key to back to main menu..."<<endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
+
+                    }
+                    case 6: {
+                        ClearScreen();
+                        Menu();
+                        break;
+                    }
+                    default: {
+                        cout << "Invalid Option! Please try again." << endl;
+                        cout << "Press any key to continue..."<< endl;
+                        cin.ignore();
+                        cin.get();
+                        break;
                     }
                 }
 
-
             }
-            cout << "Good bye!" << endl;
-            return;;
+        }
+            case 8: {
+            ClearScreen();
+            return;
         }
         default: {
 
