@@ -190,7 +190,6 @@ bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
 
     return false;
 }
-
 // Access denied
 void AccessDenied() {
     cout << "\t\t\t================================"<<endl;
@@ -274,7 +273,6 @@ void PrintClint(string AccountNumber, vector<stClient>& vClients) {
     }
 cout << "Client not found" << endl;
 }
-
 void BalancesListHeader(short Number) {
     cout << "\t\t\t\t\t\t\t\t Client list (" << Number << ") Client(s)" << endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
@@ -323,7 +321,6 @@ void AddClient(vector<stClient>& List) {
     cout<< "Client Added Successfully!" << endl;
 };
 //add New user
-
 void AddUser(vector<stUser>& List) {
     stUser User;
     char Answer = '';
@@ -870,8 +867,7 @@ void Start() {
             ClearScreen();
             return;
         }
-        default: {
-
+        default: f{
             cout << "Invalid Option! Please try again." << endl;
             cout << "Press any key to continue..."<< endl;
             cin.ignore();
