@@ -613,7 +613,7 @@ void Start() {
     switch (Option) {
         case 1: {
             ClearScreen();
-            if (!CurrentUser.Permissions.ShowClintList) {
+            if (CurrentUser.Permissions.ShowClintList) {
 
                 AccessDenied();
                 cout << "Press any key to back to main menu..."<<endl;
@@ -863,7 +863,7 @@ void Start() {
                 }
 
             }
-        }
+        }break;
             case 8: {
             ClearScreen();
             return;
