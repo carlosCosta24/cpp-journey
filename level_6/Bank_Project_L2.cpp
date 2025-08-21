@@ -26,18 +26,18 @@ struct stPermissions {
 };
 struct stUser {
     string Name;
-    string Password;
+    short Password;
     stPermissions Permissions;
-    string PermissionsFlag;
+    int PermissionsFlag;
     bool Selected = false;
 };
 struct stUserLogin {
     string Username;
-    string Password;
+    short Password;
 };
 struct stClient {
     string account;
-    string password;
+    short password;
     string phone;
     string name;
     double balance;
@@ -129,7 +129,7 @@ vector <stClient> vConvertLineToClients(vector<string> Lines) {
         if (vClient.size() >= 5) {
             stClient Client;
             Client.account = vClient[0];
-            Client.password = vClient[1];
+            Client.password =  stoi(vClient[1]);
             Client.name = vClient[2];
             Client.phone = vClient[3];
             Client.balance =stod(vClient[4]);
@@ -146,8 +146,8 @@ vector <stUser> vConvertLineToUsers(vector<string> Lines) {
         if (vUser.size() >= 3) {
             stUser User;
             User.Name = vUser[0];
-            User.Password = vUser[1];
-            User.PermissionsFlag = vUser[2];
+            User.Password = stoi(vUser[1]);
+            User.PermissionsFlag = stoi(vUser[2]);
             vUsers.push_back(User);
         }
     }
@@ -169,7 +169,7 @@ bool UserExists(vector<stUser>& List, string& UserName) {
     }
     return false;
 }
-bool IsCorrect(vector<stUser> Users, string Password) {
+bool IsCorrect(vector<stUser> Users, short Password) {
     for (const stUser &User : Users) {
         if (User.Password == Password) {
             return true;
@@ -178,10 +178,10 @@ bool IsCorrect(vector<stUser> Users, string Password) {
     return false;
 }
 // check if password is correct
-bool IsCorrectPassword(vector<stUser> Users,stUser UserName,  short Password) {
+bool IsCorrectPassword(vector<stUser> Users,string UserName,  short Password) {
     for (stUser &User : Users) {
         if (User.Name == UserName) {
-            string UserPassword = User.Password;
+            short UserPassword = User.Password;
             if (UserPassword == Password) {
                 return true;
             }
@@ -323,7 +323,7 @@ void AddClient(vector<stClient>& List) {
 //add New user
 void AddUser(vector<stUser>& List) {
     stUser User;
-    char Answer = '';
+    string Answer = "";
     cout<< "Enter Username: ";
     cin >> User.Name;
     if (UserExists(List, User.Name)) {
@@ -335,12 +335,12 @@ void AddUser(vector<stUser>& List) {
 
     cout << "Do you want to give full access? y/n? ";
     cin >>  Answer;
-    Answer = toupper(Answer);
-    while(Answer != 'Y' && Answer != 'N') {
+    Answer = toupper(Answer[0]);
+    while(Answer[0] != 'Y' && Answer[0] != 'N') {
         cout <<"Invalid Input! Do you want to give full access? y/n? ";
         cin >> Answer;
     }
-    (Answer == 'Y')? User.Permissions.FullAccess = true : User.Permissions.FullAccess = false;
+    (Answer[0] == 'Y')? User.Permissions.FullAccess = true : User.Permissions.FullAccess = false;
     (User.Permissions.FullAccess == true)? User.PermissionsFlag = -1 : User.PermissionsFlag = 0;
     if (User.Permissions.FullAccess == false) {
         cout << "Do want to give access to:"<< endl;
@@ -600,6 +600,7 @@ void Start() {
         while (IsUser(vUsersList,UserCredentials.Username) != true  ||
             IsCorrect(vUsersList, UserCredentials.Password) != true) {
             cout << "Invalid Username/Password!" << endl;
+            UserCredentials = LoginScreen();
         }
         stUser CurrentUser = GetUser(vUsersList, UserCredentials.Username);
 
@@ -867,7 +868,7 @@ void Start() {
             ClearScreen();
             return;
         }
-        default: f{
+        default: {
             cout << "Invalid Option! Please try again." << endl;
             cout << "Press any key to continue..."<< endl;
             cin.ignore();
