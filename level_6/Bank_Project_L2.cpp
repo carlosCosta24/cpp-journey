@@ -1,11 +1,3 @@
-/* requirements
- * log screen , user file for user, default username: admin , password: 1234 done;
- * Mange user option, logout done;
- * mange user menu: list users, add new user, delete user, update user , find user, main menu done;
- * use bitwise operation and to add the permissions
- * deny deleting the admin account
- *
-*/
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -233,16 +225,18 @@ void UsersHeaderPrinter(short Number){
     cout << left << setw(18)<<"|User Name";
     cout << left << setw(15)<<"|Password";
     cout << left << setw(30)<<"|Permissions";
+    cout << endl;
     cout << "_______________________________________________________________________________________________"<< endl;
-
 }
 void UsersListPrinter(vector<stUser>& vUsers) {
     for (const stUser& User : vUsers) {
         cout << left << setw(18) << "|" + User.Name;
         cout << left << setw(15) << "|" + User.Password;
         cout << left << setw(30) << "|" + User.PermissionsFlag;
+        cout << endl;
     }
-    cout << "-----------------------------------------------------------------------------------------------" << endl;}
+    cout << "-----------------------------------------------------------------------------------------------" << endl;
+}
 void TransactionMenu() {
     cout << "\t\t\t================================"<<endl;
     cout << "\t\t\t\t\tTransaction Menu" << endl;
@@ -326,21 +320,22 @@ void AddUser(vector<stUser>& List) {
     string Answer = "";
     cout<< "Enter Username: ";
     cin >> User.Name;
-    if (UserExists(List, User.Name)) {
+    while (UserExists(List, User.Name)) {
     cout << "User already exists" << endl;
-    return;
+    cout<< "Enter Username: ";
+    cin >> User.Name;
     }
     cout<< "Enter Password: ";
     cin >> User.Password;
 
     cout << "Do you want to give full access? y/n? ";
     cin >>  Answer;
-    Answer = toupper(Answer[0]);
-    while(Answer[0] != 'Y' && Answer[0] != 'N') {
+    char Result = toupper(Answer[0]);
+    while(Result != 'Y' && Result != 'N') {
         cout <<"Invalid Input! Do you want to give full access? y/n? ";
-        cin >> Answer;
+        cin >> Result;
     }
-    (Answer[0] == 'Y')? User.Permissions.FullAccess = true : User.Permissions.FullAccess = false;
+    (Result == 'Y')? User.Permissions.FullAccess = true : User.Permissions.FullAccess = false;
     (User.Permissions.FullAccess == true)? User.PermissionsFlag = -1 : User.PermissionsFlag = 0;
     if (User.Permissions.FullAccess == false) {
         cout << "Do want to give access to:"<< endl;
@@ -586,6 +581,11 @@ void Withdraw(vector<stClient>& List ,string AccountNumber) {
     }
         cout << "Account not found!" << endl;
 }
+void stop() {
+    AccessDenied();
+    cout << "Press any key to back to main menu..."<<endl;
+    cin.get();
+}
 
 void Start() {
     const string DataBase = "bank.txt";
@@ -597,8 +597,8 @@ void Start() {
     while (true) {
         ClearScreen();
         stUserLogin UserCredentials = LoginScreen();
-        while (IsUser(vUsersList,UserCredentials.Username) != true  ||
-            IsCorrect(vUsersList, UserCredentials.Password) != true) {
+        while (!IsUser(vUsersList,UserCredentials.Username) ||
+            !IsCorrect(vUsersList, UserCredentials.Password)) {
             cout << "Invalid Username/Password!" << endl;
             UserCredentials = LoginScreen();
         }
@@ -615,9 +615,7 @@ void Start() {
             ClearScreen();
             if (CurrentUser.Permissions.ShowClintList) {
 
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+                stop();
             } else {
 
                 short Length = vDataList.size();
@@ -631,10 +629,8 @@ void Start() {
         case 2: {
 
             ClearScreen();
-            if (!CurrentUser.Permissions.AddNewClint) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+            if (CurrentUser.Permissions.AddNewClint) {
+                stop();
 
             }else {
                 AddClient(vDataList);
@@ -651,13 +647,9 @@ void Start() {
         case 3: {
 
             ClearScreen();
-            if (!CurrentUser.Permissions.DeleteClint) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
-
+            if (CurrentUser.Permissions.DeleteClint) {
+                stop();
             }else {
-
                 string AccountNumber;
                 char Answer ;
                 cout<< "Enter Account Number to Delete: "<< endl;
@@ -678,10 +670,8 @@ void Start() {
         }
         case 4: {
             ClearScreen();
-            if (!CurrentUser.Permissions.UpdateClint) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+            if (CurrentUser.Permissions.UpdateClint) {
+                stop();
             }else {
                 string ClientAccount;
                 cout << "Enter Client Account: "<<endl;
@@ -697,10 +687,8 @@ void Start() {
         case 5: {
 
             ClearScreen();
-            if (!CurrentUser.Permissions.FindClint) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+            if (CurrentUser.Permissions.FindClint) {
+                stop();
             }else {
 
                 string ClientIdentifier;
@@ -716,10 +704,8 @@ void Start() {
         }
         case 6: {
             ClearScreen();
-            if (!CurrentUser.Permissions.ShowTransactions) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+            if (CurrentUser.Permissions.ShowTransactions) {
+                stop();
             }else {
                 TransactionMenu();
                 short Choice;
@@ -776,11 +762,10 @@ void Start() {
         }
         case 7: {
             ClearScreen();
-            if (!CurrentUser.Permissions.ManageUsers) {
-                AccessDenied();
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.ignore();
+            if (CurrentUser.Permissions.ManageUsers) {
+                stop();
             }else {
+                ManageUsersMenu();
                 short Choice;
                 cin >> Choice;
                 switch (Choice) {
