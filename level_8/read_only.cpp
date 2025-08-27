@@ -21,7 +21,7 @@ public:
         _LastName = LastName;
     }
     //get
-    //to add an read only property we create only a get function
+    //to add a read only property we create only a get function
     short Id() {
         return _ID;
     }
