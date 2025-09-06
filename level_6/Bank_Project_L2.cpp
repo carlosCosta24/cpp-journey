@@ -3,8 +3,6 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
-#include <limits>
-#include <unistd.h>
 using namespace std;
 struct stPermissions {
     bool FullAccess = false;
@@ -19,8 +17,8 @@ struct stPermissions {
 struct stUser {
     string Name;
     short Password;
-    stPermissions Permissions;
     int PermissionsFlag;
+    stPermissions Permissions;
     bool Selected = false;
 };
 struct stUserLogin {
@@ -230,9 +228,9 @@ void UsersHeaderPrinter(short Number){
 }
 void UsersListPrinter(vector<stUser>& vUsers) {
     for (const stUser& User : vUsers) {
-        cout << left << setw(18) << "|" + User.Name;
-        cout << left << setw(15) << "|" + User.Password;
-        cout << left << setw(30) << "|" + User.PermissionsFlag;
+        cout <<"|"<< left << setw(18) <<  User.Name;
+        cout <<"|"<< left << setw(15) <<  User.Password;
+        cout <<"| "<< left << setw(30) << User.PermissionsFlag;
         cout << endl;
     }
     cout << "-----------------------------------------------------------------------------------------------" << endl;
@@ -587,6 +585,12 @@ void stop() {
     cin.get();
 }
 
+void Next(){
+    cout << "Press any key to back to main menu..."<<endl;
+    cin.get();
+
+}
+
 void Start() {
     const string DataBase = "bank.txt";
     const string Users = "users.txt";
@@ -597,8 +601,8 @@ void Start() {
     while (true) {
         ClearScreen();
         stUserLogin UserCredentials = LoginScreen();
-        while (!IsUser(vUsersList,UserCredentials.Username) ||
-            !IsCorrect(vUsersList, UserCredentials.Password)) {
+        while (!(IsUser(vUsersList,UserCredentials.Username) &&
+            IsCorrect(vUsersList, UserCredentials.Password))) {
             cout << "Invalid Username/Password!" << endl;
             UserCredentials = LoginScreen();
         }
@@ -621,15 +625,14 @@ void Start() {
                 short Length = vDataList.size();
                 TablePrinter(Length);
                 clientsListPrinter(vDataList);
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.get();
+                Next();
             }
             break;
         }
         case 2: {
 
             ClearScreen();
-            if (CurrentUser.Permissions.AddNewClint) {
+            if (!CurrentUser.Permissions.AddNewClint) {
                 stop();
 
             }else {
@@ -637,9 +640,7 @@ void Start() {
 
                 SaveClientsToFile(DataBase, vDataList);
 
-                cout << "Press any key to back to main menu..."<<endl;
-
-                cin.get();
+                Next();
 
             }
             break;
@@ -661,9 +662,7 @@ void Start() {
                     MarkForDeletion(vDataList, AccountNumber);
                     DeleteClient(vDataList);
                     SaveClientsToFile(DataBase, vDataList);
-                    cout << "Press any key to back to main menu..."<<endl;
-                    cin.ignore();
-                    cin.get();
+                    Next();
                 }
             }
             break;
@@ -678,9 +677,7 @@ void Start() {
                 cin >> ClientAccount;
                 UpdateClient(vDataList, ClientAccount);
                 SaveClientsToFile(DataBase, vDataList);
-                cout << "Press any key to back to main menu..."<<endl;
-                cin.ignore();
-                cin.get();
+                Next();
             }
             break;
         }
@@ -695,9 +692,7 @@ void Start() {
                 cout << "Enter Account Number: "<<endl;
                 cin >> ClientIdentifier;
                 SearchClient(vDataList, ClientIdentifier);
-                cout<< "Press any key to back to main menu..."<< endl;
-                cin.ignore();
-                cin.get();
+                Next();
             }
 
             break;
@@ -718,9 +713,7 @@ void Start() {
                         SearchClient(vDataList, ClientAccount);
                         Deposit(vDataList, ClientAccount);
                         SaveClientsToFile(DataBase, vDataList);
-                        cout<< "Press any key to back to main menu..."<< endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                     case 2: {
@@ -730,9 +723,7 @@ void Start() {
                         SearchClient(vDataList, ClientAccount);
                         Withdraw(vDataList, ClientAccount);
                         SaveClientsToFile(DataBase, vDataList);
-                        cout<< "Press any key to back to main menu..."<< endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
 
                     }
@@ -740,9 +731,7 @@ void Start() {
                     {
                         BalancesListHeader(vData.size());
                         BalancesPrinter(vDataList);
-                        cout<< "Press any key to back to main menu..."<< endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                     case 4: {
@@ -751,9 +740,7 @@ void Start() {
                     }
                     default: {
                         cout << "Invalid Option! Please try again." << endl;
-                        cout << "Press any key to continue..."<< endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                 }
@@ -774,18 +761,14 @@ void Start() {
                         short UsersNumber = vUsersList.size();
                         UsersHeaderPrinter(UsersNumber);
                         UsersListPrinter(vUsersList);
-                        cout << "Press any key to back to main menu..."<<endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                     case 2: {
                         ClearScreen();
                         AddUser(vUsersList);
                         SaveUserToFile(vUsersList, Users);
-                        cout << "Press any key to back to main menu..."<<endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                     case 3: {
@@ -801,9 +784,7 @@ void Start() {
                             MarkForUserDeletion(vUsersList, UserName);
                             DeleteUser(vUsersList);
                             SaveUserToFile(vUsersList, Users);
-                            cout << "Press any key to back to main menu..."<<endl;
-                            cin.ignore();
-                            cin.get();
+                            Next();
                             break;
                         }
 
@@ -817,9 +798,7 @@ void Start() {
                            stUser UserToUpdate = GetUser(vUsersList,TargetedUser);
                            UpdateUserInfo(UserToUpdate);
                            SaveUserToFile(vUsersList, Users);
-                           cout << "Press any key to back to main menu..."<<endl;
-                           cin.ignore();
-                           cin.get();
+                            Next();
                     }
                     case 5: {
                         ClearScreen();
@@ -827,9 +806,7 @@ void Start() {
                         cout << "Enter user name?";
                         cin >> UserToFind;
                         FindUser(vUsersList, UserToFind);
-                        cout<< "Press any key to back to main menu..."<<endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
 
                     }
@@ -840,9 +817,7 @@ void Start() {
                     }
                     default: {
                         cout << "Invalid Option! Please try again." << endl;
-                        cout << "Press any key to continue..."<< endl;
-                        cin.ignore();
-                        cin.get();
+                        Next();
                         break;
                     }
                 }
@@ -855,9 +830,7 @@ void Start() {
         }
         default: {
             cout << "Invalid Option! Please try again." << endl;
-            cout << "Press any key to continue..."<< endl;
-            cin.ignore();
-            cin.get();
+                Next();
             break;
         }
     }
