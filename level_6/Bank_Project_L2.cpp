@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
+#include <thread>
 using namespace std;
 
 struct stUser {
@@ -93,7 +94,7 @@ stUser ConvertLineToUsers(string Line, string Delim = "/*/") {
     return User;
 }
 
- stClient vConvertLineToClients(string Line, string Delim = "/*/") {
+ stClient ConvertLineToClients(string Line, string Delim = "/*/") {
     stClient Client;
     vector<string> vClientData = vSpliter(Line, Delim);
 
@@ -140,7 +141,7 @@ bool IsAccountExists(const string AccountNumber, const string FileName) {
         string Line;
         stClient Client;
         while (getline(MyFile, Line)) {
-            Client = vConvertLineToClients(Line);
+            Client = ConvertLineToClients(Line);
             if (Client.account == AccountNumber) {
                 MyFile.close();
                 return true;
@@ -289,7 +290,7 @@ stUser ReadUser() {
     while (ISUserExists(User.Name, DataBase)) {
 
         cout << "\nUser with Username[ " <<
-            User.Name<<" ] Enter New User? ";
+            User.Name<<" ] Exist, Enter New User? ";
         getline(cin>> ws , User.Name);
     }
 
@@ -346,7 +347,7 @@ vector <stClient> LoadClients(string FileName) {
         while (getline(MyFile, Line))
         {
 
-            Client = vConvertLineToClients(Line);
+            Client = ConvertLineToClients(Line);
 
             vClients.push_back(Client);
         }
@@ -369,9 +370,9 @@ void PrintUser(stUser User){
 
 
     cout << "_______________________________________________________________________________________________"<< endl;
-    cout << left << setw(18)<<"|User Name";
-    cout << left << setw(15)<<"|Password";
-    cout << left << setw(30)<<"|Permissions";
+    cout <<"|User Name" <<left << setw(18)<< User.Name;
+    cout <<"|Password" <<left << setw(15)<< User.Password;
+    cout <<"|Permissions" <<left << setw(30) << User.PermissionsFlag;
     cout << "_______________________________________________________________________________________________"<< endl;
 }
 
@@ -468,8 +469,68 @@ void BalancesPrinter() {
     cout << "\t\t\t\t\t\t\t Total balance = " << TotalBalance<<  endl;
 }
 
+void PrintClintCard(stClient Client) {
+    cout << "\nThe following are the client details:\n";
+    cout << "\n-----------------------------------\n";
+    cout << "Account Number    :"<<Client.account << endl;
+    cout << "Phone Number      :"<<Client.phone << endl;
+    cout << "Name of Client    :"<<Client.name << endl;
+    cout << "Balance of Client :"<<Client.balance << endl;
+    cout << "\n-----------------------------------\n";
+}
 
+void PrintUserCard(stUser User) {
 
+    cout << "The following are the User details: "<< endl;
+    cout<< "-----------------------------------------------"<< endl;
+    cout << "User Name  :" << User.Name << endl;
+    cout << "Password   :" << User.Password << endl;;
+    cout << "Permissions:" << User.PermissionsFlag << endl;
+    cout<< "-----------------------------------------------"<< endl;
+
+}
+
+bool SearchClient(vector<stClient>& List, string AccountNumber, stClient& TargetClient) {
+    for (stClient& Client : List) {
+        if (Client.account == AccountNumber) {
+            Client = TargetClient;
+            return true;
+        }
+    }
+    return false;
+}
+
+bool FindUserNameAndPassword
+(string UserName,string Password, stUser& User) {
+    vector <stUser> vUserList = LoadUsers(Users);
+
+    for (stUser& user:  vUserList) {
+        if (user.Name == UserName) {
+            TargetUser = user;
+            return true;
+        }
+    }
+    return  false;
+}
+
+for (const stUser &User : Users) {
+    if (User.Name == UserName) {
+        return true;
+    }
+}
+return false;
+}
+
+bool IsCorrect(vector<stUser> Users, string UserName ,short Password) {
+    for (const stUser &User : Users) {
+        if (User.Name == UserName) {
+            if (User.Password == Password) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 // struct stPermissions {
 //     bool FullAccess = false;
 //     bool ShowClintList = false;
@@ -560,24 +621,7 @@ vector<string> vReadFile(string FileName ) {
 //login
 //check for user in users list
 bool IsUser(vector<stUser> Users, string UserName) {
-    for (const stUser &User : Users) {
-        if (User.Name == UserName) {
-            return true;
-        }
-    }
-    return false;
-}
 
-bool IsCorrect(vector<stUser> Users, string UserName ,short Password) {
-    for (const stUser &User : Users) {
-        if (User.Name == UserName) {
-            if (User.Password == Password) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
 // check if password is correct
 bool IsCorrectPassword(vector<stUser> Users,string UserName,  short Password) {
     for (stUser &User : Users) {
@@ -628,18 +672,7 @@ void TransactionMenu() {
 
 }
 
-void PrintClint(string AccountNumber, vector<stClient>& vClients) {
-    for (stClient& Client : vClients) {
-        if (Client.account == AccountNumber) {
-            cout << "Account Number    :"<<Client.account << endl;
-            cout << "Phone Number      :"<<Client.phone << endl;
-            cout << "Name of Client    :"<<Client.name << endl;
-            cout << "Balance of Client :"<<Client.balance << endl;
-            return;
-        }
-    }
-cout << "Client not found" << endl;
-}
+
 void BalancesListHeader(short Number) {
     cout << "\t\t\t\t\t\t\t\t Client list (" << Number << ") Client(s)" << endl;
     cout << "-----------------------------------------------------------------------------------------------"<< endl;
@@ -761,33 +794,10 @@ void ClientCard(stClient Client) {
     cout<< "-----------------------------------------------"<< endl;
 
 }
-void SearchClient(vector<stClient>& List, string AccountNumber) {
-    for (stClient& Client : List) {
-        if (Client.account == AccountNumber) {
-            ClientCard(Client);
-            return;
-        }
-    }
-    cout<< "Client not found!" << endl;
-}
-//Find User & user info card
-void UserCard(stUser User) {
-    cout << "The following are the User details: "<< endl;
-    cout<< "-----------------------------------------------"<< endl;
-    cout << "User Name  :" << User.Name << endl;
-    cout << "Password   :" << User.Password << endl;;
-    cout << "Permissions:" << User.PermissionsFlag << endl;
-    cout<< "-----------------------------------------------"<< endl;
 
-}
-void FindUser(vector<stUser> UserList, string UserName) {
-    for (stUser& user:  UserList) {
-        if (user.Name == UserName) {
-            UserCard(user);
-        }
-    }
-    cout << "User Not Found!" << endl;
-}
+//Find User & user info card
+
+
 stUser GetUser(vector<stUser> UserList, string UserName) {
     stUser TargetedUser;
     for (stUser& user:  UserList) {
