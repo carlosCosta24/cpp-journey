@@ -60,6 +60,9 @@ void ShowTransactionsMenu();
 void ShowManageUsersMenu();
 bool CheckAccessPermission(enMainMenuPermissions Permission);
 void login();
+void ClearScreen() {
+    std::cout << "\033[2J\033[1;1H";
+}
 
 struct stClient {
     string account;
@@ -1003,14 +1006,129 @@ void DepositScreen() {
 
 }
 
+void WithDrowScreen() {
+
+    cout << "\n-----------------------------------\n";
+    cout << "\tWithdraw Screen";
+    cout << "\n-----------------------------------\n";
+
+    stClient Client;
+    vector <stClient> vClients = LoadClients(Users);
+    string AccountNumber = ReadClientAccount();
+
+    while (!SearchClient(vClients,AccountNumber,Client)) {
+        cout << "\nClient with [" << AccountNumber << "] does not exist.\n";
+        AccountNumber = ReadClientAccount();
+    }
+    PrintClintCard(Client);
+
+    double Amount = 0;
+    cout << "\nPlease enter withdraw amount? ";
+    cin >> Amount;
+
+    while (Amount > Client.balance) {
+        cout << "\nAmount Exceeds the balance, you can withdraw up to : " << Client.balance << endl;
+        cout << "Please enter another amount? ";
+        cin >> Amount;
+    }
+
+    Deposit(vClients,AccountNumber,Amount * -1);
+}
+
+void TotalBalanceScreen() {
+
+    TotalBalanceScreen();
+}
+
+bool CheckAccessPermission(enMainMenuPermissions Permission) {
+
+    if (CurrentUser.PermissionsFlag == enMainMenuPermissions::eAll) {
+        return true;
+    }
+    if ((Permission & CurrentUser.PermissionsFlag) == Permission) {
+        return true;
+    }
+    else {
+        return false;
+    }
 
 
+}
 
+void GoBackToMainMenu() {
+    cout << "\n\nPress any key to go back to Main Menue...";
+    ShowMainMenu();
+}
 
+void GoBackToTransactionMenu() {
+    cout << "\n\nPress any key to go back to Transactions Menue...";
 
+    ShowTransactionsMenu();
+}
 
+void GoBackToManageUsersMenu() {
+    cout << "\n\nPress any key to go back to Transactions Menu...";
 
+    ShowManageUsersMenu();
+}
 
+short ReadTransactionMenuOP() {
+
+    cout<< "Choose what do you want to do? [1 to 4]? ";
+    short Choice = 0;
+    cin >> Choice;
+
+    return Choice;
+}
+
+void PerformTransactionMenuOP(enTransactionsMenuOptions Option) {
+    switch (Option) {
+        case enTransactionsMenuOptions::eDeposit: {
+            ClearScreen();
+            DepositScreen();
+            GoBackToTransactionMenu();
+            break;
+        }
+        case enTransactionsMenuOptions::eWithdraw: {
+            ClearScreen();
+            WithDrowScreen();
+            GoBackToManageUsersMenu();
+            break;
+        }
+        case enTransactionsMenuOptions::eShowTotalBalance: {
+            ClearScreen();
+            TotalBalanceScreen();
+            GoBackToTransactionMenu();
+            break;
+        }
+        case enTransactionsMenuOptions::eShowMainMenu: {
+            ShowMainMenu();
+        }
+    }
+
+}
+
+void ShowTransactionsMenu() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pTransactions)) {
+        AccessDenied();
+        GoBackToMainMenu();
+        return;
+    }
+    ClearScreen();
+
+    cout << "===========================================\n";
+    cout << "\t\tTransactions Menue Screen\n";
+    cout << "===========================================\n";
+    cout << "\t[1] Deposit.\n";
+    cout << "\t[2] Withdraw.\n";
+    cout << "\t[3] Total Balances.\n";
+    cout << "\t[4] Main Menue.\n";
+    cout << "===========================================\n";
+
+    PerformTransactionMenuOP((enTransactionsMenuOptions)ReadTransactionMenuOP());
+
+}
 
 
 
@@ -1228,9 +1346,7 @@ stUser GetUser(vector<stUser> UserList, string UserName) {
     }
 }*/
 
-void ClearScreen() {
-    std::cout << "\033[2J\033[1;1H";
-}
+
 //transaction menu operation
 
 void Withdraw(vector<stClient>& List ,string AccountNumber) {
