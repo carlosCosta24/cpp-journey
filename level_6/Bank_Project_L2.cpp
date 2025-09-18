@@ -647,7 +647,7 @@ void AddNewUser() {
 
 }
 
-void addNewClients() {
+void AddNewClients() {
     char Answer = 'Y';
     do {
         cout << "Adding New Clients" << endl;
@@ -876,6 +876,216 @@ void AddClientScreen()
 
     AddNewClient();
 }
+
+void UpdateUserScreen() {
+    cout << "\n-----------------------------------\n";
+    cout << "\tUpdate Users Screen";
+    cout << "\n-----------------------------------\n";
+
+    vector <stUser> vUsers = LoadUsers(Users);
+    string UserName = ReadUseAccount();
+
+    UpdateUser(vUsers, UserName);
+}
+
+void DeleteClientScreen() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pDeleteClient)) {
+        AddUserScreen();
+        return;
+    }
+
+    cout << "\n-----------------------------------\n";
+    cout << "\tDelete Client Screen";
+    cout << "\n-----------------------------------\n";
+
+    vector <stClient> vClients = LoadClients(Users);
+    string AccountNumber = ReadClientAccount();
+    DeleteClient(AccountNumber, vClients);
+}
+
+void ClientUpdateScreen() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pUpdateClient)) {
+
+        AccessDenied();
+        return;
+    }
+
+    vector<stClient> vClients = LoadClients(Users);
+    string AccountNumber = ReadClientAccount();
+    UpdateClient(vClients, AccountNumber );
+}
+
+void AddNewClientScreen() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pAddNewClient)) {
+        AccessDenied();
+        return;
+
+    }
+    cout << "\n-----------------------------------\n";
+    cout << "\tAdd New Clients Screen";
+    cout << "\n-----------------------------------\n";
+
+    AddNewClients();
+
+}
+
+void FindClientScreen() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pFindClient)) {
+        AccessDenied();
+        return;
+    }
+    cout << "\n-----------------------------------\n";
+    cout << "\tFind Client Screen";
+    cout << "\n-----------------------------------\n";
+
+    vector <stClient> vClients = LoadClients(Users);
+    stClient Client;
+    string AccountNumber = ReadClientAccount();
+    if (SearchClient(vClients,AccountNumber,Client)) {
+        PrintClintCard(Client);
+    }else {
+        cout << "\nClient with Account Number[" << AccountNumber << "] is not found!";
+    }
+
+}
+
+void FindUserScreen() {
+
+    cout << "\n-----------------------------------\n";
+    cout << "\tFind User Screen";
+    cout << "\n-----------------------------------\n";
+
+    vector <stUser> vUsers = LoadUsers(Users);
+    stUser User;
+    string UserName = ReadUseAccount();
+
+    if (SearchUser(vUsers,UserName,User)) {
+        PrintUserCard(User);
+    }else {
+        cout << "\nUser with Username [" << UserName << "] is not found!";
+    }
+}
+
+void ShowEndScreen()
+{
+    cout << "\n-----------------------------------\n";
+    cout << "\tProgram Ends :-)";
+    cout << "\n-----------------------------------\n";
+
+}
+
+void DepositScreen() {
+    cout << "\n-----------------------------------\n";
+    cout << "\tDeposit Screen";
+    cout << "\n-----------------------------------\n";
+
+    stClient Client;
+
+    vector <stClient> vClients = LoadClients(Users);
+    string AccountNumber = ReadClientAccount();
+
+    while (!SearchClient(vClients,AccountNumber,Client)) {
+        cout << "\nClient with [" << AccountNumber << "] does not exist.\n";
+        AccountNumber = ReadClientAccount();
+    }
+
+    PrintClintCard(Client);
+
+    double Amount = 0;
+    cout << "\nPlease enter deposit amount? ";
+    cin >> Amount;
+
+    Deposit(vClients,AccountNumber,Amount);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
