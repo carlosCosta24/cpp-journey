@@ -3,7 +3,6 @@
 #include <fstream>
 #include <vector>
 #include <iomanip>
-#include <thread>
 using namespace std;
 
 struct stUser {
@@ -59,7 +58,7 @@ void ShowMainMenu();
 void ShowTransactionsMenu();
 void ShowManageUsersMenu();
 bool CheckAccessPermission(enMainMenuPermissions Permission);
-void login();
+void Login();
 void ClearScreen() {
     std::cout << "\033[2J\033[1;1H";
 }
@@ -387,14 +386,14 @@ void PrintClientBalance(stClient Client) {
 }
 
 void AccessDenied() {
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\t\tAccess denied,\n "
-            "You don't have permission,\n "
-            "Contact your admin!!" << endl;
-    cout << "\t\t\t================================"<<endl;
+    cout << "==========================================="<<endl;
+    cout << "\t\t\tAccess denied,\n "
+            "\t\t\tYou don't have permission,\n "
+            "\t\t\tContact your admin!!" << endl;
+    cout << "==========================================="<<endl;
 }
 
-void clientsListPrinter() {
+void ClientsListPrinter() {
     if (!CheckAccessPermission(enMainMenuPermissions::pListClients)) {
         AccessDenied();
         return;
@@ -580,7 +579,7 @@ bool MarkUserForDeletion(vector<stUser>& List, string UserName) {
     return false;
 }
 
-vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vclients) {
+vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vClients) {
     fstream MyFile;
     MyFile.open(fileName, ios::out);
 
@@ -588,7 +587,7 @@ vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vclients) {
 
     if (MyFile.is_open()) {
 
-        for (stClient client : vclients) {
+        for (stClient client : vClients) {
             if (client.selected == false) {
                 Line = ConvertRecordToLine(client);
                 MyFile << Line<< endl;
@@ -597,7 +596,7 @@ vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vclients) {
         MyFile.close();
 
     }
-    return vclients;
+    return vClients;
 }
 // save new users
 vector <stUser> SaveUserToFile(vector<stUser> vUserList, string fileName) {
@@ -894,7 +893,7 @@ void UpdateUserScreen() {
 void DeleteClientScreen() {
 
     if (!CheckAccessPermission(enMainMenuPermissions::pDeleteClient)) {
-        AddUserScreen();
+        AccessDenied();
         return;
     }
 
@@ -1056,18 +1055,14 @@ bool CheckAccessPermission(enMainMenuPermissions Permission) {
 }
 
 void GoBackToMainMenu() {
-    cout << "\n\nPress any key to go back to Main Menue...";
     ShowMainMenu();
 }
 
 void GoBackToTransactionMenu() {
-    cout << "\n\nPress any key to go back to Transactions Menue...";
-
     ShowTransactionsMenu();
 }
 
 void GoBackToManageUsersMenu() {
-    cout << "\n\nPress any key to go back to Transactions Menu...";
 
     ShowManageUsersMenu();
 }
@@ -1118,530 +1113,210 @@ void ShowTransactionsMenu() {
     ClearScreen();
 
     cout << "===========================================\n";
-    cout << "\t\tTransactions Menue Screen\n";
+    cout << "\t\tTransactions Menu Screen\n";
     cout << "===========================================\n";
     cout << "\t[1] Deposit.\n";
     cout << "\t[2] Withdraw.\n";
     cout << "\t[3] Total Balances.\n";
-    cout << "\t[4] Main Menue.\n";
+    cout << "\t[4] Main Menu.\n";
     cout << "===========================================\n";
 
     PerformTransactionMenuOP((enTransactionsMenuOptions)ReadTransactionMenuOP());
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void LoginScreen() {
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\t\tLogin: " << endl;
-    cout << "\t\t\t================================"<<endl;
+short ReadMainMenuOP() {
+    cout << "Choose what do you want to do? [1 - 8]? "<< endl;
+    short Choice = 0;
+    cin >> Choice;
+
+    return Choice;
 }
 
-stUserLogin LoginCredentials(stUserLogin & User) {
-    cout << "Enter Username? ";
-    cin>> User.Username;
-    cout << "Enter Password? ";
-    cin>> User.Password;
-    return User;
-}
-void Menu() {
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\t\tMain Menu" << endl;
-    cout << "\t\t\t================================"<<endl;
-    cout<< "\t\t\t[1] Show Client List."<< endl;
-    cout<< "\t\t\t[2] Add New Client."<<endl;
-    cout<< "\t\t\t[3] Delete Client."<<endl;
-    cout<< "\t\t\t[4] Update Client Info."<<endl;
-    cout<< "\t\t\t[5] Find Client."<<endl;
-    cout<< "\t\t\t[6] Transaction Menu."<<endl;
-    cout<< "\t\t\t[7] Manage Users."<<endl;
-    cout<< "\t\t\t[8] Logout."<<endl;
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\tChoose What to do? [1 - 7]?"<<endl;
-}
-void ManageUsersMenu(){
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\t\tManage Users Menu Screen " << endl;
-    cout << "\t\t\t================================"<<endl;
-    cout<< "\t\t\t[1] List Users."<< endl;
-    cout<< "\t\t\t[2] Add New User."<<endl;
-    cout<< "\t\t\t[3] Delete User."<<endl;
-    cout<< "\t\t\t[4] Update User."<<endl;
-    cout<< "\t\t\t[5] Find User."<<endl;
-    cout<< "\t\t\t[6] Main Menu."<<endl;
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\tChoose What to do? [1 - 6]?"<<endl;
-
-
-}
-
-vector<string> vReadFile(string FileName ) {
-    vector<string> vFileContent;
-    fstream file;
-    file.open(FileName, ios::in);
-    string Line;
-    if (file.is_open()) {
-        while (getline(file, Line)) {
-            vFileContent.push_back(Line);
-        }
-        file.close();
-    }
-    return vFileContent;
-}
-
-
-
-//creating a new user
-
-//Show Client list
-
-void TablePrinter(short Number) {
-    cout << "\t\t\t\t\t\t\t\t Client list (" << Number << ") Client(s)" << endl;
-    cout << "-----------------------------------------------------------------------------------------------"<< endl;
-    cout << left << setw(18)<<"|Account Number";
-    cout << left << setw(15)<<"|Pin code";
-    cout << left << setw(30)<<"|Client Name";
-    cout << left << setw(15)<<"|Phone";
-    cout << left << setw(15)<<"|Balance"<< endl;
-    cout << "-----------------------------------------------------------------------------------------------"<< endl;
-}
-//user listing
-
-
-void TransactionMenu() {
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\t\t\tTransaction Menu" << endl;
-    cout << "\t\t\t================================"<<endl;
-    cout<< "\t\t\t[1] Deposit."<< endl;
-    cout<< "\t\t\t[2] Withdraw."<<endl;
-    cout<< "\t\t\t[3] Total Balance."<<endl;
-    cout<< "\t\t\t[4] Main Menu."<<endl;
-    cout << "\t\t\t================================"<<endl;
-    cout << "\t\t\tChoose What to do? [1 - 4]?"<<endl;
-
-}
-
-
-void BalancesListHeader(short Number) {
-    cout << "\t\t\t\t\t\t\t\t Client list (" << Number << ") Client(s)" << endl;
-    cout << "-----------------------------------------------------------------------------------------------"<< endl;
-    cout << left << setw(18)<<"|Account Number";
-    cout << left << setw(30)<<"|Client Name";
-    cout << left << setw(15)<<"|Balance"<< endl;
-    cout << "-----------------------------------------------------------------------------------------------"<< endl;
-}
-
-//Update Client
-
-
-//Find Client
-void ClientCard(stClient Client) {
-    cout << "The following are the client details: "<< endl;
-    cout<< "-----------------------------------------------"<< endl;
-    cout << "Account Number :" << Client.account << endl;
-    cout << "Name           :" << Client.name << endl;
-    cout << "Phone          :" << Client.phone << endl;
-    cout << "Balance        :" << Client.balance << endl;
-    cout<< "-----------------------------------------------"<< endl;
-
-}
-
-//Find User & user info card
-
-
-stUser GetUser(vector<stUser> UserList, string UserName) {
-    stUser TargetedUser;
-    for (stUser& user:  UserList) {
-        if (user.Name == UserName) {
-            TargetedUser = user;
-        }
-    }
-    return TargetedUser;
-}
-// check for permissions
-/*bool IsAllowed(vector<stUser>& List,string UserName, bool Permission) {
-    if (UserExists(List, UserName)) {
-        stUser TargetedUser = GetUser(List, UserName);
-
-        if (TargetedUser.Permissions.Permission == true) {
-
-        }
-
-    }
-}*/
-
-
-//transaction menu operation
-
-void Withdraw(vector<stClient>& List ,string AccountNumber) {
-    for (stClient& Client : List) {
-        if (Client.account == AccountNumber) {
-            double Amount;
-            cout << "Enter Withdrawal Amount: ";
-            cin >> Amount;
-            while (Amount > Client.balance) {
-                cout << "Amount is exceeding the Limit! (Available: " << Client.balance << "), try again?:" << endl;
-                cin >> Amount;
-            }
-            Client.balance -= Amount;
-            cout << "Withdraw done Successfully -:)"<< endl;
-            return;
-        }
-    }
-        cout << "Account not found!" << endl;
-}
-void stop() {
-    AccessDenied();
-    cout << "Press any key to back to main menu..."<<endl;
-    cin.get();
-}
-void login() {
-    const string DataBase = "bank.txt";
-    const string Users = "users.txt";
-    stUserLogin CurrentUser;
-    vector<string> vData = vReadFile(DataBase);
-    vector<string> vUsers = vReadFile(Users);
-    vector<stClient> vDataList = vConvertLineToClients(vData);
-    vector<stUser> vUsersList = vConvertLineToUsers(vUsers);
-    bool IsLoggedIn = false;
-    do {
-        ClearScreen();
-        LoginScreen();
-        LoginCredentials(CurrentUser);
-        IsLoggedIn = (IsUser(vUsersList,CurrentUser.Username) &&
-            IsCorrect(vUsersList,CurrentUser.Username,CurrentUser.Password));
-        if (!IsLoggedIn) {
-            cout << "Invalid Username/Password!" << endl;
-            cin.ignore();
-            cin.get();
-        }
-    }while (!IsLoggedIn);
-    Menu();
-}
-void Next(){
-    cout << "Press any key to back to main menu..."<<endl;
-    cin.get();
-
-}
-
-void Start() {
-
-    while (true) {
-        ClearScreen();
-        stUserLogin UserCredentials = LoginScreen();
-        while (!(IsUser(vUsersList,UserCredentials.Username) &&
-            IsCorrect(vUsersList, UserCredentials.Password))) {
-            cout << "Invalid Username/Password!" << endl;
-            UserCredentials = LoginScreen();
-        }
-        stUser CurrentUser = GetUser(vUsersList, UserCredentials.Username);
-
-        Menu();
-        cout << endl;
-        short Option;
-        cin>> Option;
-        cin.ignore();
+void PerformManageUsersMenuOp(enManageUsersMenuOptions Option) {
 
     switch (Option) {
-        case 1: {
+        case enManageUsersMenuOptions::eListUsers: {
             ClearScreen();
-            if (CurrentUser.Permissions.ShowClintList) {
-
-                stop();
-            } else {
-
-                short Length = vDataList.size();
-                TablePrinter(Length);
-                clientsListPrinter(vDataList);
-                Next();
-            }
+            ShowAllUsersList();
+            GoBackToManageUsersMenu();
             break;
         }
-        case 2: {
-
+        case enManageUsersMenuOptions::eAddNewUser: {
             ClearScreen();
-            if (!CurrentUser.Permissions.AddNewClint) {
-                stop();
-
-            }else {
-                AddClient(vDataList);
-
-                SaveClientsToFile(DataBase, vDataList);
-
-                Next();
-
-            }
+            AddNewUser();
+            GoBackToManageUsersMenu();
             break;
         }
-        case 3: {
-
+        case enManageUsersMenuOptions::eDeleteUser: {
             ClearScreen();
-            if (CurrentUser.Permissions.DeleteClint) {
-                stop();
-            }else {
-                string AccountNumber;
-                char Answer ;
-                cout<< "Enter Account Number to Delete: "<< endl;
-                cin >> AccountNumber;
-                SearchClient(vDataList, AccountNumber);
-                cout << "Are you sure You want to delete this account ?";
-                cin >> Answer;
-                if (toupper(Answer) == 'Y') {
-                    MarkForDeletion(vDataList, AccountNumber);
-                    DeleteClient(vDataList);
-                    SaveClientsToFile(DataBase, vDataList);
-                    Next();
-                }
-            }
+            DeleteUserScreen();
+            GoBackToManageUsersMenu();
+            break;
+
+        }
+        case enManageUsersMenuOptions::eUpdateUser: {
+            ClearScreen();
+            UpdateUserScreen();
+            GoBackToManageUsersMenu();
+            break;
+
+        }
+        case enManageUsersMenuOptions::eFindUser: {
+            ClearScreen();
+            FindUserScreen();
+            GoBackToManageUsersMenu();
             break;
         }
-        case 4: {
+        case enManageUsersMenuOptions::eMainMenu: {
             ClearScreen();
-            if (CurrentUser.Permissions.UpdateClint) {
-                stop();
-            }else {
-                string ClientAccount;
-                cout << "Enter Client Account: "<<endl;
-                cin >> ClientAccount;
-                UpdateClient(vDataList, ClientAccount);
-                SaveClientsToFile(DataBase, vDataList);
-                Next();
-            }
+            ShowMainMenu();
+        }
+    }
+}
+
+short ReadManageUsersMenuOP() {
+    short Choice = 0 ;
+
+    cout << "Choose what do you want to do? [1  - 8]?";
+    cin >> Choice;
+
+    return Choice;
+}
+
+void ShowManageUsersMenu() {
+
+    if (!CheckAccessPermission(enMainMenuPermissions::pMenageUsers)) {
+        AccessDenied();
+        GoBackToManageUsersMenu();
+        return;
+    }
+
+    ClearScreen();
+    cout << "===========================================\n";
+    cout << "\t\tManage Users Menu Screen\n";
+    cout << "===========================================\n";
+    cout << "\t[1] List Users.\n";
+    cout << "\t[2] Add New User.\n";
+    cout << "\t[3] Delete User.\n";
+    cout << "\t[4] Update User.\n";
+    cout << "\t[5] Find User.\n";
+    cout << "\t[6] Main Menu.\n";
+    cout << "===========================================\n";
+
+    PerformManageUsersMenuOp((enManageUsersMenuOptions) ReadManageUsersMenuOP());
+}
+
+void PerformMainMenuOp(enMainMenuOptions Option) {
+    switch (Option) {
+        case enMainMenuOptions::eListClint: {
+            ClearScreen();
+            ClientsListPrinter();
+            GoBackToMainMenu();
             break;
         }
-        case 5: {
-
+        case enMainMenuOptions::eAddNewClint: {
             ClearScreen();
-            if (CurrentUser.Permissions.FindClint) {
-                stop();
-            }else {
-
-                string ClientIdentifier;
-                cout << "Enter Account Number: "<<endl;
-                cin >> ClientIdentifier;
-                SearchClient(vDataList, ClientIdentifier);
-                Next();
-            }
-
+            AddNewClientScreen();
+            GoBackToMainMenu();
             break;
         }
-        case 6: {
+        case enMainMenuOptions::eDeleteClint: {
             ClearScreen();
-            if (CurrentUser.Permissions.ShowTransactions) {
-                stop();
-            }else {
-                TransactionMenu();
-                short Choice;
-                cin >> Choice;
-                switch (Choice) {
-                    case 1: {
-                        string ClientAccount;
-                        cout << "Enter Account Number: "<<endl;
-                        cin >> ClientAccount;
-                        SearchClient(vDataList, ClientAccount);
-                        Deposit(vDataList, ClientAccount);
-                        SaveClientsToFile(DataBase, vDataList);
-                        Next();
-                        break;
-                    }
-                    case 2: {
-                        string ClientAccount;
-                        cout<< "Enter Account Number: "<<endl;
-                        cin >> ClientAccount;
-                        SearchClient(vDataList, ClientAccount);
-                        Withdraw(vDataList, ClientAccount);
-                        SaveClientsToFile(DataBase, vDataList);
-                        Next();
-                        break;
-
-                    }
-                    case 3:
-                    {
-                        BalancesListHeader(vData.size());
-                        BalancesPrinter(vDataList);
-                        Next();
-                        break;
-                    }
-                    case 4: {
-                        Menu();
-                        break;
-                    }
-                    default: {
-                        cout << "Invalid Option! Please try again." << endl;
-                        Next();
-                        break;
-                    }
-                }
-            }
+            DeleteClientScreen();
+            GoBackToMainMenu();
             break;
         }
-        case 7: {
+        case enMainMenuOptions::eUpdateClint: {
             ClearScreen();
-            if (CurrentUser.Permissions.ManageUsers) {
-                stop();
-            }else {
-                ManageUsersMenu();
-                short Choice;
-                cin >> Choice;
-                switch (Choice) {
-                    case 1: {
-                        ClearScreen();
-                        short UsersNumber = vUsersList.size();
-                        UsersHeaderPrinter(UsersNumber);
-                        UsersListPrinter(vUsersList);
-                        Next();
-                        break;
-                    }
-                    case 2: {
-                        ClearScreen();
-                        AddUser(vUsersList);
-                        SaveUserToFile(vUsersList, Users);
-                        Next();
-                        break;
-                    }
-                    case 3: {
-                        ClearScreen();
-                        string UserName;
-                        char Answer ;
-                        cout<< "Enter User Name to Delete: "<< endl;
-                        cin >> UserName;
-                        FindUser(vUsersList, UserName);
-                        cout << "Are you sure You want to delete this account ?";
-                        cin >> Answer;
-                        if (toupper(Answer) == 'Y') {
-                            MarkForUserDeletion(vUsersList, UserName);
-                            DeleteUser(vUsersList);
-                            SaveUserToFile(vUsersList, Users);
-                            Next();
-                            break;
-                        }
-
-                    }
-                    case 4: {
-                            ClearScreen();
-                           string TargetedUser;
-                           cout << "Enter user name?";
-                           cin >> TargetedUser;
-                           FindUser(vUsersList, TargetedUser);
-                           stUser UserToUpdate = GetUser(vUsersList,TargetedUser);
-                           UpdateUserInfo(UserToUpdate);
-                           SaveUserToFile(vUsersList, Users);
-                            Next();
-                    }
-                    case 5: {
-                        ClearScreen();
-                        string UserToFind;
-                        cout << "Enter user name?";
-                        cin >> UserToFind;
-                        FindUser(vUsersList, UserToFind);
-                        Next();
-                        break;
-
-                    }
-                    case 6: {
-                        ClearScreen();
-                        Menu();
-                        break;
-                    }
-                    default: {
-                        cout << "Invalid Option! Please try again." << endl;
-                        Next();
-                        break;
-                    }
-                }
-
-            }
-        }break;
-            case 8: {
-            ClearScreen();
-            return;
+            ClientUpdateScreen();
+            GoBackToMainMenu();
+            break;
         }
-        default: {
-            cout << "Invalid Option! Please try again." << endl;
-                Next();
+        case enMainMenuOptions::eFindClint: {
+            ClearScreen();
+            FindClientScreen();
+            GoBackToMainMenu();
+            break;
+
+        }
+        case enMainMenuOptions::eShowTransactionsMenu: {
+            ClearScreen();
+            ShowTransactionsMenu();
+            break;
+        }
+        case enMainMenuOptions::eManageUsers: {
+            ClearScreen();
+            ShowManageUsersMenu();
+            break;
+        }
+        case enMainMenuOptions::eExit: {
+            ClearScreen();
+            Login();
+
             break;
         }
     }
 }
+
+void ShowMainMenu() {
+    ClearScreen();
+
+    cout << "===========================================\n";
+    cout << "\t\t\tMain Menu Screen\n";
+    cout << "===========================================\n";
+    cout << "\t[1] Show Client List.\n";
+    cout << "\t[2] Add New Client.\n";
+    cout << "\t[3] Delete Client.\n";
+    cout << "\t[4] Update Client Info.\n";
+    cout << "\t[5] Find Client.\n";
+    cout << "\t[6] Transactions.\n";
+    cout << "\t[7] Manage Users.\n";
+    cout << "\t[8] Logout.\n";
+    cout << "===========================================\n";
+
+    PerformMainMenuOp((enMainMenuOptions) ReadMainMenuOP());
+}
+
+bool LoadUserInfo(string UserName, string Password) {
+
+    if (FindUserUsingNameAndPassword(UserName, Password, CurrentUser)) {
+        return true;
+    }else {
+        return false;
     }
+}
+
+void Login() {
+
+    bool LogInFailed = false;
+
+    string UserName, UserPassword;
+
+    do {
+        ClearScreen();
+        cout << "\n------------------------------------------\n";
+        cout << "\t\t\t  Login Screen";
+        cout << "\n------------------------------------------\n";
+
+        if (LogInFailed) {
+            cout << "Invalid UserName/Password!!!"<< endl;
+        }
+
+        cout << "Enter Username? ";
+        cin >> UserName;
+
+        cout << "Enter Password? ";
+        cin >> UserPassword;
+
+        LogInFailed = !LoadUserInfo(UserName, UserPassword);
+
+    }while (LogInFailed);
+
+    ShowMainMenu();
+}
 
 int main() {
-    Start();
+    Login();
     return 0;
 }
