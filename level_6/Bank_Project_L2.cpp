@@ -114,7 +114,6 @@ string ConvertRecordToLine(stClient Client, string Delim = "/*/") {
 
     Record += Client.account + Delim;
     Record += Client.password + Delim;
-    Record += Client.phone + Delim;
     Record += Client.name + Delim;
     Record += Client.phone + Delim;
     Record += to_string(Client.balance) + Delim;
@@ -242,7 +241,7 @@ int SetPermissions() {
     cout << "\nDelete Client? y/n? ";
     cin >> Answer;
     Capitalize(Answer);
-    if (Answer == 'y')
+    if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pDeleteClient;
     }
@@ -250,7 +249,7 @@ int SetPermissions() {
     cout << "\nUpdate Client? y/n? ";
     cin >> Answer;
     Capitalize(Answer);
-    if (Answer == 'y')
+    if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pUpdateClient;
     }
@@ -258,7 +257,7 @@ int SetPermissions() {
     cout << "\nFind Client? y/n? ";
     cin >> Answer;
     Capitalize(Answer);
-    if (Answer == 'y')
+    if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pFindClient;
     }
@@ -266,7 +265,7 @@ int SetPermissions() {
     cout << "\nTransactions? y/n? ";
     cin >> Answer;
     Capitalize(Answer);
-    if (Answer == 'y')
+    if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pTransactions;
     }
@@ -274,7 +273,7 @@ int SetPermissions() {
     cout << "\nManage Users? y/n? ";
     cin >> Answer;
     Capitalize(Answer);
-    if (Answer == 'y' )
+    if (Answer == 'Y' )
     {
         Permissions += enMainMenuPermissions::pMenageUsers;
     }
@@ -290,7 +289,7 @@ stUser AddUser() {
     cout << "Enter Username? ";
     getline(cin >> ws, User.Name);
 
-    while (ISUserExists(User.Name, DataBase)) {
+    while (ISUserExists(User.Name, Users)) {
 
         cout << "\nUser with Username[ " <<
             User.Name<<" ] Exist, Enter New User? ";
@@ -304,7 +303,6 @@ stUser AddUser() {
 
     return User;
 };
-
 
 vector <stUser> LoadUsers(string FileName) {
 
@@ -363,26 +361,23 @@ vector <stClient> LoadClients(string FileName) {
 }
 
 void PrintClint(stClient Client) {
-    cout << "Account Number    :"<<Client.account << endl;
-    cout << "Name of Client    :"<<Client.name << endl;
-    cout << "Phone Number      :"<<Client.phone << endl;
-    cout << "Balance of Client :"<<Client.balance << endl;
+    cout << setw(20)<<Client.account ;
+    cout << setw(20)<<Client.name ;
+    cout << setw(25)<<Client.phone ;
+    cout << setw(10)<<Client.balance ;
 }
 
 void PrintUser(stUser User){
-
-
-    cout << "_______________________________________________________________________________________________"<< endl;
-    cout <<"|User Name" <<left << setw(18)<< User.Name;
-    cout <<"|Password" <<left << setw(15)<< User.Password;
-    cout <<"|Permissions" <<left << setw(30) << User.PermissionsFlag;
-    cout << "_______________________________________________________________________________________________"<< endl;
+    cout  <<left << setw(20)<< User.Name;
+    cout  <<left << setw(15)<< User.Password;
+    cout  <<left << setw(30) << User.PermissionsFlag;
+    cout << endl;
 }
 
 void PrintClientBalance(stClient Client) {
-    cout << "Account Number    :"<<Client.account << endl;
-    cout << "Name of Client    :"<<Client.name << endl;
-    cout << "Balance of Client :"<<Client.balance << endl;
+    cout <<setw(22) <<Client.account ;
+    cout <<setw(35) <<Client.name ;
+    cout <<setw(20) <<Client.balance ;
 }
 
 void AccessDenied() {
@@ -403,11 +398,10 @@ void ClientsListPrinter() {
     cout << "-----------------------------------------------------------------------------------------------" << endl;
 
     cout << "|" <<left << setw(18) <<  "Account Number";
-    cout << "|" <<left << setw(15) <<  "Password ";
-    cout << "|" <<left << setw(30) <<  "Client Name";
-    cout << "|" <<left << setw(15) <<  "Phone";
+    cout << "|" <<left << setw(15) <<  "Client Name ";
+    cout << "|" <<left << setw(30) <<  "Phone Number ";
     cout << "|" <<left << setw(15) <<  "Balance";
-
+    cout << endl;
     cout << "-----------------------------------------------------------------------------------------------" << endl;
 
     if (vClients.size() == 0) {
@@ -456,7 +450,7 @@ void BalancesPrinter() {
     cout << "| " <<left << setw(18) << "Account Number";
     cout << "| " <<left << setw(30) << "Client Name";
     cout << "| " <<left << setw(15) << "Balance";
-
+    cout << endl;
     cout << "-----------------------------------------------------------------------------------------------" << endl;
 
     if (vClients.size() == 0) {
@@ -496,7 +490,7 @@ void PrintUserCard(stUser User) {
 bool SearchClient(vector<stClient>& List, string AccountNumber, stClient& TargetClient) {
     for (stClient& Client : List) {
         if (Client.account == AccountNumber) {
-            Client = TargetClient;
+            TargetClient = Client;
             return true;
         }
     }
@@ -525,7 +519,7 @@ bool FindUserUsingNameAndPassword(string UserName,string Password, stUser& User)
     return  false;
 }
 
-stClient UpdateClintInfo(string AccountNumber) {
+stClient UpdateClientInfo(string AccountNumber) {
     stClient Client;
     Client.account = AccountNumber;
 
@@ -598,7 +592,7 @@ vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vClients) {
     }
     return vClients;
 }
-// save new users
+
 vector <stUser> SaveUserToFile(vector<stUser> vUserList, string fileName) {
 
     fstream MyFile;
@@ -709,7 +703,6 @@ bool DeleteClient(string Account, vector<stClient>& List) {
     }
     List = NewList;
 }
-//Delete user
 
 bool DeleteUser(string UserName, vector<stUser>& List) {
 
@@ -728,7 +721,7 @@ bool DeleteUser(string UserName, vector<stUser>& List) {
         if (Answer == 'Y') {
             MarkUserForDeletion(List, UserName);
             SaveUserToFile(List, Users);
-            List = LoadUsers(DataBase);
+            List = LoadUsers(Users);
             cout << "User Deleted Successfully!" << endl;
             return true;
         }
@@ -753,7 +746,7 @@ bool UpdateClient(vector<stClient>& List, string AccountNumber) {
         if (Answer == 'Y') {
             for (stClient& Client : List) {
                 if (Client.account == AccountNumber) {
-                    Client = UpdateClintInfo(Client.account);
+                    Client = UpdateClientInfo(Client.account);
                     break;
                 }
             }
@@ -815,7 +808,7 @@ bool Deposit(vector<stClient>& List ,string AccountNumber, double Amount) {
         if (Client.account == AccountNumber) {
 
             Client.balance += Amount;
-            SaveClientsToFile(Users, List);
+            SaveClientsToFile(DataBase, List);
             cout << "Amount Updated successfully, New Account balance is [ "
             << Client.balance<<
                 " ]"<< endl;
@@ -901,7 +894,7 @@ void DeleteClientScreen() {
     cout << "\tDelete Client Screen";
     cout << "\n-----------------------------------\n";
 
-    vector <stClient> vClients = LoadClients(Users);
+    vector <stClient> vClients = LoadClients(DataBase);
     string AccountNumber = ReadClientAccount();
     DeleteClient(AccountNumber, vClients);
 }
@@ -914,7 +907,7 @@ void ClientUpdateScreen() {
         return;
     }
 
-    vector<stClient> vClients = LoadClients(Users);
+    vector<stClient> vClients = LoadClients(DataBase);
     string AccountNumber = ReadClientAccount();
     UpdateClient(vClients, AccountNumber );
 }
@@ -944,7 +937,7 @@ void FindClientScreen() {
     cout << "\tFind Client Screen";
     cout << "\n-----------------------------------\n";
 
-    vector <stClient> vClients = LoadClients(Users);
+    vector <stClient> vClients = LoadClients(DataBase);
     stClient Client;
     string AccountNumber = ReadClientAccount();
     if (SearchClient(vClients,AccountNumber,Client)) {
@@ -987,7 +980,7 @@ void DepositScreen() {
 
     stClient Client;
 
-    vector <stClient> vClients = LoadClients(Users);
+    vector <stClient> vClients = LoadClients(DataBase);
     string AccountNumber = ReadClientAccount();
 
     while (!SearchClient(vClients,AccountNumber,Client)) {
@@ -1012,7 +1005,7 @@ void WithDrowScreen() {
     cout << "\n-----------------------------------\n";
 
     stClient Client;
-    vector <stClient> vClients = LoadClients(Users);
+    vector <stClient> vClients = LoadClients(DataBase);
     string AccountNumber = ReadClientAccount();
 
     while (!SearchClient(vClients,AccountNumber,Client)) {
@@ -1036,7 +1029,7 @@ void WithDrowScreen() {
 
 void TotalBalanceScreen() {
 
-    TotalBalanceScreen();
+    BalancesPrinter();
 }
 
 bool CheckAccessPermission(enMainMenuPermissions Permission) {
