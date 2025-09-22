@@ -36,7 +36,9 @@ enum enMainMenuOptions {
     eFindClint = 5,
     eShowTransactionsMenu = 6,
     eManageUsers = 7,
-    eExit = 8
+    eLogOut = 8,
+    eExit = 9
+
 };
 
 enum enMainMenuPermissions {
@@ -206,8 +208,8 @@ stClient AddClient() {
     return Client;
 };
 
-char Capitalize(const char & character) {
-    return toupper(character);
+char Capitalize(const char & Character) {
+    return toupper(Character);
 }
 
 int SetPermissions() {
@@ -217,7 +219,7 @@ int SetPermissions() {
 
     cout << "Do you want to give full access? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y') {
         return -1;
     }
@@ -226,21 +228,21 @@ int SetPermissions() {
 
     cout << "\nShow Client List? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y') {
         Permissions += enMainMenuPermissions::pListClients;
     }
 
     cout << "\nAdd New Client? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y') {
         Permissions += enMainMenuPermissions::pAddNewClient;
     }
 
     cout << "\nDelete Client? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pDeleteClient;
@@ -248,7 +250,7 @@ int SetPermissions() {
 
     cout << "\nUpdate Client? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pUpdateClient;
@@ -256,7 +258,7 @@ int SetPermissions() {
 
     cout << "\nFind Client? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pFindClient;
@@ -264,7 +266,7 @@ int SetPermissions() {
 
     cout << "\nTransactions? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y')
     {
         Permissions += enMainMenuPermissions::pTransactions;
@@ -272,7 +274,7 @@ int SetPermissions() {
 
     cout << "\nManage Users? y/n? ";
     cin >> Answer;
-    Capitalize(Answer);
+    Answer = Capitalize(Answer);
     if (Answer == 'Y' )
     {
         Permissions += enMainMenuPermissions::pMenageUsers;
@@ -470,8 +472,8 @@ void PrintClintCard(stClient Client) {
     cout << "\nThe following are the client details:\n";
     cout << "\n-----------------------------------\n";
     cout << "Account Number    :"<<Client.account << endl;
-    cout << "Phone Number      :"<<Client.phone << endl;
     cout << "Name of Client    :"<<Client.name << endl;
+    cout << "Phone Number      :"<<Client.phone << endl;
     cout << "Balance of Client :"<<Client.balance << endl;
     cout << "\n-----------------------------------\n";
 }
@@ -522,7 +524,8 @@ bool FindUserUsingNameAndPassword(string UserName,string Password, stUser& User)
 stClient UpdateClientInfo(string AccountNumber) {
     stClient Client;
     Client.account = AccountNumber;
-
+    vector<stClient> vClients = LoadClients(DataBase);
+    SearchClient(vClients, AccountNumber, Client);
     cout << "Enter New Password (current: " << Client.password << "): ";
     getline(cin>> ws, Client.password);
 
@@ -656,15 +659,15 @@ void AddNewClients() {
     }while (Answer == 'Y');
 }
 
-void addNewUsers() {
+void addNewClients() {
     char Answer = 'Y';
     do {
         cout << "Adding New Clients" << endl;
 
-        AddNewUser();
-        cout << "User added successfully, Do you Want to add more Users?? Y/N?"<< endl;
+        AddNewClients();
+        cout << "User added successfully, Do you Want to add more Clients?? Y/N?"<< endl;
         cin >> Answer;
-        Answer = Capitalize(Answer);
+       Answer = Capitalize(Answer);
 
     }while (Answer == 'Y');
 }
@@ -768,7 +771,7 @@ bool UpdateUser(vector<stUser>& List, string UserName) {
     char Answer = 'N';
     if (SearchUser(List, UserName, TargetUser)) {
         PrintUserCard(TargetUser);
-        cout << "Are you sure you want to update this user?? Y/N";
+        cout << "Are you sure you want to update this user?? Y/N??"<< endl;
         cin >> Answer;
         Answer = Capitalize(Answer);
         if (Answer == 'Y') {
@@ -1119,7 +1122,7 @@ void ShowTransactionsMenu() {
 }
 
 short ReadMainMenuOP() {
-    cout << "Choose what do you want to do? [1 - 8]? "<< endl;
+    cout << "Choose what do you want to do? [1 - 9]? "<< endl;
     short Choice = 0;
     cin >> Choice;
 
@@ -1171,7 +1174,7 @@ void PerformManageUsersMenuOp(enManageUsersMenuOptions Option) {
 short ReadManageUsersMenuOP() {
     short Choice = 0 ;
 
-    cout << "Choose what do you want to do? [1  - 8]?";
+    cout << "Choose what do you want to do? [1  - 8]?"<<endl;
     cin >> Choice;
 
     return Choice;
@@ -1181,7 +1184,7 @@ void ShowManageUsersMenu() {
 
     if (!CheckAccessPermission(enMainMenuPermissions::pMenageUsers)) {
         AccessDenied();
-        GoBackToManageUsersMenu();
+        GoBackToMainMenu();
         return;
     }
 
@@ -1199,7 +1202,9 @@ void ShowManageUsersMenu() {
 
     PerformManageUsersMenuOp((enManageUsersMenuOptions) ReadManageUsersMenuOP());
 }
-
+void GoodByMessage() {
+    cout << "Good By!\n";
+}
 void PerformMainMenuOp(enMainMenuOptions Option) {
     switch (Option) {
         case enMainMenuOptions::eListClint: {
@@ -1243,11 +1248,15 @@ void PerformMainMenuOp(enMainMenuOptions Option) {
             ShowManageUsersMenu();
             break;
         }
-        case enMainMenuOptions::eExit: {
+        case enMainMenuOptions::eLogOut: {
             ClearScreen();
             Login();
-
             break;
+        }
+        case enMainMenuOptions::eExit: {
+            ClearScreen();
+            GoodByMessage();
+            exit(0);
         }
     }
 }
@@ -1266,6 +1275,7 @@ void ShowMainMenu() {
     cout << "\t[6] Transactions.\n";
     cout << "\t[7] Manage Users.\n";
     cout << "\t[8] Logout.\n";
+    cout << "\t[9] Exit.\n";
     cout << "===========================================\n";
 
     PerformMainMenuOp((enMainMenuOptions) ReadMainMenuOP());
