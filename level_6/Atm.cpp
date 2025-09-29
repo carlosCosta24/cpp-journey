@@ -75,7 +75,6 @@ vector<stClient> LoadClients(string FileName) {
     MyFile.open(FileName, ios::in);
 
     if (MyFile.is_open()) {
-        MyFile.open(FileName);
         string Line;
         stClient Client;
 
@@ -83,10 +82,11 @@ vector<stClient> LoadClients(string FileName) {
             Client = ConvertLineToClients(Line, "/*/");
             vClients.push_back(Client);
         }
-    }MyFile.close();
+        MyFile.close();
+    }
     return vClients;
 
-};
+}
 
 bool CheckClientAndPassword(string FileName, string Account,string Password ) {
     vector <stClient> vClientsList = LoadClients(FileName);
@@ -129,21 +129,31 @@ void ClearScreen() {
     std::cout << "\033[2J\033[1;1H";
 }
 
-void PerformMainMenu(enATMMainMenu Option) {
-    ReadMenuOptions();
-    switch (Option) {
-        case enQuickWithDraw: {
-            ClearScreen();
-            QuickWithdrawMenu();
-            break;
-        }
-        case enNormalWithDraw: {
-            ClearScreen();
-            NormalWithdraw();
+void CheckBalance(string Account) {
+    vector <stClient> vClientsList = LoadClients(ClientsList);
+    for (stClient& Client : vClientsList) {
+        if (Client.account == Account) {
+            cout << "Your Balance is " << Client.balance << endl;
+            return;
         }
     }
+    cout << "Account Not Found" << endl;
 }
+// void PerformMainMenu(enATMMainMenu Option) {
+//     ReadMenuOptions();
+//     switch (Option) {
+//         case enQuickWithDraw: {
+//             ClearScreen();
+//             QuickWithdrawMenu();
+//             break;
+//         }
+//         case enNormalWithDraw: {
+//             ClearScreen();
+//             NormalWithdraw();
+//         }
+//     }
+// }
 
 int main() {
-    LoginScreen();
+
 }
