@@ -19,9 +19,25 @@ enum enATMMainMenu {
     enLogout = 5,
 };
 
+enum enQuickWithDrawMenu {
+    enQuick_20 = 1,
+    enQuick_50 = 2,
+    enQuick_100 = 3,
+    enQuick_200 = 4,
+    enQuick_400 = 5,
+    enQuick_600 = 6,
+    enQuick_800 = 7,
+    enQuick_1000 = 8,
+
+};
+
 const string Database = "bank.txt";
 stClient CurrentClient;
 void LogIn();
+void PerformQuickWithdrawMenu();
+char Capitalize(const char & Character) {
+    return toupper(Character);
+}
 
 vector<string> vSpliter(string &s, string delim) {
     vector<string> vResult;
@@ -51,6 +67,36 @@ stClient ConvertLineToClients(string Line, string Delim = "/*/") {
 
     return Client;
 };
+
+string ConvertRecordToLine(stClient Client, string Delim = "/*/") {
+    string Record = "";
+
+    Record += Client.account + Delim;
+    Record += Client.password + Delim;
+    Record += Client.name + Delim;
+    Record += Client.phone + Delim;
+    Record += to_string(Client.balance) + Delim;
+    return Record;
+}
+
+vector<stClient> SaveClientsToFile(string fileName, vector<stClient> vClients) {
+    fstream MyFile;
+    MyFile.open(fileName, ios::out);
+
+    string Line;
+
+    if (MyFile.is_open()) {
+
+        for (stClient client : vClients) {
+                Line = ConvertRecordToLine(client);
+                MyFile << Line<< endl;
+
+        }
+        MyFile.close();
+
+    }
+    return vClients;
+}
 
 vector<stClient> LoadClients(string FileName) {
 
@@ -85,13 +131,11 @@ bool CheckClientAndPassword(string FileName, string Account,string Password ) {
 
 }
 
-bool LoadClient(string Username, string Password) {
-    if (CheckClientAndPassword(Database, Username, Password)) {
+bool LoadClient(string UserName, string Password) {
+    if (CheckClientAndPassword(Database, UserName, Password)) {
         return true;
-    }else {
-        return false;
     }
-
+    return false;
 }
 
 void LoginScreen () {
@@ -100,15 +144,35 @@ void LoginScreen () {
     cout << "--------------------------------------------"<< endl;
 }
 
-int ReadMenuOptions() {
+int ReadMenuOptions(const short NumberOFOptions) {
     int Option;
-    cout << "Choose what do you want to do? [1 - 5]?"<< endl;
+    cout << "Choose what do you want to do? [1 - " << NumberOFOptions <<"]?"<< endl;
     cin >> Option;
 
     return Option;
 }
 
-void QuickWithdrawMenu() {
+double GetClientBalance() {
+    return CurrentClient.balance;
+}
+
+stClient GetClient(string Account) {
+    stClient Target;
+    vector <stClient> ClientsList = LoadClients(Database);
+    for (stClient& Client : ClientsList) {
+        if (Client.account == Account) {
+            Target = Client;
+        }
+    }
+    return Target;
+}
+
+void WithDraw(double WithdrawAmount, double Balance, stClient & Client) {
+    double NewBalance = Balance - WithdrawAmount;
+    Client.balance -= NewBalance;
+}
+
+void QuickWithdrawMenu(enQuickWithDrawMenu Option) {
     cout << "========================================================" << endl;
     cout << "\t\t Quick Withdraw "<< endl;
     cout << "========================================================" << endl;
@@ -122,7 +186,23 @@ void QuickWithdrawMenu() {
     cout << "\t\t\t\t[8] 1000"<<endl;
     cout << "\t\t[9] Exit"<<endl;
     cout << "==========================================================" << endl;
-    ReadMenuOptions();
+    cout << "Your Balance is : " << GetClientBalance() << endl;
+
+    PerformQuickWithdrawMenu((enQuickWithDraw) ReadMenuOptions(9));
+
+}
+
+bool HaveSufficientAmount(double ClientBalance, double AmountOfWithDraw) {
+
+    if (ClientBalance > AmountOfWithDraw) {
+        return true;
+    }else {
+        return false;
+    }
+}
+
+void DeniedTransaction() {
+    cout << "You cant perform this transaction"<< endl;
 }
 
 void NormalWithdrawMenu() {
@@ -130,6 +210,8 @@ void NormalWithdrawMenu() {
     cout << "\t\t Normal Withdraw "<< endl;
     cout << "========================================================" << endl;
 }
+
+void MainMenuScreen();
 
 void Deposit() {
     double DepositAmount;
@@ -147,6 +229,14 @@ double ReadAmount() {
     return Amount;
 }
 
+bool ActionConfirmation() {
+    char Answer;
+    cout << "Are You sure you want to perform this transaction? y/n?" << endl;
+    cin >> Answer;
+    Answer = Capitalize(Answer);
+    return (Answer == 'Y') ? true : false;
+}
+
 void ClearScreen() {
     std::cout << "\033[2J\033[1;1H";
 }
@@ -161,24 +251,21 @@ stClient LoadClientInfo(string& ClientName) {
     }
     return TargetClient;
 }
+
 void CheckBalance() {
     stClient Client = LoadClientInfo(CurrentClient.account);
     cout << "Your Balance is: " << CurrentClient.balance << endl;
 }
 
-char Capitalize(const char & Character) {
-    return toupper(Character);
-}
-
 void NormalWithdraw() {
     stClient Client;
-    double WithdrawAmount;
+    short WithdrawAmount;
     do {
         cout << "Enter an amount multiple of 5's ? "<< endl;
         WithdrawAmount = ReadAmount();
-    } while (WithdrawAmount / 5.0 != 0 );
+    } while (WithdrawAmount % 5 != 0 );
 
-    if (Client.balance >= WithdrawAmount) {
+    if (Client.balance < WithdrawAmount) {
         cout << "the amount exceeds your balance, make another choice, "
                 "your current balance is " << Client.balance << endl;
         return;
@@ -214,6 +301,7 @@ void PerformMainMenu(enATMMainMenu Option) {
         case enCheckBalance: {
             ClearScreen();
             CheckBalance();
+            MainMenuScreen();
             break;
 
         }
@@ -226,7 +314,109 @@ void PerformMainMenu(enATMMainMenu Option) {
         default: {
             ClearScreen();
             cout << "Please enter a valid option!" << endl;
+            MainMenuScreen();
             break;
+        }
+    }
+}
+
+void PerformQuickWithdrawMenu(short Option) {
+    switch (Option) {
+        case 1: {
+            if (HaveSufficientAmount(CurrentClient.balance, 20)) {
+                if (ActionConfirmation()) {
+                    WithDraw(20, CurrentClient.balance,  CurrentClient);
+                    cout << "Successful Withdraw"<< endl;
+                }
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+        case 2: {
+            if (HaveSufficientAmount(CurrentClient.balance, 50)) {
+                ActionConfirmation();
+                WithDraw(50, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 3: {
+            if (HaveSufficientAmount(CurrentClient.balance, 100)) {
+                ActionConfirmation();
+                WithDraw(100, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 4: {
+            if (HaveSufficientAmount(CurrentClient.balance, 200)) {
+                ActionConfirmation();
+                WithDraw(200, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+        case 5: {
+            if (HaveSufficientAmount(CurrentClient.balance, 400)) {
+                ActionConfirmation();
+                WithDraw(400, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 6: {
+            if (HaveSufficientAmount(CurrentClient.balance, 600)) {
+                    ActionConfirmation();
+                    WithDraw(600, CurrentClient.balance,  CurrentClient);
+                    cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 7: {
+            if (HaveSufficientAmount(CurrentClient.balance, 800)) {
+                ActionConfirmation();
+                WithDraw(800, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 8: {
+            if (HaveSufficientAmount(CurrentClient.balance, 1000)) {
+                ActionConfirmation();
+                WithDraw(1000, CurrentClient.balance,  CurrentClient);
+                cout << "Successful Withdraw"<< endl;
+            }
+            else {
+                DeniedTransaction();
+            }
+            break;
+        }
+            case 9: {
+                MainMenuScreen();
+                break;
+        }
+            default: {
+                cout << "Please enter a valid option!" << endl;
         }
     }
 }
@@ -242,11 +432,12 @@ void MainMenuScreen () {
     cout << "[4] Check Balance "<<endl;
     cout << "[5] Logout "<<endl;
     cout << "=======================================================" << endl;
-    PerformMainMenu((enATMMainMenu) ReadMenuOptions());
+    PerformMainMenu((enATMMainMenu) ReadMenuOptions(5));
 }
 
+
 void LogIn() {
-    string ClientName , Password;
+    string Account , Password;
     bool LogInFailed = false;
     do {
     LoginScreen();
@@ -257,15 +448,15 @@ void LogIn() {
     }
         cout << "Please enter your username: "<< endl;
 
-        cin >> ClientName;
+        cin >> Account;
 
         cout << "Please enter your password: "<<endl;
 
         cin >> Password;
 
-        LogInFailed = !LoadClient( ClientName, Password);
+        LogInFailed = !LoadClient( Account, Password);
     }while (LogInFailed);
-
+    CurrentClient = GetClient(Account);
     MainMenuScreen();
 
 }
