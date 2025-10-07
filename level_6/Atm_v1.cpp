@@ -516,4 +516,5 @@ void LogIn() {
 
 int main() {
     LogIn();
+    return 0;
 }
