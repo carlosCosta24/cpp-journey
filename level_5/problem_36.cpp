@@ -16,7 +16,6 @@ int WordCounter(string S) {
     while ((Pos = S.find(Space)) != std::string::npos) {
         Word = S.substr(0, Pos);
         if (Word != "") Counter++;
-
         S.erase(0,Pos + Space.length());
     }
     if (S != "") Counter++;
