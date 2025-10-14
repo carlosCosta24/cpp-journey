@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>
 #include "clsDate.h"
+#include "string_lib.h"
 using namespace std;
 
 class clsInputValidate{
@@ -18,6 +18,11 @@ class clsInputValidate{
 
     }
     static bool IsDateBetween(clsMyDate Date, clsMyDate From, clsMyDate To) {
+        if (clsMyDate::DateIsLessThan(To, From)) {
+            swap(From, To);
+        }
+        return clsMyDate::DateIsLessThanOrEqual(From,Date) && clsMyDate::DateIsLessThanOrEqual(Date,To);
     }
 
-}
+
+};

@@ -3,6 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <string>
+#include "string_lib.h"
 using namespace std;
 
 class clsMyDate {
@@ -63,7 +64,7 @@ class clsMyDate {
             _Year = stoi(DateElements[2]);
         }
     }
-    clsMyDate(int Year, int Month, int Day) {
+    clsMyDate(int Day, int Month, int Year) {
         _Year = Year;
         _Month = Month;
         _Day = Day;
@@ -160,8 +161,7 @@ class clsMyDate {
     void PrintDate() {
         PrintDate(_Year, _Month, _Day);
     }
-    static string DayFinder(int Year, int Month, int Day) {
-        string DayName = "";
+    static short DayFinder(int Year, int Month, int Day) {
         string Days [7] = {
             "Sunday", "Monday", "Tuesday",
             "Wednesday", "Thursday", "Friday", "Saturday"
@@ -170,10 +170,9 @@ class clsMyDate {
         const int Y = Year - A;
         const int M = Month + (12 * A) - 2;
         const int D = (Day + Y + (Y/4)-(Y/100)+(Y/400)+ ((31 * M)/ 12 )) % 7;
-        DayName = Days[D];
-        return DayName;
+        return D;
     }
-    string DayFinder() {
+    short DayFinder() {
         return DayFinder(_Year, _Month, _Day);
     }
     //need refactor
@@ -238,7 +237,7 @@ class clsMyDate {
         short DaysLeft;
         for (short i = 1; i < Month; i ++) {
             if (Days >= 28) {
-                Days -= NumberOfDays(_Year, i);
+                Days -= NumberOfDays(Year, i);
             }
             DaysLeft = Days;
         }
@@ -250,19 +249,19 @@ class clsMyDate {
     clsMyDate DateAfterXNumber(short Days, clsMyDate Date) {
     short DaysLeft = Days + DaysPassed(_Year, _Month, _Day);
     short MonthDays = 0;
-    Date.Month = 1;
+    Date = *this;
     while (true) {
-        MonthDays = NumberOfDays(Date.Year, Date.Month);
+        MonthDays = NumberOfDays(Date._Year, Date._Month);
         if (DaysLeft > MonthDays ) {
             DaysLeft -= MonthDays;
-            Date.Month++;
-            if (Date.Month > 12) {
-                Date.Month = 1;
-                Date.Year++;
+            Date._Month++;
+            if (Date._Month > 12) {
+                Date._Month = 1;
+                Date._Year++;
             }
 
         }   else {
-            Date.Day = DaysLeft;
+            Date._Day = DaysLeft;
             break;
         }
     }
@@ -270,7 +269,7 @@ class clsMyDate {
     return Date;
 }
     void DateAfterXNumberOfDays(short Number) {
-        clsMyDate Date = DateAfterXNumber(Number, CurrentDate);
+        clsMyDate Date = DateAfterXNumber(Number, clsMyDate());
         cout << _Year << "/" << _Month << "/" << _Day << endl;
     }
     static bool DateIsLessThan(clsMyDate First, clsMyDate Second) {
@@ -285,8 +284,23 @@ class clsMyDate {
         }
         return false;
     }
-    bool DateIsLessThan() {
-        return DateIsLessThan(clsMyDate First, clsMyDate Second);
+    bool DateIsLessThan(clsMyDate Second) {
+        return DateIsLessThan(*this,Second);
+    }
+    static bool DateIsLessThanOrEqual(clsMyDate First, clsMyDate Second) {
+        if (First._Year <= Second._Year) {
+            return true;
+        }else if (First._Year == Second._Year) {
+            if (First._Month <= Second._Month) {
+                return true;
+            }else if (First._Month == Second._Month) {
+                return First._Day <= Second._Day;
+            }
+        }
+        return false;
+    }
+    bool DateIsLessThanOrEqual(clsMyDate Second) {
+        return DateIsLessThanOrEqual(*this,Second);
     }
     static bool IsLastDay(short Year, short Month, short Day) {
         short NumberOfDaysInMonth = NumberOfDays(Year, Month);
@@ -301,7 +315,7 @@ class clsMyDate {
     bool IsLastMonth() {
         return IsLastMonth(_Month);
     }
-    clsMyDate IncreaseDayByOne(clsMyDate Date) {
+    static clsMyDate IncreaseDayByOne(clsMyDate Date) {
         if (IsLastDay(Date._Year, Date._Month, Date._Day) && IsLastMonth(Date._Month)) {
             Date._Year += 1;
             Date._Month = 1;
@@ -323,7 +337,7 @@ class clsMyDate {
         ((First._Year == Second._Year) ? (First._Month < Second._Month ? true :
         (First._Month == Second._Month ? First._Day < Second._Day : false)) : false);
     }
-    bool IsDateBeforeDate2(cls Date2) {
+    bool IsDateBeforeDate2(clsMyDate Date2) {
         return IsDate1BeforeDate2(*this, Date2);
     }
     static int DiffCalculate(clsMyDate Date1, clsMyDate Date2, bool IncludeLastDay = false) {
