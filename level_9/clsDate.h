@@ -359,4 +359,34 @@ class clsMyDate {
     short AgeCalculateInDays(clsMyDate BirthDate, clsMyDate Current, bool IncludeLastDay) {
         return DiffCalculate(BirthDate, Current, IncludeLastDay);
     }
+    static	bool IsValidDate(clsMyDate Date)
+    {
+        if (Date._Day < 1 || Date._Day>31)
+            return false;
+
+        if (Date._Month < 1 || Date._Month>12)
+            return false;
+
+        if (Date._Month == 2)
+        {
+            if (IsLeapYear(Date._Year))
+            {
+                if (Date._Day > 29)
+                    return false;
+            }
+            else
+            {
+                if (Date._Day > 28)
+                    return false;
+            }
+        }
+
+        short DaysInMonth = NumberOfDays(Date._Month, Date._Year);
+
+        if (Date._Day > DaysInMonth)
+            return false;
+
+        return true;
+
+    }
 };
