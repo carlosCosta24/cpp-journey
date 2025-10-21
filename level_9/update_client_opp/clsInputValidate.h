@@ -67,10 +67,11 @@ class clsInputValidate{
             }
             return true;
         }
-    static string ReadString()
+    static string ReadString(string Message = "")
     {
         string  S1="";
         // Usage of std::ws will extract allthe whitespace character
+        cout << Message;
         getline(cin >> ws, S1);
         return S1;
     }

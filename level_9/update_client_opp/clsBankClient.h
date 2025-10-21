@@ -9,7 +9,7 @@ using namespace std;
 
 class clsBankClient :public clsPerson {
 private:
-    enum enMode {EmptyMode = 0, UpdateMode = 1};
+    enum enMode {EmptyMode = 0, UpdateMode = 1, AddNew = 2};
     enMode _Mode;
     string _Account;
     string _Password;
@@ -195,6 +195,24 @@ public:
 
     static clsBankClient AddNewClientObj(string AccountNumber) {
         return clsBankClient(enMode::AddNew,"","","","",AccountNumber,"", 0);
+    }
+
+    bool Delete() {
+        vector <clsBankClient> vClients;
+        vClients = _LoadClientsData();
+        for (clsBankClient Client : vClients) {
+            if (Client.AccountNumber() == _Account) {
+                Client._MarkedForDeletion = true;
+                break;
+            }
+        }
+        _SaveClientsData(vClients);
+        *this = _GetEmptyClientObj();
+        return true;
+    }
+
+    static vector<clsBankClient> GetClientsList() {
+        return _LoadClientsData();
     }
 
 };

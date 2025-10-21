@@ -24,6 +24,7 @@ void ReadClientInfo(clsBankClient& Client) {
     Client.setBalance(clsInputValidate::ReadFloatNumber());
 
 }
+
 void AddNewClient() {
     string AccountNumber = "";
     cout << "\nEnter Account Number:";
@@ -103,20 +104,21 @@ void DeleteClient() {
     clsBankClient Client = clsBankClient::Find(AccountNumber);
     Client.Print();
 
-    cout << "\n\nAre you sure you want to delete this client? y/n";
+    cout << "\n\nAre you sure you want to delete this client? y/n"<< endl;
     char Choice = 'n';
     cin >> Choice;
     Choice = tolower(Choice);
     if (Choice == 'y') {
-        if (Client.Delete()) {
+        if (Client.Delete())
+            {
 
             cout << "\nClient deleted successfully :-)" << endl;
             Client.Print();
-        }else {
-
-            cout << "\nClient not deleted :-("<< endl;
         }
 
+    }else {
+
+            cout << "\nClient not deleted :-("<< endl;
     }
 }
 
@@ -153,5 +155,13 @@ void ShowClientsList() {
 }
 
 int main() {
+    // string AccountNumber = "";
+    // AccountNumber = clsInputValidate::ReadString("Please enter a Account Number: ");
+    // AddNewClient();
+    // clsBankClient Client = clsBankClient::Find(AccountNumber);
+    // ReadClientInfo(Client);
+    //UpdateClient();
+     //DeleteClient();
+    //ShowClientsList();
     return 0;
 }
