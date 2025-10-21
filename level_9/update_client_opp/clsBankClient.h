@@ -14,7 +14,6 @@ private:
     string _Account;
     string _Password;
     float _Balance;
-    bool _MarkedForDeletion = false;
 
     static clsBankClient _ConvertLineToClientObj(string Line, string Delimiter = "/*/") {
         vector <string> vClientData;
@@ -59,10 +58,8 @@ private:
         string DataLine;
         if (file.is_open()) {
             for (clsBankClient Client : vclients) {
-                if (!Client._MarkedForDeletion) {
-                    DataLine = _ConvertClientObjToLine(Client, "/*/");
-                    file << DataLine << endl;
-                }
+                DataLine = _ConvertClientObjToLine(Client, "/*/");
+                file << DataLine<<endl;
             }
             file.close();
         }
@@ -170,20 +167,6 @@ public:
     static bool IsClientExist(string Account) {
         clsBankClient Client = Find(Account);
         return (!Client.IsEmpty());
-    }
-
-    bool Delete() {
-        vector <clsBankClient> _vClients;
-        _vClients = _LoadClientsData();
-        for (clsBankClient & Client : _vClients) {
-            if (Client.AccountNumber() == _Account) {
-                Client._MarkedForDeletion = true;
-                break;
-            }
-        }
-        _SaveClientsData(_vClients);
-        *this = _GetEmptyClientObj();
-        return true;
     }
 
 };
