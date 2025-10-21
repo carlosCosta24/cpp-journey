@@ -14,6 +14,7 @@ private:
     string _Account;
     string _Password;
     float _Balance;
+    bool _MarkedForDeletion = false;
 
     static clsBankClient _ConvertLineToClientObj(string Line, string Delimiter = "/*/") {
         vector <string> vClientData;
@@ -58,9 +59,19 @@ private:
         string DataLine;
         if (file.is_open()) {
             for (clsBankClient Client : vclients) {
-                DataLine = _ConvertClientObjToLine(Client, "/*/");
-                file << DataLine<<endl;
+                if (!Client._MarkedForDeletion) {
+                    DataLine = _ConvertClientObjToLine(Client, "/*/");
+                    file << DataLine << endl;
+                }
             }
+            file.close();
+        }
+    }
+    static void _AddDataLineToFile(string stDataLine) {
+        fstream file;
+        file.open("Clients.txt", ios::out | ios::app);
+        if (file.is_open()) {
+            file << stDataLine << endl;
             file.close();
         }
     }
@@ -74,6 +85,9 @@ private:
         }
         _SaveClientsData(_vClients);
 
+    }
+    void _AddNewClient() {
+        _AddDataLineToFile(_ConvertClientObjToLine(*this));
     }
 public:
     clsBankClient(enMode Mode, string FirstName, string LastName, string Email,
@@ -149,7 +163,7 @@ public:
         }
         return _GetEmptyClientObj();
     }
-    enum enSaveResult {svFailed = 0, svSaved = 1};
+    enum enSaveResult {svFailed = 0, svSaved = 1, svAccountExist = 2};
     enSaveResult Save() {
         switch (_Mode) {
         case enMode::EmptyMode:
@@ -161,12 +175,26 @@ public:
             return enSaveResult::svSaved;
             break;
         }
+        case enMode::AddNew: {
+            if (clsBankClient::IsClientExist(_Account)) {
+                return enSaveResult::svAccountExist;
+
+            }else {
+                _AddNewClient();
+                _Mode = enMode::UpdateMode;
+                return enSaveResult::svSaved;
+            }
+        }
         }
 
     }
     static bool IsClientExist(string Account) {
         clsBankClient Client = Find(Account);
         return (!Client.IsEmpty());
+    }
+
+    static clsBankClient AddNewClientObj(string AccountNumber) {
+        return clsBankClient(enMode::AddNew,"","","","",AccountNumber,"", 0);
     }
 
 };
