@@ -9,7 +9,7 @@ using namespace std;
 
 class clsBankClient :public clsPerson {
 private:
-    enum enMode {EmptyMode = 0, UpdateMode = 1};
+    enum enMode {EmptyMode = 0, UpdateMode = 1, AddNew = 2};
     enMode _Mode;
     string _Account;
     string _Password;
@@ -67,6 +67,14 @@ private:
             file.close();
         }
     }
+    static void _AddDataLineToFile(string stDataLine) {
+        fstream file;
+        file.open("Clients.txt", ios::out | ios::app);
+        if (file.is_open()) {
+            file << stDataLine << endl;
+            file.close();
+        }
+    }
     void _Update() {
         vector <clsBankClient> _vClients = _LoadClientsData();
         for (clsBankClient & Client : _vClients) {
@@ -77,6 +85,9 @@ private:
         }
         _SaveClientsData(_vClients);
 
+    }
+    void _AddNewClient() {
+        _AddDataLineToFile(_ConvertClientObjToLine(*this));
     }
 public:
     clsBankClient(enMode Mode, string FirstName, string LastName, string Email,
@@ -152,7 +163,7 @@ public:
         }
         return _GetEmptyClientObj();
     }
-    enum enSaveResult {svFailed = 0, svSaved = 1};
+    enum enSaveResult {svFailed = 0, svSaved = 1, svAccountExist = 2};
     enSaveResult Save() {
         switch (_Mode) {
         case enMode::EmptyMode:
@@ -164,6 +175,16 @@ public:
             return enSaveResult::svSaved;
             break;
         }
+        case enMode::AddNew: {
+            if (clsBankClient::IsClientExist(_Account)) {
+                return enSaveResult::svAccountExist;
+
+            }else {
+                _AddNewClient();
+                _Mode = enMode::UpdateMode;
+                return enSaveResult::svSaved;
+            }
+        }
         }
 
     }
@@ -172,22 +193,8 @@ public:
         return (!Client.IsEmpty());
     }
 
-    bool Delete() {
-        vector <clsBankClient> _vClients;
-        _vClients = _LoadClientsData();
-        for (clsBankClient & Client : _vClients) {
-            if (Client.AccountNumber() == _Account) {
-                Client._MarkedForDeletion = true;
-                break;
-            }
-        }
-        _SaveClientsData(_vClients);
-        *this = _GetEmptyClientObj();
-        return true;
-    }
-
-    static vector <clsBankClient> GetClientsList() {
-        return _LoadClientsData();
+    static clsBankClient AddNewClientObj(string AccountNumber) {
+        return clsBankClient(enMode::AddNew,"","","","",AccountNumber,"", 0);
     }
 
 };

@@ -94,5 +94,39 @@ void ShowClientsList() {
 
 int main() {
     UpdateClient();
+void AddNewClient() {
+    string AccountNumber = "";
+    cout << "\nEnter Account Number:";
+    AccountNumber = clsInputValidate::ReadString();
+    while (clsBankClient::IsClientExist(AccountNumber)) {
+        cout << "\nAccount Number already exist, Try again:";
+        AccountNumber = clsInputValidate::ReadString();
+    }
+    clsBankClient NewClient = clsBankClient::AddNewClientObj(AccountNumber);
+
+    ReadClientInfo(NewClient);
+    clsBankClient::enSaveResult SaveResult;
+
+    SaveResult = NewClient.Save();
+
+    switch (SaveResult) {
+        case clsBankClient::enSaveResult::svSaved: {
+            cout << "\nSaved Successfully :-)";
+            NewClient.Print();
+            break;
+        }
+        case clsBankClient::enSaveResult::svFailed: {
+            cout << "\nSaved Failed!, object is empty!";
+            break;
+        }
+        case clsBankClient::enSaveResult::svAccountExist:{
+            cout << "\nAccount Number already in use, Try again later.";
+            break;
+        }
+    }
+}
+
+int main() {
+    AddNewClient();
     return 0;
 }
