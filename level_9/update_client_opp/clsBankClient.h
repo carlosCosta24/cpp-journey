@@ -14,6 +14,7 @@ private:
     string _Account;
     string _Password;
     float _Balance;
+    bool _MarkedForDeletion = false;
 
     static clsBankClient _ConvertLineToClientObj(string Line, string Delimiter = "/*/") {
         vector <string> vClientData;
@@ -58,8 +59,10 @@ private:
         string DataLine;
         if (file.is_open()) {
             for (clsBankClient Client : vclients) {
-                DataLine = _ConvertClientObjToLine(Client, "/*/");
-                file << DataLine<<endl;
+                if (!Client._MarkedForDeletion) {
+                    DataLine = _ConvertClientObjToLine(Client, "/*/");
+                    file << DataLine << endl;
+                }
             }
             file.close();
         }
