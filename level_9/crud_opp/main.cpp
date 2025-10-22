@@ -2,6 +2,7 @@
 #include "clsBankClient.h"
 #include "clsInputValidate.h"
 #include <iomanip>
+#include "clsUtil_lb.h"
 
 void ReadClientInfo(clsBankClient& Client) {
 
@@ -154,6 +155,41 @@ void ShowClientsList() {
 
 }
 
+void PrintClientRecordBalanceLine(clsBankClient Client) {
+    cout << "| " << left << setw(15) << Client.AccountNumber();
+    cout << "| " << left << setw(40) << Client.FullName();
+    cout << "| " << left << setw(12) << Client.GetBalance();
+}
+
+void ShowBankBalance() {
+    vector<clsBankClient> ClientsList = clsBankClient::GetClientsList();
+    double TotalBalance = clsBankClient::GetTotalBalances(ClientsList);
+    cout << "\n\t\t\t\t\tBalances List (" << ClientsList.size() << ") Client(s).";
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+    cout << "| " << left << setw(15) << "Account Number";
+    cout << "| " << left << setw(40) << "Client Name";
+    cout << "| " << left << setw(12) << "Balance";
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+
+    if (ClientsList.size() == 0) {
+        cout << "\n\t\t\t\t\t\t\t\t\tNo Clients data are available" << endl;
+    }
+
+    for (clsBankClient Client : ClientsList) {
+        PrintClientRecordBalanceLine(Client);
+        cout << endl;
+    }
+
+    cout << "\n_______________________________________________________";
+    cout << "_________________________________________\n" << endl;
+
+    cout << "\t\t\t\t\t\tTotal Balance: " << TotalBalance << endl;
+    cout << "\t\t\t\t\t\t( " << clsUtil::NumberToText(TotalBalance)<<")"<< endl;
+
+}
+
 int main() {
     // string AccountNumber = "";
     // AccountNumber = clsInputValidate::ReadString("Please enter a Account Number: ");
@@ -162,6 +198,7 @@ int main() {
     // ReadClientInfo(Client);
     //UpdateClient();
     //DeleteClient();
-    ShowClientsList();
+    //ShowClientsList();
+    ShowBankBalance();
     return 0;
 }

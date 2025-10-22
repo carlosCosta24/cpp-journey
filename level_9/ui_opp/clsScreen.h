@@ -1,8 +1,16 @@
-//
-// Created by molto on 10/22/25.
-//
+#pragma once
+#include <iostream>
+using namespace std;
 
-#ifndef LEVEL_9_CLSSCREEN_H
-#define LEVEL_9_CLSSCREEN_H
 
-#endif //LEVEL_9_CLSSCREEN_H
+class clsScreen {
+    protected:
+        static void _ScreenHeader(string Header, string SubHeader = "") {
+            cout << "\t\t\t\t\t\t\t\t\t ★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★\n";
+            cout << "\t\t\t\t\t\t\t\t\t\t"<< Header ;
+            if (SubHeader != "") {
+                cout << "\n\t\t\t\t\t\t\t\t " << SubHeader;
+            }
+            cout << "\n\t\t\t\t\t\t\t\t\t ★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★彡★\n";
+        }
+};
