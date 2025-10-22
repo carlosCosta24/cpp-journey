@@ -215,4 +215,12 @@ public:
         return _LoadClientsData();
     }
 
+    static double GetTotalBalances(vector<clsBankClient> vClientsList) {
+        double TotalBalance = 0;
+        for (clsBankClient Client : vClientsList) {
+            TotalBalance += Client.GetBalance();
+        }
+        return TotalBalance;
+    }
+
 };
