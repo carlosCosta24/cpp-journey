@@ -161,7 +161,7 @@ int main() {
     // clsBankClient Client = clsBankClient::Find(AccountNumber);
     // ReadClientInfo(Client);
     //UpdateClient();
-     //DeleteClient();
-    //ShowClientsList();
+    //DeleteClient();
+    ShowClientsList();
     return 0;
 }
