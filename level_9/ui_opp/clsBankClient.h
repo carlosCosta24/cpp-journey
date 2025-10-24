@@ -117,20 +117,6 @@ public:
         return _Balance;
     }
 
-    void Print() {
-        cout << "\nClient Card:";
-        cout << "\n___________________";
-        cout << "\nFirstName   : " << GetFirstName();
-        cout << "\nLastName    : " << GetLastName();
-        cout << "\nFull Name   : " << FullName();
-        cout << "\nEmail       : " << GetEmail();
-        cout << "\nPhone       : " << GetPhone();
-        cout << "\nAcc. Number : " << _Account;
-        cout << "\nPassword    : " << _Password;
-        cout << "\nBalance     : " << _Balance;
-        cout << "\n___________________\n";
-    }
-
     static clsBankClient Find (string Account) {
         fstream file;
         file.open("Clients.txt", ios::in);
