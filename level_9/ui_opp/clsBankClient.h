@@ -184,17 +184,16 @@ public:
     }
 
     bool Delete() {
-        vector <clsBankClient> vClients;
-        vClients = _LoadClientsData();
-        for (clsBankClient Client : vClients) {
+        vector <clsBankClient> vClients = _LoadClientsData();
+        for (clsBankClient &Client : vClients) {
             if (Client.AccountNumber() == _Account) {
                 Client._MarkedForDeletion = true;
                 break;
             }
         }
-        _SaveClientsData(vClients);
-        *this = _GetEmptyClientObj();
-        return true;
+            _SaveClientsData(vClients);
+            *this = _GetEmptyClientObj();
+            return true;
     }
 
     static vector<clsBankClient> GetClientsList() {
