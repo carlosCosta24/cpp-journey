@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
+#include <iomanip>
 #include "clsScreen.h"
 #include "clsBankClient.h"
-#include <iomanip>
 
 class clsClientListScreen : protected clsScreen {
     private:
@@ -19,17 +19,18 @@ class clsClientListScreen : protected clsScreen {
     static void ShowClientList() {
         vector <clsBankClient> vClients = clsBankClient::GetClientsList();
         string Title = "\t Client List Screen";
-        string SubTitle = "\t  (" + to_string(vClients.size()) + ") Client(s).";
+        string SubTitle = "\t\t (" + to_string(vClients.size()) + ") Client(s).";
 
         _ScreenHeader(Title, SubTitle);
-        cout << "\n----------------------------------------------------------------------------------------------------------\n";
+        cout << "\n-------------------------------------------------------------------------------"
+                "---------------------------\n";
         cout << "| " << left << setw(15) << "Account Number";
         cout << "| " << left << setw(20) << "Client Name";
         cout << "| " << left << setw(12) << "Phone";
         cout << "| " << left << setw(28) << "Email";
-        cout << "| " << left << setw(10) << "Password";
         cout << "| " << left << setw(12) << "Balance";
-        cout << "\n----------------------------------------------------------------------------------------------------------\n";
+        cout << "\n-------------------------------------------------------------------------------------"
+                "---------------------\n";
         if (vClients.size() == 0) {
             cout << "\n\t\t\t\t\t\t\t\t\tNo Clients data are available" << endl;
         }
@@ -39,6 +40,7 @@ class clsClientListScreen : protected clsScreen {
                 cout << endl;
             }
         }
-        cout << "\n----------------------------------------------------------------------------------------------------------\n";
+        cout << "\n----------------------------------------------------------------------------------"
+                "------------------------\n";
     }
 };
