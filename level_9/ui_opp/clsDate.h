@@ -3,7 +3,7 @@
 #include <vector>
 #include <ctime>
 #include <string>
-#include "string_lib.h"
+#include "clsString.h"
 using namespace std;
 
 class clsMyDate {

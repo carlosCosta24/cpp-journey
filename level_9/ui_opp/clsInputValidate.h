@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include "clsDate.h"
-#include "string_lib.h"
+#include "clsString.h"
 #include <limits>
 using namespace std;
 
