@@ -6,7 +6,7 @@
 
 class clsClientListScreen : protected clsScreen {
     private:
-    static void PrintClientRecordLine(clsBankClient Client) {
+    static void _PrintClientRecordLine(clsBankClient Client) {
         cout << "| " << left << setw(15) << Client.AccountNumber();
         cout << "| " << left << setw(20) << Client.FullName();
         cout << "| " << left << setw(12) << Client.GetPhone();
@@ -36,7 +36,7 @@ class clsClientListScreen : protected clsScreen {
         }
         else {
             for (clsBankClient Client : vClients) {
-                PrintClientRecordLine(Client);
+                _PrintClientRecordLine(Client);
                 cout << endl;
             }
         }
