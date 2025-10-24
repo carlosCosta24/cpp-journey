@@ -38,6 +38,15 @@ class clsInputValidate{
         }
         return Number;
     }
+    static double ReadFloatNumber(string Error = "Invalid number") {
+        float Number = 0;
+        while (!(cin>> Number)) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout << Error;
+        }
+        return Number;
+    }
 
     static bool IsDateBetween(clsMyDate Date, clsMyDate From, clsMyDate To) {
         if (clsMyDate::DateIsLessThan(To, From)) {
@@ -57,6 +66,14 @@ class clsInputValidate{
             }
             return Number;
         }
+    static string ReadString(string Message = "")
+    {
+        string  S1="";
+        // Usage of std::ws will extract allthe whitespace character
+        cout << Message;
+        getline(cin >> ws, S1);
+        return S1;
+    }
 
 
 };
