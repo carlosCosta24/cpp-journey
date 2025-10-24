@@ -37,7 +37,7 @@ private:
         cout << "\nPhone       : " << Client.GetPhone();
         cout << "\nAccount Number : " << Client.AccountNumber();
         cout << "\nPassword    : " << Client.GetPassword();
-        cout << "\nBalance     : " << Client.GetPassword();
+        cout << "\nBalance     : " << Client.GetBalance();
         cout << "\n___________________\n";
     }
 
