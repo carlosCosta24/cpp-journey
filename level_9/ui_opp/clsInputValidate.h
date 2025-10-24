@@ -49,14 +49,14 @@ class clsInputValidate{
         return clsMyDate::IsValidDate(Date);
     }
 
-    static bool ReadIntNumberBetween( int Start, int End, string Message = "") {
-        //cout << "Please enter a number in the range " << Start << ":" << End << "\n";
+    static int ReadIntNumberBetween(int Start, int End, string Message = "") {
         int Number = ReadIntNumber();
         while (!IsNumberBetween(Number,Start, End)) {
                 cout << Message ;
                 Number = ReadIntNumber();
             }
-            return true;
+            return Number;
         }
+
 
 };

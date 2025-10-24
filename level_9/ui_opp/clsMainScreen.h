@@ -1,5 +1,4 @@
 #pragma once
-#include <ncurses.h>
 #include <iostream>
 #include <iomanip>
 #include "clsInputValidate.h"
@@ -13,10 +12,9 @@ class clsMainScreen: protected clsScreen {
             enFindClient=5, enShowTransactionMenu= 6, enManageUsers= 7, enExit= 8};
 
     static short _ReadMainMenuOP() {
-            short Option = 0;
-            cout <<"Choose what you do Want [1 - 8]? : ";
-            Option = clsInputValidate::ReadIntNumberBetween(1,8, "Invalid input, Try again!: ");
-            return Option;
+            cout <<"Choose what you do Want [1 - 8]? ";
+            short Choice  = clsInputValidate::ReadIntNumberBetween(1,8, "Invalid input, Try again!: ");
+            return Choice;
         }
     static void _GoBackToMainMenu() {
             cout << "\nPress any key to go back to Main Menu...\n";
@@ -50,12 +48,12 @@ class clsMainScreen: protected clsScreen {
 
     static void _ShowTransactionsMenue()
         {
-            cout << "\nTransactions Menue Will be here...\n";
+            cout << "\nTransactions Menu Will be here...\n";
         }
 
     static void _ShowManageUsersMenue()
         {
-            cout << "\nUsers Menue Will be here...\n";
+            cout << "\nUsers Menu Will be here...\n";
         }
 
     static void _ShowEndScreen()
@@ -124,6 +122,4 @@ class clsMainScreen: protected clsScreen {
         cout << setw(37) << left << "" << "===========================================\n";
         _PerformMainMenuOp((enMainMenuOp) _ReadMainMenuOP());
     }
-
-
 };
