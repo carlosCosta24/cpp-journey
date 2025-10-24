@@ -1,8 +1,10 @@
 #pragma once
+#include <ncurses.h>
 #include <iostream>
 #include <iomanip>
 #include "clsInputValidate.h"
 #include "clsScreen.h"
+#include "clsClientListScreen.h"
 using namespace std;
 
 class clsMainScreen: protected clsScreen {
@@ -23,7 +25,7 @@ class clsMainScreen: protected clsScreen {
         }
     static void _ShowAllClientsScreen()
         {
-            cout << "\nClient List Screen Will be here...\n";
+            clsClientListScreen::ShowClientList();
         }
 
     static void _ShowAddNewClientsScreen()
