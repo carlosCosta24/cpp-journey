@@ -2,8 +2,8 @@ Marcus/*/Julia/*/marcus.julia@email.com/*/1234/*/A111/*/1234/*/717.000000
 Lucia/*/Tiberius/*/lucia.tiberius@email.com/*/5678/*/B222/*/5678/*/1280.500000
 carlos /*/costa /*/carlosCosta@gmail.com/*/45613546/*/C333/*/122356/*/145287.000000
 tavia/*/Cassius/*/octavia.cassius@email.com/*/8765/*/D444/*/8765/*/934.250000
-Cornelius/*/Livia/*/cornelius.livia@email.com/*/1111/*/E555/*/1111/*/1420.000000
-karla/*/glauber/*/karlaGlauber@gmail.com/*/79935433/*/F666/*/45858596/*/1425.000000
+Cornelius/*/Livia/*/cornelius.livia@email.com/*/1111/*/E555/*/1111/*/1000.000000
+karla/*/glauber/*/karlaGlauber@gmail.com/*/79935433/*/F666/*/45858596/*/225.000000
 Claudia/*/Publius/*/claudia.publius@email.com/*/3333/*/G777/*/3333/*/1599.000000
 Aelius/*/Sabina/*/aelius.sabina@email.com/*/4444/*/H888/*/4444/*/700.250000
 sirgio/*/carlos /*/sirgiocarlos@gmail.com/*/454712365/*/J000/*/4566/*/125455.000000
