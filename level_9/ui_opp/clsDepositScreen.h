@@ -22,7 +22,7 @@ private:
     static string _ReadAccountNumber() {
         string Account = "";
         cout << "Please Enter Account Number: ";
-        cin >> Account;
+        Account = clsInputValidate::ReadString();
         return Account;
     }
     public:
