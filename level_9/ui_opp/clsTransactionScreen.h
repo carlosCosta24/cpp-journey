@@ -4,6 +4,8 @@
 #include "clsInputValidate.h"
 #include "clsDepositScreen.h"
 #include "clsWithdrawScreen.h"
+#include "clsTotalBalancesScreen.h"
+#include "clsTotalBalancesScreen.h"
 #include <iomanip>
 
 class clsTransactionScreen : protected clsScreen {
@@ -29,14 +31,11 @@ class clsTransactionScreen : protected clsScreen {
 
     static void _TotalBalancesScreen()
     {
-        cout << "\n Balances Screen will be here.\n";
+        clsTotalBalancesScreen::TotalBalancesScreen();
     }
 
     static void _GoBackToTransactionsScreen()
     {
-        cout << "\n\nPress any key to go back to Transactions Menu...";
-        TransactionsMenu();
-
     }
     static void _PerformTransactionMenuOption(enTransationMenuOptions Options) {
         switch (Options) {
@@ -56,7 +55,7 @@ class clsTransactionScreen : protected clsScreen {
                 break;
             }
             case enTransationMenuOptions::enShowMainMenu: {
-                cout << "Will be here soon "<<endl;
+
             }
         }
     }
