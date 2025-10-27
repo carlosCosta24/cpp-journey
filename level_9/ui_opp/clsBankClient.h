@@ -53,12 +53,12 @@ private:
         return _vClients;
 
     }
-    static void _SaveClientsData(vector<clsBankClient> vclients) {
+    static void _SaveClientsData(vector<clsBankClient> vClients) {
         fstream file;
         file.open("Clients.txt", ios::out);
         string DataLine;
         if (file.is_open()) {
-            for (clsBankClient Client : vclients) {
+            for (clsBankClient Client : vClients) {
                 if (!Client._MarkedForDeletion) {
                     DataLine = _ConvertClientObjToLine(Client, "/*/");
                     file << DataLine << endl;
@@ -159,7 +159,6 @@ public:
         case enMode::UpdateMode: {
             _Update();
             return enSaveResult::svSaved;
-            break;
         }
         case enMode::AddNew: {
             if (clsBankClient::IsClientExist(_Account)) {
