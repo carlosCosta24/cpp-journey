@@ -65,7 +65,7 @@ class clsUser : public clsPerson {
     void _Update() {
         vector <clsUser> _vUsers = _LoadUsersData();
         for (clsUser& User : _vUsers) {
-            if (User.GetUserName() == GetFirstName()) {
+            if (User.GetUserName() == GetUserName()) {
                 User = *this;
                 break;
             }
@@ -163,7 +163,7 @@ class clsUser : public clsPerson {
                 break;
             }
         }
-        _SaveClientsData(vClients);
+        _SaveUsersData(vUsers);
         *this = _GetEmptyUserObj();
         return true;
     }
@@ -193,18 +193,6 @@ class clsUser : public clsPerson {
     static bool IsUserExist(string UserName) {
         clsUser User = clsUser::Find(UserName);
         return (!User.IsEmpty());
-    }
-    bool Delete() {
-        vector <clsUser> vUsers = _LoadUsersData();
-        for (clsUser &User : vUsers) {
-            if (User.GetUserName() == _UserName) {
-                User._MarkForDelete = true;
-                break;
-            }
-        }
-        _SaveUsersData(vUsers);
-        *this = _GetEmptyUserObj();
-        return true;
     }
     static clsUser GetAddNewUserObj(string Username) {
         return clsUser(enMode::enAdd, "", "", "", "", Username,"", 0);
