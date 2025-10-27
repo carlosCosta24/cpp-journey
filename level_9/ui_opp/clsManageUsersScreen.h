@@ -11,10 +11,10 @@ private:
         enUpdateUser = 4, enFindUser =5, enMainMenu = 6};
 
     static short _ReadManageUsersOption() {
-        short Option = 0;
+        short choice = 0;
         cout << "Please enter your choice: ";
-        Option = clsInputValidate::ReadIntNumberBetween(1,6,"Invalid Input, Try agin!");
-        return Option;
+        choice = clsInputValidate::ReadIntNumberBetween(1,6,"Invalid Input, Try agin!");
+        return choice;
     }
 
     static void _GoBackToManageUsersMenu() {
