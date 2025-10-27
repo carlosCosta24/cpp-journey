@@ -32,7 +32,7 @@ class clsClientListScreen : protected clsScreen {
         cout << "\n-------------------------------------------------------------------------------------"
                 "---------------------\n";
         if (vClients.size() == 0) {
-            cout << "\n\t\t\t\t\t\t\t\t\tNo Clients data are available" << endl;
+            cout << "\n\t\t\t\t\t\t\t\t\tNo Clients data not available" << endl;
         }
         else {
             for (clsBankClient Client : vClients) {
