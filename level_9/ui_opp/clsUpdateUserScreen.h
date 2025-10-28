@@ -4,6 +4,7 @@
 #include "clsPerson.h"
 #include "clsUser.h"
 #include "clsInputValidate.h"
+#include "clsUtil.h"
 using namespace std;
 
 class clsUpdateUserScreen : protected clsScreen {
@@ -48,51 +49,51 @@ private:
         char Answer = 'N';
         cout << "Do you want to give user a full access? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y') {return -1;
         }
         cout << "\nDo you want to give access to : \n";
         cout << "\nShow Client List? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y') {Permissions += clsUser::enPermissions::pListClients;
         }
         cout << "\nAdd New Client? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y') {Permissions += clsUser::enPermissions::pAddNewClient;
         }
         cout << "\nDelete Client? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pDeleteClient;
         }
         cout << "\nUpdate Client? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pUpdateClient;
         }
         cout << "\nFind Client? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pFindClient;
         }
         cout << "\nTransactions? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pTransactions;
         }
         cout << "\nManage Users? y/n? ";
         cin >> Answer;
-        Answer = _Capitalize(Answer);
+        clsUtil::Capitalize(Answer);
         if (Answer == 'Y' )
         {
             Permissions += clsUser::enPermissions::pManageUsers;

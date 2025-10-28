@@ -8,6 +8,8 @@
 #include "clsDeleteClientScreen.h"
 #include "clsUpdateClientScreen.h"
 #include "clsFindClientScreen.h"
+#include "clsLogScreen.h"
+#include "clsLogScreen.h"
 #include "clsTransactionScreen.h"
 #include "clsManageUsersScreen.h"
 #include "Global.h"

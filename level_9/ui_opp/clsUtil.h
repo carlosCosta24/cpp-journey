@@ -237,5 +237,8 @@ class clsUtil {
 
     }
 
+    static char Capitalize(const char & Character) {
+        return toupper(Character);
+    }
 
     };
