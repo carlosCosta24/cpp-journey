@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include "clsListUsersScreen.h"
+#include "clsAddNewUser.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen {
@@ -26,16 +27,16 @@ private:
        clsListUsersScreen::ListUsersScreen();
     }
     static void _AddNewUsersMenu() {
-        cout << "Add Users Menu will be here soon"<<endl;
+        clsAddNewUser::AddNewUserScreen();
     }
     static void _DeleteUsersMenu() {
-        cout << "Delete Users Menu will be here soon"<<endl;
+        cout << "Delete Users Screen will be here soon"<<endl;
     }
     static void _UpdateUsersMenu() {
-        cout << "Update Users Menu will be here soon"<<endl;
+        cout << "Update Users Screen will be here soon"<<endl;
     }
     static void _FinsUsersMenu() {
-        cout << "Find Users Menu will be here soon"<<endl;
+        cout << "Find Users Screen will be here soon"<<endl;
     }
     static void _PerformManageUsersMenu(enManageUsersOptions Option) {
         switch (Option) {
