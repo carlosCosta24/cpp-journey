@@ -88,6 +88,10 @@ class clsUser : public clsPerson {
     }
 
     public:
+    enum enPermissions {
+        pAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8,
+        pFindClient = 16, pTransactions = 16, pManageUsers = 32
+    };
     clsUser(enMode Mode, string FirstName, string LastName,string Email
         , string Phone, string UserName, string Password, int Permissions ) :
     clsPerson(FirstName, LastName, Email, Phone) {
