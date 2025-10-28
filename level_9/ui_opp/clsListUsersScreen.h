@@ -7,11 +7,12 @@ using namespace std;
 
 class clsListUsersScreen : protected clsScreen {
 private:
-    static void _PrintUsersList(clsUser Use) {
-        cout << "| " << left << setw(20) << Use.FullName();
-        cout << "| " << left << setw(12) << Use.GetPhone();
-        cout << "| " << left << setw(28) << Use.GetEmail();
-        cout << "| " << left << setw(12) << Use.GetPermissions();
+    static void _PrintUsersList(clsUser User) {
+        cout << "| " << left << setw(15) << User.GetUserName();
+        cout << "| " << left << setw(20) << User.FullName();
+        cout << "| " << left << setw(12) << User.GetPhone();
+        cout << "| " << left << setw(28) << User.GetEmail();
+        cout << "| " << left << setw(12) << User.GetPermissions();
     }
     public:
     static void ListUsersScreen() {
@@ -22,7 +23,8 @@ private:
         _ScreenHeader(Title, SubTitle);
         cout << "\n-------------------------------------------------------------------------------"
                 "---------------------------\n";
-        cout << "| " << left << setw(20) << "User Name";
+        cout << "| " << left << setw(15) << "User Name";
+        cout << "| " << left << setw(20) << "Full Name";
         cout << "| " << left << setw(12) << "Phone";
         cout << "| " << left << setw(28) << "Email";
         cout << "| " << left << setw(12) << "Permissions";
