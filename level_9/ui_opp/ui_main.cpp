@@ -1,8 +1,8 @@
 #include <iostream>
-#include "clsMainScreen.h"
+#include "clsLogScreen.h"
 using namespace std;
 
 int main() {
-    clsMainScreen::ShowMainMenu();
+   clsLoginScreen::LoginScreen();
     return 0;
 }
