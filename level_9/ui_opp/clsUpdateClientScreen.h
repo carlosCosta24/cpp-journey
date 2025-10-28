@@ -44,7 +44,7 @@ class clsUpdateClientScreen : protected clsScreen {
 
 public:
     static void UpdateClient() {
-        _ScreenHeader("\t Update Client Screen");
+        _ScreenHeader("\t  Update Client Screen");
         string AccountNumber = "";
 
         cout << "\nPlease enter client account number:";
@@ -77,7 +77,7 @@ public:
                 }
             }
         }else {
-            cout << "\n\nUpdate Failed ";
+            cout << "\n\nUpdate Failed "<<endl;
         }
 
     }
