@@ -7,7 +7,7 @@
 class clsFindClientScreen: protected clsScreen {
     private:
 
-    static void _printClient(clsBankClient Client) {
+    static void _PrintClient(clsBankClient Client) {
         cout << "\nClient Card:";
         cout << "\n___________________";
         cout << "\nFirstName   : " << Client.GetFirstName();
@@ -39,7 +39,7 @@ class clsFindClientScreen: protected clsScreen {
             cout << "Client Data was not foud :-("<< endl;
 
         }
-        _printClient(NewClient);
+        _PrintClient(NewClient);
 
     }
 

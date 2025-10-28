@@ -7,6 +7,7 @@
 #include "clsAddNewUserScreen.h"
 #include "clsDeleteUserScreen.h"
 #include "clsUpdateUserScreen.h"
+#include "clsFindUserScreen.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen {
@@ -38,7 +39,7 @@ private:
         clsUpdateUserScreen::UpdateUserScreen();
     }
     static void _FinsUsersMenu() {
-        cout << "Find Users Screen will be here soon"<<endl;
+        clsFindUserScreen::FindUserScreen();
     }
     static void _PerformManageUsersMenu(enManageUsersOptions Option) {
         switch (Option) {
