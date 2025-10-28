@@ -6,7 +6,7 @@
 #include <iomanip>
 using namespace std;
 
-class clsAddNewUser : protected clsScreen {
+class clsAddNewUserScreen : protected clsScreen {
     private:
     static void _ReadUserInfo(clsUser& User) {
         cout << "\nEnter User FirstName:";
@@ -28,14 +28,14 @@ class clsAddNewUser : protected clsScreen {
         User.SetPermissions(_ReadUserPermissions());
     }
     static void _PrintUserInfo(clsUser User) {
-        cout << "\nClient Card:";
+        cout << "\nUser Card:";
         cout << "\n___________________";
+        cout << "\nUser Name   : " << User.GetUserName();
         cout << "\nFirstName   : " << User.GetFirstName();
         cout << "\nLastName    : " << User.GetLastName();
         cout << "\nFull Name   : " << User.FullName();
         cout << "\nEmail       : " << User.GetEmail();
         cout << "\nPhone       : " << User.GetPhone();
-        cout << "\nUser Name   : " << User.GetPassword();
         cout << "\nPassword    : " << User.GetPassword();
         cout << "\nPermissions : " << User.GetPermissions();
         cout << "\n___________________\n";
@@ -104,10 +104,10 @@ public:
     static void AddNewUserScreen() {
         _ScreenHeader("\t  Add New User Screen");
         string UserName = "";
-        cout << "\nEnter UserName:";
+        cout << "\nEnter UserName: ";
         UserName = clsInputValidate::ReadString();
         while (clsUser::IsUserExist(UserName)) {
-            cout << "\nUserName already exist, Try again:";
+            cout << "\nUserName already exist, Try again: ";
             UserName = clsInputValidate::ReadString();
         }
         clsUser NewUser = clsUser::GetAddNewUserObj(UserName);

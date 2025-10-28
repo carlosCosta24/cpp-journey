@@ -6,7 +6,7 @@
 
 class clsDeleteClientScreen: protected clsScreen {
     private:
-    static void _printClient(clsBankClient Client) {
+    static void _PrintClient(clsBankClient Client) {
         cout << "\nClient Card:";
         cout << "\n___________________";
         cout << "\nFirstName   : " << Client.GetFirstName();
@@ -31,7 +31,7 @@ class clsDeleteClientScreen: protected clsScreen {
             AccountNumber = clsInputValidate::ReadString();
         }
         clsBankClient Client = clsBankClient::Find(AccountNumber);
-        _printClient(Client);
+        _PrintClient(Client);
         cout << "\n\nAre you sure you want to delete this client? y/n"<< endl;
         char Choice = 'n';
         cin >> Choice;
@@ -39,9 +39,8 @@ class clsDeleteClientScreen: protected clsScreen {
         if (Choice == 'y') {
             bool Deleted = Client.Delete();
             if (Deleted){
-                cout << "reached";
                 cout << "\nClient deleted successfully :-)" << endl;
-                _printClient(Client);
+                _PrintClient(Client);
 
         }
         }else {cout << "\nClient not deleted :-("<< endl;
