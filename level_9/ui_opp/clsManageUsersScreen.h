@@ -4,7 +4,8 @@
 #include <iostream>
 #include <iomanip>
 #include "clsListUsersScreen.h"
-#include "clsAddNewUser.h"
+#include "clsAddNewUserScreen.h"
+#include "clsDeleteUserScreen.h"
 using namespace std;
 
 class clsManageUsersScreen : protected clsScreen {
@@ -27,10 +28,10 @@ private:
        clsListUsersScreen::ListUsersScreen();
     }
     static void _AddNewUsersMenu() {
-        clsAddNewUser::AddNewUserScreen();
+        clsAddNewUserScreen::AddNewUserScreen();
     }
     static void _DeleteUsersMenu() {
-        cout << "Delete Users Screen will be here soon"<<endl;
+        clsDeleteUserScreen::DeleteUserScreen();
     }
     static void _UpdateUsersMenu() {
         cout << "Update Users Screen will be here soon"<<endl;
