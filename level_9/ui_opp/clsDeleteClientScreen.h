@@ -21,7 +21,9 @@ class clsDeleteClientScreen: protected clsScreen {
     }
     public:
     static void DeleteClientScreen() {
-
+        if (!_AccessChecker(clsUser::enPermissions::pDeleteClient)) {
+            return;
+        }
         _ScreenHeader("\t Delete Client Screen");
         string AccountNumber = "";
         cout << "\nPlease enter client account number:";

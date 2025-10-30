@@ -8,7 +8,7 @@
 using namespace std;
 
 class clsUser : public clsPerson {
-    private:
+private:
     enum enMode {enEmpty = 0, enUpdate = 1, enAdd = 2};
     enMode _Mode ;
     string _UserName;
@@ -87,7 +87,7 @@ class clsUser : public clsPerson {
         return clsUser(enMode::enEmpty,"","","","","","",0);
     }
 
-    public:
+public:
     enum enPermissions {
         pAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8,
         pFindClient = 16, pTransactions = 16, pManageUsers = 32
@@ -203,6 +203,12 @@ class clsUser : public clsPerson {
     }
     static vector<clsUser> GetUsersList() {
         return _LoadUsersData();
+    }
+    bool IsAllowed(enPermissions Permission) {
+        if (this->GetPermissions() == enPermissions::pAll) return true;
+        if ((Permission & this->GetPermissions()) == Permission) return true;
+        return false;
+
     }
 
 

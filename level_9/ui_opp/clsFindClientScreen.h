@@ -23,6 +23,9 @@ class clsFindClientScreen: protected clsScreen {
 
     public:
     static void FindClientScreen() {
+        if (!_AccessChecker(clsUser::enPermissions::pFindClient)) {
+            return;
+        }
         _ScreenHeader("\t Find Client Screen ");
         string AccountNumber = "";
         cout << "\nEnter Account Number:";

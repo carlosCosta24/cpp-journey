@@ -76,6 +76,9 @@ private:
     }
     public:
      static void ManageUsersScreen() {
+         if (!_AccessChecker(clsUser::enPermissions::pManageUsers)) {
+             return;
+         }
         _ScreenHeader("\t\t Manage users Screen");
         cout << setw(37) << left <<""<< "===========================================\n";
         cout << setw(37) << left << "" << "\t\t\t Manage users Menu\n";

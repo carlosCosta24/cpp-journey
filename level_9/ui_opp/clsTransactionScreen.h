@@ -61,7 +61,9 @@ class clsTransactionScreen : protected clsScreen {
     }
     public:
     static void TransactionsMenu() {
-
+        if (!_AccessChecker(clsUser::enPermissions::pTransactions)) {
+            return;
+        }
         _ScreenHeader("\t Transaction Screen");
         cout << setw(37) << left << "" << "===========================================\n";
         cout << setw(37) << left << "" << "\t\t  Transactions Menue\n";

@@ -44,6 +44,9 @@ class clsUpdateClientScreen : protected clsScreen {
 
 public:
     static void UpdateClient() {
+        if (!_AccessChecker(clsUser::enPermissions::pUpdateClient)) {
+            return;
+        }
         _ScreenHeader("\t  Update Client Screen");
         string AccountNumber = "";
 

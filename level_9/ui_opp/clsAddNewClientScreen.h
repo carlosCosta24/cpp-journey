@@ -44,6 +44,9 @@ private:
 
 public:
     static void AddNewClientScreen() {
+        if (!_AccessChecker(clsUser::enPermissions::pAddNewClient)) {
+            return;
+        }
         string AccountNumber = "";
         cout << "\nEnter Account Number:";
         AccountNumber = clsInputValidate::ReadString();

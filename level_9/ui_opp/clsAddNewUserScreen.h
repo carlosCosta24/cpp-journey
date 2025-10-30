@@ -100,6 +100,7 @@ class clsAddNewUserScreen : protected clsScreen {
     }
 public:
     static void AddNewUserScreen() {
+
         _ScreenHeader("\t  Add New User Screen");
         string UserName = "";
         cout << "\nEnter UserName: ";
