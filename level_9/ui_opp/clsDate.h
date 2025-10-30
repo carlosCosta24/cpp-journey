@@ -389,4 +389,7 @@ class clsMyDate {
         return true;
 
     }
+    static void PrintDateFromObj(clsMyDate Date) {
+        cout << Date._Day << "/" << Date._Month << "/" << Date._Year << endl;
+    }
 };
