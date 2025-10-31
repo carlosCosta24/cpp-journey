@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "clsDate.h"
 using namespace std;
 
 class clsUser : public clsPerson {
@@ -33,6 +34,20 @@ private:
 
         return sUserRecord;
     }
+    static string _GetLogInLine(clsUser User, string Dellimter = "/*/") {
+        string LogInLine = "";
+        clsMyDate Date;
+        LogInLine = to_string(Date.GetDay()) + Dellimter;
+        LogInLine += to_string(Date.GetMonth()) + Dellimter;
+        LogInLine += to_string(Date.GetYear()) ;
+        LogInLine += " - " + to_string(Date.GetHour()) + ":"
+        + to_string(Date.GetMinute()) + ":"
+        + to_string(Date.GetSecond()) + Dellimter;
+        LogInLine += User.GetUserName() + Dellimter;
+        LogInLine += User.GetPassword() + Dellimter;
+        LogInLine += to_string(User.GetPermissions());
+        return LogInLine;
+    }
     static vector <clsUser> _LoadUsersData() {
         vector <clsUser> _vUsers;
         fstream file;
@@ -59,6 +74,14 @@ private:
                     file << DataLine << endl;
                 }
             }
+            file.close();
+        }
+    }
+    static void SaveLogInfo(string Logs) {
+        fstream file;
+        file.open("Logs.txt", ios::out | ios::app);
+        if (file.is_open()) {
+            file << Logs << endl;
             file.close();
         }
     }
@@ -209,6 +232,12 @@ public:
         if ((Permission & this->GetPermissions()) == Permission) return true;
         return false;
 
+    }
+    void SaveToLog(string UserName) {
+        clsMyDate Date;
+        clsUser User = clsUser::Find(UserName);
+        string Line = _GetLogInLine(User);
+        SaveLogInfo(Line);
     }
 
 

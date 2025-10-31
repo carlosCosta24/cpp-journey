@@ -11,6 +11,9 @@ class clsMyDate {
     short _Year;
     short _Month;
     short _Day;
+    short _Hour;
+    short _Minute;
+    short _Second;
 
     public:
     void SetYear(short Input) {
@@ -31,6 +34,24 @@ class clsMyDate {
     short GetDay() {
         return _Day;
     }
+    short GetHour() {
+        return _Hour;
+    }
+    short GetMinute() {
+        return _Minute;
+    }
+    short GetSecond() {
+        return _Second;
+    }
+    void SetHour(short Input) {
+        _Hour = Input;
+    }
+    void SetMinute(short Input) {
+        _Minute = Input;
+    }
+    void SetSecond(short Input) {
+        _Second = Input;
+    }
     short GetNumberOfMonth(string Month){
         short NumberOfMonth = 0;
         const string Months[] {
@@ -50,9 +71,14 @@ class clsMyDate {
         time_t t = time(0);
         const char * Time = ctime(&t);
         vector <string> DateElements = clsString::StringSplitter(Time, " ");
+        string TimeElements = DateElements[3];
+        vector <string> TimesElements = clsString::StringSplitter(TimeElements, ":");
         _Year = stoi(DateElements[4]);
         _Month = GetNumberOfMonth(DateElements[1]);
         _Day = stoi(DateElements[2]);
+        _Hour = stoi(TimesElements[0]);
+        _Minute = stoi(TimesElements[1]);
+        _Second = stoi(TimesElements[2]);
     }
     clsMyDate(string date) {
         vector<string> DateElements = clsString::StringSplitter(date, "/");

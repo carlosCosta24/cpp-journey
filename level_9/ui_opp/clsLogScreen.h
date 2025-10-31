@@ -34,6 +34,7 @@ class clsLoginScreen : protected clsScreen {
             CurrentUser = clsUser::Find(UserName, Password);
             LoginFailed = CurrentUser.IsEmpty();
         }while(LoginFailed);
+        CurrentUser.SaveToLog(CurrentUser.GetUserName());
         clsMainScreen::ShowMainMenu();
         return true;
     }
