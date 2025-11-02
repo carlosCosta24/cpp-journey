@@ -37,8 +37,8 @@ private:
     static string _GetLogInLine(clsUser User, string Dellimter = "/*/") {
         string LogInLine = "";
         clsMyDate Date;
-        LogInLine = to_string(Date.GetDay()) + Dellimter;
-        LogInLine += to_string(Date.GetMonth()) + Dellimter;
+        LogInLine = to_string(Date.GetDay()) + "/";
+        LogInLine += to_string(Date.GetMonth()) + "/";
         LogInLine += to_string(Date.GetYear()) ;
         LogInLine += " - " + to_string(Date.GetHour()) + ":"
         + to_string(Date.GetMinute()) + ":"
