@@ -9,7 +9,7 @@
 #include "clsUpdateClientScreen.h"
 #include "clsFindClientScreen.h"
 #include "clsLogScreen.h"
-#include "clsLogScreen.h"
+#include "clsLogsScreen.h"
 #include "clsTransactionScreen.h"
 #include "clsManageUsersScreen.h"
 #include "Global.h"
@@ -18,11 +18,11 @@ using namespace std;
 class clsMainScreen: protected clsScreen {
     private:
     enum enMainMenuOp{enListClient =1, enAddClient =2, enDeleteClient=3, enUpdateClient=4,
-            enFindClient=5, enShowTransactionMenu= 6, enManageUsers= 7, enExit= 8};
+            enFindClient=5, enShowTransactionMenu= 6, enManageUsers= 7,enLogs = 8, enExit= 9};
 
     static short _ReadMainMenuOP() {
-            cout <<"Choose what you do Want [1 - 8]? ";
-            short Choice  = clsInputValidate::ReadIntNumberBetween(1,8, "Invalid input, Try again!: ");
+            cout <<"Choose what you do Want [1 - 9]? ";
+            short Choice  = clsInputValidate::ReadIntNumberBetween(1,9, "Invalid input, Try again!: ");
             return Choice;
         }
     static void _GoBackToMainMenu() {
@@ -62,6 +62,9 @@ class clsMainScreen: protected clsScreen {
         {
             clsManageUsersScreen::ManageUsersScreen();
         }
+    static void _ShowLogsScreen() {
+        clsLogsScreen::ShowLogsScreen();
+    }
 
     static void _Logout()
         {
@@ -105,6 +108,10 @@ class clsMainScreen: protected clsScreen {
                 _GoBackToMainMenu();
                 break;
             }
+            case enMainMenuOp::enLogs: {
+                _ShowLogsScreen();
+                _GoBackToMainMenu();
+            }
             case enMainMenuOp::enExit: {
                 _Logout();
                 break;
@@ -124,7 +131,8 @@ class clsMainScreen: protected clsScreen {
         cout << setw(37) << left << "" << "\t[5] Find Client.\n";
         cout << setw(37) << left << "" << "\t[6] Transactions.\n";
         cout << setw(37) << left << "" << "\t[7] Manage Users.\n";
-        cout << setw(37) << left << "" << "\t[8] Logout.\n";
+        cout << setw(37) << left << "" << "\t[8] Login History.\n";
+        cout << setw(37) << left << "" << "\t[9] Logout.\n";
         cout << setw(37) << left << "" << "===========================================\n";
         _PerformMainMenuOp((enMainMenuOp) _ReadMainMenuOP());
     }
