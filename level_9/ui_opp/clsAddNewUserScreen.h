@@ -27,6 +27,7 @@ class clsAddNewUserScreen : protected clsScreen {
 
         cout << "\nEnter User Permissions:"<<endl;
         User.SetPermissions(_ReadUserPermissions());
+        cout << User.GetPermissions();
     }
     static void _PrintUserInfo(clsUser User) {
         cout << "\nUser Card:";
@@ -47,18 +48,27 @@ class clsAddNewUserScreen : protected clsScreen {
         cout << "Do you want to give user a full access? y/n? ";
         cin >> Answer;
         clsUtil::Capitalize(Answer);
-        if (Answer == 'Y') {return -1;
+        if (Answer == 'Y') {
+            return -1;
         }
         cout << "\nDo you want to give access to : \n";
         cout << "\nShow Client List? y/n? ";
         cin >> Answer;
         clsUtil::Capitalize(Answer);
-        if (Answer == 'Y') {Permissions += clsUser::enPermissions::pListClients;
+        if (Answer == 'Y') {
+            Permissions += clsUser::enPermissions::pListClients;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pListClients
+     << "), Total: " << Permissions << endl;
+
         }
         cout << "\nAdd New Client? y/n? ";
         cin >> Answer;
         clsUtil::Capitalize(Answer);
-        if (Answer == 'Y') {Permissions += clsUser::enPermissions::pAddNewClient;
+        if (Answer == 'Y') {
+            Permissions += clsUser::enPermissions::pAddNewClient;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pAddNewClient
+     << "), Total: " << Permissions << endl;
+
         }
         cout << "\nDelete Client? y/n? ";
         cin >> Answer;
@@ -66,6 +76,9 @@ class clsAddNewUserScreen : protected clsScreen {
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pDeleteClient;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pDeleteClient
+     << "), Total: " << Permissions << endl;
+
         }
         cout << "\nUpdate Client? y/n? ";
         cin >> Answer;
@@ -73,6 +86,8 @@ class clsAddNewUserScreen : protected clsScreen {
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pUpdateClient;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pUpdateClient
+     << "), Total: " << Permissions << endl;
         }
         cout << "\nFind Client? y/n? ";
         cin >> Answer;
@@ -80,6 +95,9 @@ class clsAddNewUserScreen : protected clsScreen {
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pFindClient;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pFindClient
+     << "), Total: " << Permissions << endl;
+
         }
         cout << "\nTransactions? y/n? ";
         cin >> Answer;
@@ -87,6 +105,9 @@ class clsAddNewUserScreen : protected clsScreen {
         if (Answer == 'Y')
         {
             Permissions += clsUser::enPermissions::pTransactions;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pTransactions
+     << "), Total: " << Permissions << endl;
+
         }
         cout << "\nManage Users? y/n? ";
         cin >> Answer;
@@ -94,6 +115,18 @@ class clsAddNewUserScreen : protected clsScreen {
         if (Answer == 'Y' )
         {
             Permissions += clsUser::enPermissions::pManageUsers;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pManageUsers
+     << "), Total: " << Permissions << endl;
+
+        }
+        cout<< "\nShow Logs? y/n? ";
+        cin >> Answer;
+        clsUtil::Capitalize(Answer);
+        if (Answer == 'Y') {
+            Permissions += clsUser::enPermissions::pLogs;
+            cout << "DEBUG: Added pListClients (" << clsUser::enPermissions::pLogs
+     << "), Total: " << Permissions << endl;
+
         }
         return Permissions;
 
