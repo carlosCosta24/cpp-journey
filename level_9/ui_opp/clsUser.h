@@ -112,7 +112,7 @@ private:
 public:
     enum enPermissions {
         pAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8,
-        pFindClient = 16, pTransactions = 16, pManageUsers = 32
+        pFindClient = 16, pTransactions = 32, pManageUsers = 64, pLogs = 128
     };
     struct stUsersLogs {
         string Date;

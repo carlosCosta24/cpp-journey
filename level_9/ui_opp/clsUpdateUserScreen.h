@@ -98,8 +98,14 @@ private:
         {
             Permissions += clsUser::enPermissions::pManageUsers;
         }
+        cout << "\nShow Logs? y/n? ";
+        cin >> Answer;
+        clsUtil::Capitalize(Answer);
+        if (Answer == 'Y' )
+        {
+            Permissions += clsUser::enPermissions::pLogs;
+        }
         return Permissions;
-
     }
 public:
 static void UpdateUserScreen() {

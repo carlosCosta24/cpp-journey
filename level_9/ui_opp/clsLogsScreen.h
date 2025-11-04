@@ -20,6 +20,9 @@ class clsLogsScreen: protected clsScreen {
 
     public:
     static void ShowLogsScreen() {
+        if (!_AccessChecker(clsUser::enPermissions::pLogs)) {
+            return;
+        }
         vector <clsUser::stUsersLogs> vLogsList = clsUser::GetLogsList();
         string Title = "\t Logs List Screen";
         string SubTitle = "\t\t (" + to_string(vLogsList.size()) + ") Client(s).";
