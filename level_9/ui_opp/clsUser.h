@@ -16,7 +16,6 @@ private:
     string _Password;
     int _Permissions;
     bool _MarkForDelete = false;
-
     static clsUser _ConvertLineToUserObj(string Line, string Delimiter = "/*/") {
         vector <string> vUserData = clsString::StringSplitter(Line, Delimiter);
         return clsUser(enMode::enUpdate, vUserData[0], vUserData[1], vUserData[2],
@@ -114,6 +113,12 @@ public:
     enum enPermissions {
         pAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8,
         pFindClient = 16, pTransactions = 16, pManageUsers = 32
+    };
+    struct stUsersLogs {
+        string Date;
+        string Name;
+        string Password;
+        int Permissions;
     };
     clsUser(enMode Mode, string FirstName, string LastName,string Email
         , string Phone, string UserName, string Password, int Permissions ) :
@@ -233,11 +238,35 @@ public:
         return false;
 
     }
-    void SaveToLog(string UserName) {
+    static void SaveToLog(string UserName) {
         clsMyDate Date;
         clsUser User = clsUser::Find(UserName);
         string Line = _GetLogInLine(User);
         SaveLogInfo(Line);
+    }
+    static stUsersLogs _ConvertLogsLineToRecord(string Line) {
+        stUsersLogs Record;
+        vector <string> vRecordLine = clsString::StringSplitter(Line,"/*/");
+        Record.Date = vRecordLine[0];
+        Record.Name = vRecordLine[1];
+        Record.Password = vRecordLine[2];
+        Record.Permissions = stod(vRecordLine[3]);
+        return Record;
+    }
+    static vector <stUsersLogs> GetLogsList() {
+        vector <stUsersLogs> vUsersLogList;
+        fstream file;
+        file.open("Logs.txt", ios::in);
+        if (file.is_open()) {
+            string Line;
+            stUsersLogs LogRecord;
+            while (getline(file, Line)) {
+                LogRecord = _ConvertLogsLineToRecord(Line);
+                vUsersLogList.push_back(LogRecord);
+            }
+        }
+        file.close();
+        return vUsersLogList;
     }
 
 
