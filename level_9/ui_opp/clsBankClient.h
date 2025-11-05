@@ -125,6 +125,15 @@ public:
         _Password = Password;
         _Balance = Balance;
     }
+    struct stTransferLog {
+        string Date;
+        string DestinationAccount;
+        string SourceAccount;
+        float Amount;
+        float DestinationBalance;
+        float SourceBalance;
+        string UserName;
+    };
     bool IsEmpty() {
         return (_Mode == enMode::EmptyMode);
     }
@@ -238,6 +247,34 @@ public:
         _Balance -= Amount;
         Save();
         return true;
+
+    }
+    static stTransferLog _ConvertTransferLogsLineToRecord(string Line) {
+        stTransferLog Record;
+        vector <string> vRecordLine = clsString::StringSplitter(Line,"/*/");
+        Record.Date = vRecordLine[0];
+        Record.SourceAccount = vRecordLine[1];
+        Record.DestinationAccount = vRecordLine[2];
+        Record.Amount = stod(vRecordLine[3]);
+        Record.SourceBalance = stod(vRecordLine[4]);
+        Record.DestinationBalance = stod(vRecordLine[5]);
+        Record.UserName = vRecordLine[6];
+        return Record;
+    }
+    static vector<stTransferLog> GetTransferList() {
+        vector <stTransferLog> vRecords;
+        fstream file;
+        file.open("Transfers.txt", ios::in);
+        if (file.is_open()) {
+            string line;
+            while (getline(file, line)) {
+                stTransferLog Record;
+                Record = _ConvertTransferLogsLineToRecord(line);
+                vRecords.push_back(Record);
+            }
+            file.close();
+        }
+        return vRecords;
 
     }
 
