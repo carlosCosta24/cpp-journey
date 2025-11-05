@@ -221,5 +221,13 @@ public:
         }
         return TotalBalance;
     }
+    bool Transfer(float Amount, clsBankClient & DestinationAccount) {
+        if (Amount > _Balance) {
+            return false;
+        }
+        Withdraw(Amount);
+        DestinationAccount.Deposit(Amount);
+        return true;
+    }
 
 };
