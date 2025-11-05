@@ -114,7 +114,7 @@ public:
         pAll = -1, pListClients = 1, pAddNewClient = 2, pDeleteClient = 4, pUpdateClient = 8,
         pFindClient = 16, pTransactions = 32, pManageUsers = 64, pLogs = 128
     };
-    struct stUsersLogs {
+    struct stUsersLog {
         string Date;
         string Name;
         string Password;
@@ -244,8 +244,8 @@ public:
         string Line = _GetLogInLine(User);
         SaveLogInfo(Line);
     }
-    static stUsersLogs _ConvertLogsLineToRecord(string Line) {
-        stUsersLogs Record;
+    static stUsersLog _ConvertLogsLineToRecord(string Line) {
+        stUsersLog Record;
         vector <string> vRecordLine = clsString::StringSplitter(Line,"/*/");
         Record.Date = vRecordLine[0];
         Record.Name = vRecordLine[1];
@@ -253,13 +253,13 @@ public:
         Record.Permissions = stod(vRecordLine[3]);
         return Record;
     }
-    static vector <stUsersLogs> GetLogsList() {
-        vector <stUsersLogs> vUsersLogList;
+    static vector <stUsersLog> GetLogsList() {
+        vector <stUsersLog> vUsersLogList;
         fstream file;
         file.open("Logs.txt", ios::in);
         if (file.is_open()) {
             string Line;
-            stUsersLogs LogRecord;
+            stUsersLog LogRecord;
             while (getline(file, Line)) {
                 LogRecord = _ConvertLogsLineToRecord(Line);
                 vUsersLogList.push_back(LogRecord);

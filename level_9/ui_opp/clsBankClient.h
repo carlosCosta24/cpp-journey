@@ -37,6 +37,33 @@ private:
     static clsBankClient _GetEmptyClientObj() {
         return clsBankClient(enMode::EmptyMode,"","","","","","",0);
     }
+    string _GetTransferLogs(string UserNamw,clsBankClient Destination,
+    float Amount, string Dellimter = "/*/") {
+        string Line;
+        clsMyDate Date;
+        Line = to_string(Date.GetDay()) + "/";
+        Line += to_string(Date.GetMonth()) + "/";
+        Line += to_string(Date.GetYear()) ;
+        Line += " - " + to_string(Date.GetHour()) + ":"
+        + to_string(Date.GetMinute()) + ":"
+        + to_string(Date.GetSecond()) + Dellimter;
+        Line +=  AccountNumber() + Dellimter;
+        Line += Destination.AccountNumber() + Dellimter;
+        Line += to_string(Amount) + Dellimter;
+        Line += to_string(GetBalance()) + Dellimter;
+        Line += to_string(Destination.GetBalance()) + Dellimter;
+        Line += UserNamw;
+        return Line;
+    }
+     void _SaveTransferInfo(string UserName, clsBankClient Destination, float Amount) {
+        fstream file;
+        string Log = _GetTransferLogs(UserName, Destination, Amount);
+        file.open("Transfers.txt", ios::out | ios::app);
+        if (file.is_open()) {
+            file << Log << endl;
+            file.close();
+        }
+    }
     static vector <clsBankClient> _LoadClientsData() {
         vector <clsBankClient> _vClients;
         fstream file;
@@ -221,12 +248,14 @@ public:
         }
         return TotalBalance;
     }
-    bool Transfer(float Amount, clsBankClient & DestinationAccount) {
+    bool Transfer(float Amount, clsBankClient & DestinationAccount, string UserName) {
         if (Amount > _Balance) {
             return false;
         }
         Withdraw(Amount);
         DestinationAccount.Deposit(Amount);
+        _SaveTransferInfo(UserName, DestinationAccount,Amount);
+
         return true;
     }
 

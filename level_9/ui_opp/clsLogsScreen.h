@@ -9,7 +9,7 @@ using namespace std;
 class clsLogsScreen: protected clsScreen {
     private:
 
-    static void _PrintLogsLine(clsUser::stUsersLogs Log) {
+    static void _PrintLogsLine(clsUser::stUsersLog Log) {
 
              cout << "| " << left << setw(25)<< Log.Date;
              cout << "| " << left << setw(20) << Log.Name;
@@ -23,7 +23,7 @@ class clsLogsScreen: protected clsScreen {
         if (!_AccessChecker(clsUser::enPermissions::pLogs)) {
             return;
         }
-        vector <clsUser::stUsersLogs> vLogsList = clsUser::GetLogsList();
+        vector <clsUser::stUsersLog> vLogsList = clsUser::GetLogsList();
         string Title = "\t Logs List Screen";
         string SubTitle = "\t\t (" + to_string(vLogsList.size()) + ") Client(s).";
 
@@ -40,7 +40,7 @@ class clsLogsScreen: protected clsScreen {
             cout << "\n\t\t\t\t\t\t\t\t\tNo Logs data available" << endl;
         }
         else {
-            for (clsUser::stUsersLogs Log : vLogsList) {
+            for (clsUser::stUsersLog Log : vLogsList) {
                 _PrintLogsLine(Log);
                 cout << endl;
             }

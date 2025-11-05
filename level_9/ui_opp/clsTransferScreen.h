@@ -53,7 +53,7 @@ class clsTransferScreen : protected clsScreen {
         cin >> Choice;
         Choice = tolower(Choice);
         if (Choice == 'y') {
-            if (FirstClient.Transfer(Amount,SecondClient)) {
+            if (FirstClient.Transfer(Amount,SecondClient, CurrentUser.GetUserName())) {
 
                 cout << "\nTransfer done successfully \n";
                 _PrintSummaryCard(FirstClient);
