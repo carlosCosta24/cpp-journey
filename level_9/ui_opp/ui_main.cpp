@@ -4,7 +4,7 @@
 using namespace std;
 
 int main() {
-    char Exit = 'n';
+     char Exit = 'n';
     while (Exit == 'n') {
         if (clsLoginScreen::LoginScreen() == false ) {
             return 0;

@@ -5,6 +5,7 @@
 #include "clsString.h"
 #include <vector>
 #include <fstream>
+#include "clsUtil.h"
 using namespace std;
 
 class clsBankClient :public clsPerson {
@@ -20,7 +21,7 @@ private:
         vector <string> vClientData;
         vClientData = clsString::StringSplitter(Line, Delimiter);
         return clsBankClient(enMode::UpdateMode, vClientData[0], vClientData[1], vClientData[2],
-            vClientData[3], vClientData[4], vClientData[5], stod(vClientData[6]));
+            vClientData[3], vClientData[4], clsUtil::Decryption(vClientData[5]), stod(vClientData[6]));
     }
     static string _ConvertClientObjToLine(clsBankClient Client, string Delimiter = "/*/") {
         string stClientRecord = "";
@@ -29,7 +30,7 @@ private:
         stClientRecord += Client.GetEmail() + Delimiter;
         stClientRecord += Client.GetPhone() + Delimiter;
         stClientRecord += Client.AccountNumber() + Delimiter;
-        stClientRecord += Client.GetPassword() + Delimiter;
+        stClientRecord += clsUtil::Encryption(Client.GetPassword()) + Delimiter;
         stClientRecord += to_string(Client.GetBalance()) ;
 
         return stClientRecord;

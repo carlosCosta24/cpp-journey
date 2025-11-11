@@ -15,7 +15,7 @@ class clsFindClientScreen: protected clsScreen {
         cout << "\nFull Name   : " << Client.FullName();
         cout << "\nEmail       : " << Client.GetEmail();
         cout << "\nPhone       : " << Client.GetPhone();
-        cout << "\nAccount Number : " << Client.AccountNumber();
+        cout << "\nAccount \n-Number \t: " << Client.AccountNumber();
         cout << "\nPassword    : " << Client.GetPassword();
         cout << "\nBalance     : " << Client.GetBalance();
         cout << "\n___________________\n";

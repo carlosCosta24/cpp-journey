@@ -129,7 +129,6 @@ class clsAddNewUserScreen : protected clsScreen {
 
         }
         return Permissions;
-
     }
 public:
     static void AddNewUserScreen() {

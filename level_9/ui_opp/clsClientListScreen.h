@@ -22,7 +22,7 @@ class clsClientListScreen : protected clsScreen {
         }
         vector <clsBankClient> vClients = clsBankClient::GetClientsList();
         string Title = "\t Client List Screen";
-        string SubTitle = "\t\t (" + to_string(vClients.size()) + ") Client(s).";
+        string SubTitle = " \t\t\t (" + to_string(vClients.size()) + ") Client(s).";
 
         _ScreenHeader(Title, SubTitle);
         cout << "\n-------------------------------------------------------------------------------"

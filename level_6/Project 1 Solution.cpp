@@ -52,7 +52,7 @@ enum enMainMenuePermissions {
 };
 
 const string ClientsFileName = "Clients.txt";
-const string UsersFileName = "Users.txt";
+const string UsersFileName = "UsersList.txt";
 stUser CurrentUser;
 
 

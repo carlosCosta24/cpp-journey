@@ -152,7 +152,7 @@ class clsUtil {
         return t;
 
     }
-    static string Encryption(string Word, short EncryptionKey = 15)
+    static string Encryption(string Word, short EncryptionKey = 10)
     {
         string result = "";
         for (int i = 0; i < Word.length(); i++)
@@ -161,7 +161,7 @@ class clsUtil {
         }
         return result;
     }
-    static string Decryption(string Encrypted, short DecryptionKey)
+    static string Decryption(string Encrypted, short DecryptionKey = 10)
     {
 
         string decrypted = "";

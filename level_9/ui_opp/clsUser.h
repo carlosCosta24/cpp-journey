@@ -6,6 +6,7 @@
 #include <string>
 #include <fstream>
 #include "clsDate.h"
+#include "clsUtil.h"
 using namespace std;
 
 class clsUser : public clsPerson {
@@ -19,7 +20,7 @@ private:
     static clsUser _ConvertLineToUserObj(string Line, string Delimiter = "/*/") {
         vector <string> vUserData = clsString::StringSplitter(Line, Delimiter);
         return clsUser(enMode::enUpdate, vUserData[0], vUserData[1], vUserData[2],
-            vUserData[3], vUserData[4], vUserData[5], stod(vUserData[6]));
+            vUserData[3], vUserData[4], clsUtil::Decryption(vUserData[5]), stod(vUserData[6]));
     }
     static string _ConvertUserObjToLine(clsUser User, string Delimiter = "/*/") {
         string sUserRecord = "";
@@ -28,7 +29,7 @@ private:
         sUserRecord += User.GetEmail() + Delimiter;
         sUserRecord += User.GetPhone() + Delimiter;
         sUserRecord += User.GetUserName() + Delimiter;
-        sUserRecord += User.GetPassword() + Delimiter;
+        sUserRecord += clsUtil::Encryption(User.GetPassword(), 10) + Delimiter;
         sUserRecord += to_string(User.GetPermissions()) ;
 
         return sUserRecord;
@@ -43,14 +44,14 @@ private:
         + to_string(Date.GetMinute()) + ":"
         + to_string(Date.GetSecond()) + Dellimter;
         LogInLine += User.GetUserName() + Dellimter;
-        LogInLine += User.GetPassword() + Dellimter;
+        LogInLine += clsUtil::Encryption(User.GetPassword(),10) + Dellimter;
         LogInLine += to_string(User.GetPermissions());
         return LogInLine;
     }
     static vector <clsUser> _LoadUsersData() {
         vector <clsUser> _vUsers;
         fstream file;
-        file.open("Users.txt", ios::in);
+        file.open("AllUsersList.txt", ios::in);
 
         if (file.is_open()) {
             string Line;
@@ -64,7 +65,7 @@ private:
     }
     static void _SaveUsersData(vector<clsUser> vUsers) {
         fstream file;
-        file.open("Users.txt", ios::out);
+        file.open("AllUsersList.txt", ios::out);
         string DataLine;
         if (file.is_open()) {
             for (clsUser User : vUsers) {
@@ -99,7 +100,7 @@ private:
     }
     static void _AddDataLineToFile(string stDataLine) {
         fstream file;
-        file.open("Users.txt", ios::out | ios::app);
+        file.open("AllUsersList.txt", ios::out | ios::app);
         if (file.is_open()) {
             file << stDataLine << endl;
             file.close();
@@ -157,7 +158,7 @@ public:
     }
     static clsUser Find(string UserName) {
         fstream file;
-        file.open("Users.txt", ios::in);
+        file.open("AllUsersList.txt", ios::in);
         if (file.is_open()) {
             string line;
             while (getline(file, line)) {
@@ -173,7 +174,7 @@ public:
     }
     static clsUser Find (string UserName, string Password) {
         fstream file;
-        file.open("Users.txt", ios::in);
+        file.open("AllUsersList.txt", ios::in);
         if (file.is_open()) {
             string line;
             while (getline(file, line)) {
@@ -220,7 +221,6 @@ public:
                 }
             }
         }
-
     }
     static bool IsUserExist(string UserName) {
         clsUser User = clsUser::Find(UserName);
@@ -249,7 +249,7 @@ public:
         vector <string> vRecordLine = clsString::StringSplitter(Line,"/*/");
         Record.Date = vRecordLine[0];
         Record.Name = vRecordLine[1];
-        Record.Password = vRecordLine[2];
+        Record.Password = clsUtil::Decryption(vRecordLine[2]) ;
         Record.Permissions = stod(vRecordLine[3]);
         return Record;
     }

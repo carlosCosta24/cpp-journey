@@ -40,7 +40,7 @@ class clsLoginScreen : protected clsScreen {
     }
     public:
     static bool LoginScreen() {
-        _ScreenHeader("\t  Login Screen");
+        _ScreenHeader("\t\t     Login Screen");
         return _Login();
     }
 

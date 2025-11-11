@@ -26,7 +26,7 @@ class clsMainScreen: protected clsScreen {
             return Choice;
         }
     static void _GoBackToMainMenu() {
-            cout << "\nPress any key to go back to Main Menu...\n";
+            cout << "\nPress any key to go back to Main Menu..." << endl;
             
             ShowMainMenu();
         }
