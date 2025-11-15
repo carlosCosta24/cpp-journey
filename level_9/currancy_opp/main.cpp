@@ -30,6 +30,7 @@ int main() {
     }
 
     C2.UpdateRate(95);
+    cout << "\n Currency after update "<< endl;
     _Print(C2);
-
+    return 0;
 }
