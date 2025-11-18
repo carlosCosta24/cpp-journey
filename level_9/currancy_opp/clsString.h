@@ -189,7 +189,7 @@ class clsString {
     short VowelCount() {
         return VowelCount(_Value);
     }
-    static vector<string> StringSplitter(string S, string Splitter) {
+    static vector<string> StringSplitter(string S, string Splitter = "/*/") {
         vector<string> vResult;
         short Pos = 0;
         string Word;
@@ -305,6 +305,15 @@ class clsString {
     }
     string StringReplacer(string Target, string& Replacement) {
         return StringReplacer(_Value, Target, Replacement);
+    }
+    static char Capitalize(char & Character) {
+        return toupper(Character);
+    }
+    static string Capitalize(string & sentence) {
+        for(char & C : sentence) {
+            toupper(C);
+        }
+        return sentence;
     }
 
     // static void SplittedStringPrinter(string Splitter = " ") {

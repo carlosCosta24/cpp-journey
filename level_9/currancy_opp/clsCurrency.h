@@ -17,7 +17,7 @@ class clsCurrency {
   float _CurrencyRate;
 
   static clsCurrency _ConvertLineToCurrencyObj(string Line, string Delimiter = "/*/") {
-    clsCurrency Currency;
+   // clsCurrency Currency;
     vector <string> vCurrencyElements = clsString::StringSplitter(Line);
     // this is my code, its ok but not optimal
     // Currency._Country = vCurrencyElements[0];
@@ -76,20 +76,18 @@ class clsCurrency {
     _SaveCurrencyData(vCurrencyList) ;
   }
 
-  static clsCurrency _GetCurrencyObj() {
+  static clsCurrency _GetEmptyCurrencyObj() {
     return clsCurrency(enMood::enEmpty,"","","",0);
   }
 
 public:
-  clsCurrency(enMood Mood, string Country, string currencyCode, string CurrencyName, float Rate) {
+  clsCurrency(enMood Mood, string Country, string currencyCode,
+    string CurrencyName, float Rate) {
     _Mood = Mood;
     _Country = Country;
     _CurrencyCode = currencyCode;
     _CurrencyName = CurrencyName;
     _CurrencyRate = Rate;
-  }
-  static vector <clsCurrency> GetCurrencyList() {
-    return _LoadCurrenciesData();
   }
 
   bool IsEmpty() {
@@ -110,6 +108,47 @@ public:
   }
   float GetRate() {
     return _CurrencyRate;
+  }
+  static clsCurrency FindCurrencyByCode(string Code) {
+    Code = clsString::CapitalString(Code);
+    fstream file;
+    file.open("CurrenciesList.txt", ios::in);
+    if (file.is_open()) {
+      string Line;
+      while (getline(file, Line)) {
+        clsCurrency Currency = _ConvertLineToCurrencyObj(Line);
+        if (Currency._CurrencyCode == Code) {
+          file.close();
+          return Currency;
+        }
+      }
+    file.close();
+    }
+    return _GetEmptyCurrencyObj();
+  }
+
+  static clsCurrency FindCurrencyByName(string Name) {
+    fstream file;
+    file.open("CurrenciesList.txt", ios::in);
+    if (file.is_open()) {
+      string Line;
+      while (getline(file, Line)) {
+        clsCurrency Currency = _ConvertLineToCurrencyObj(Line);
+        if (clsString::CapitalString(Currency._Country) == clsString::CapitalString(Name)) {
+          file.close();
+          return Currency;
+        }
+      }
+      file.close();
+    }
+    return _GetEmptyCurrencyObj();
+  }
+  static bool IsCurrencyExist(string Code) {
+    clsCurrency Curency = clsCurrency::FindCurrencyByCode(Code);
+    return (!Curency.IsEmpty());
+  }
+  static vector <clsCurrency> GetCurrencyList() {
+    return _LoadCurrenciesData();
   }
 
 
