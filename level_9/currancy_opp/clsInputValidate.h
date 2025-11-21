@@ -25,7 +25,6 @@ class clsInputValidate{
         while (!(cin>> Number)) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout << Error;
         }
         return Number;
     }
@@ -34,7 +33,6 @@ class clsInputValidate{
         while (!(cin>> Number)) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout << Error;
         }
         return Number;
     }
@@ -61,7 +59,6 @@ class clsInputValidate{
     static int ReadIntNumberBetween(int Start, int End, string Message = "") {
         int Number = ReadIntNumber();
         while (!IsNumberBetween(Number,Start, End)) {
-                cout << Message ;
                 Number = ReadIntNumber();
             }
             return Number;
