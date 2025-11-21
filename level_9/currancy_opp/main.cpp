@@ -2,6 +2,7 @@
 #include "clsCurrency.h"
 #include "clsCurrency_menu.h"
 #include "clsCurrencyFindScreen.h"
+#include "clsCurrency_update.h"
 using namespace std;
 
 void _Print(clsCurrency Currency) {
@@ -16,23 +17,24 @@ void _Print(clsCurrency Currency) {
 
 }
 int main() {
-    clsCurrency C = clsCurrency::FindCurrencyByCode("usd");
-    if (C.IsEmpty()) {
-        cout << "\n Currency isn't exist "<< endl;
-    }
-    else {
-        _Print(C);
-    }
-    clsCurrency C2 = clsCurrency::FindCurrencyByName("egypt");
-    if (C2.IsEmpty()) {
-        cout << "\n Currency isn't exist "<< endl;
-    }
-    else {
-        _Print(C2);
-    }
-
-    C2.UpdateRate(95);
-    cout << "\n Currency after update "<< endl;
-    _Print(C2);
+    // clsCurrency C = clsCurrency::FindCurrencyByCode("usd");
+    // if (C.IsEmpty()) {
+    //     cout << "\n Currency isn't exist "<< endl;
+    // }
+    // else {
+    //     _Print(C);
+    // }
+    // clsCurrency C2 = clsCurrency::FindCurrencyByName("egypt");
+    // if (C2.IsEmpty()) {
+    //     cout << "\n Currency isn't exist "<< endl;
+    // }
+    // else {
+    //     _Print(C2);
+    // }
+    //
+    // C2.UpdateRate(95);
+    // cout << "\n Currency after update "<< endl;
+    // _Print(C2);
+    clsCurrencyUpdate::UpdateScreen();
     return 0;
 }
