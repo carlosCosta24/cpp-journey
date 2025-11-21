@@ -306,7 +306,7 @@ class clsString {
     string StringReplacer(string Target, string& Replacement) {
         return StringReplacer(_Value, Target, Replacement);
     }
-    static char Capitalize(char & Character) {
+    static char Capitalize(char Character) {
         return toupper(Character);
     }
     static string Capitalize(string & sentence) {
