@@ -307,11 +307,13 @@ class clsString {
         return StringReplacer(_Value, Target, Replacement);
     }
     static char Capitalize(char & Character) {
-        return toupper(Character);
+        Character = toupper(Character);
+        return Character;
     }
     static string Capitalize(string & sentence) {
+
         for(char & C : sentence) {
-            toupper(C);
+            C = Capitalize(C);
         }
         return sentence;
     }

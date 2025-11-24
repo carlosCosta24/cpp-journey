@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iomanip>
 #include "clsInputValidate.h"
+#include "clsCurrencyList.h"
 using namespace std;
 
 class clsCurrencyMenu {
@@ -25,8 +26,8 @@ class clsCurrencyMenu {
     }
     enum enOptions {enList = 1, enFind = 2, enUpdate = 3, enCalculate = 4, enMainMenu = 5};
     static void _ListAllCurrencies() {
-        cout << "\n Listing all currencies" << endl;
-        //clsCurrency::GetCurrencyList();
+
+        clsCurrencyList::ListCurrencyScreen();
     }
     static void _FindCurrency() {
         cout << "\n Find Currency" << endl;
