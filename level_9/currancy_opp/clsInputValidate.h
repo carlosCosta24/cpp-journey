@@ -10,41 +10,19 @@ class clsInputValidate{
 
     public:
 
-    static bool IsNumberBetween(int Number, int MinNumber, int MaxNumber){
-        return ((Number >= MinNumber) && (Number <= MaxNumber));
-    }
-    static bool IsNumberBetween(double Number, int MinNumber, double MaxNumber){
-        return ((Number >= MinNumber) && (Number <= MaxNumber));
-    }
-    static bool IsNumberBetween(float Number , float MinNumber, float MaxNumber) {
-        return ((Number >= MinNumber) && (Number <= MaxNumber));
 
+     template <typename T> static bool IsNumberBetween(T Number,T MinNumber, T MaxNumber) {
+        return ((Number >= MinNumber) && (Number <= MaxNumber));
     }
-    static int ReadIntNumber(string Error = "Invalid number") {
-        int Number = 0;
-        while (!(cin>> Number)) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        }
-        return Number;
-    }
-    static double ReadDNumber(string Error = "Invalid number") {
-        double Number = 0;
-        while (!(cin>> Number)) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        }
-        return Number;
-    }
-    static float ReadFloatNumber(string Error = "Invalid number") {
-        float Number = 0;
-        while (!(cin>> Number)) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout << Error;
-        }
-        return Number;
-    }
+    template <typename T> static T ReadNumber() {
+         T Number = 0;
+         while (!(cin>> Number)) {
+             cin.clear();
+             cin.ignore(numeric_limits<streamsize>::max(),'\n');
+             cout << "Invalid Number entered. Enter Number: " << endl;
+         }
+         return Number;
+     }
 
     static bool IsDateBetween(clsMyDate Date, clsMyDate From, clsMyDate To) {
         if (clsMyDate::DateIsLessThan(To, From)) {
@@ -56,13 +34,15 @@ class clsInputValidate{
         return clsMyDate::IsValidDate(Date);
     }
 
-    static int ReadIntNumberBetween(int Start, int End, string Message = "") {
-        int Number = ReadIntNumber();
-        while (!IsNumberBetween(Number,Start, End)) {
-                Number = ReadIntNumber();
+    template <typename T> static T ReadIntNumberBetween(T Start, T End)
+    {
+         T Number = ReadNumber<T>();
+        while (!IsNumberBetween( Number,Start, End)) {
+                Number = ReadNumber<T>();
             }
             return Number;
-        }
+    }
+
     static string ReadString(string Message = "")
     {
         string  S1="";
@@ -71,6 +51,5 @@ class clsInputValidate{
         getline(cin >> ws, S1);
         return S1;
     }
-
 
 };
