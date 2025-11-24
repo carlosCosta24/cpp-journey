@@ -36,7 +36,7 @@ class clsInputValidate{
         }
         return Number;
     }
-    static double ReadFloatNumber(string Error = "Invalid number") {
+    static float ReadFloatNumber(string Error = "Invalid number") {
         float Number = 0;
         while (!(cin>> Number)) {
             cin.clear();
