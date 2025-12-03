@@ -15,23 +15,19 @@ void PrintLinkedList(Node * Head) {
         Head = Head->Next;
     }
 }
-void Find(Node * Head, int Target ) {
+Node * Find(Node * Head, int Target ) {
 
-    if (Head == NULL) {
-        cout << "Linked List is Empty"<<endl;
-        return;
-    }
-    while (Head != NULL && Head->Data != Target) {
-        if (Head->Next == NULL) {
-            cout << "Target have not been found!!!" << endl;
+    while (Head != NULL ) {
+        if (Head->Data == Target) {
+            cout << "Target found: " << endl;
+            cout << Head->Data << endl;
+            return Head;
         }
         cout << "searching...."<<endl;
         Head = Head->Next;
     }
-    cout << "Target found: " << endl;
-    cout << Head->Data;
-
-
+    cout << "Target not found" << endl;
+    return NULL;
 }
 
 void InsertAtBeginningDLL(Node* &head, int data) {
@@ -62,6 +58,6 @@ int main() {
 
     PrintLinkedList(Head);
 
-    Find(Head, 10);
+    Find(Head, 100);
     return 0;
 }
