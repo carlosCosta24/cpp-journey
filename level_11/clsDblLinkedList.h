@@ -1,38 +1,40 @@
 #pragma once
 #include <iostream>
-using namespace std;
 
-template <class T>
-class clsDblLinkedList{
+template <class T> class clsDblLinkedList {
 private:
     struct Node{
         T data;
-        Node* next;
-        Node* previous;
-    }
-    Node* head;
-    Node* tail;
+        Node* Next;
+        Node* Previous;
+    };
+    Node* Head;
+    Node* Tail;
 public:
 
- clsDblLinkedList(){
-   Head = * nullptr;
-   Tail = * nullptr;
-   };
+    clsDblLinkedList(){
+        Head = nullptr;
+        Tail = nullptr;
+    }
+    void InsertAtBegin(T Value){
+        Node * NewNode = new Node {Value, nullptr, nullptr};
+        if (Head == nullptr) {
+            Head = Tail = NewNode;
+            return;
+        }
+        NewNode->Next = Head;
+        Head->Previous = NewNode;
+        Head = NewNode;
 
-void clsDblLinkedList(T Value){
-    Node * New = new Node {Value, nullptr, nullptr};
-    Head = New;
-    Tail = New;
+    };
+    void PrintList(){
+        Node * Temp = Head;
+        while(Temp != nullptr){
+            std::cout << Temp->data << " ";
+            Temp = Temp->Next;
+        }
+    }
 };
 
-void InsertAtBegin(T Value){
-    Node * New = new Node {Value, nullptr, nullptr};
-    head . previous = NULL;
-    New . next = head.next ;
 
-
-}
-
-
-}
 
