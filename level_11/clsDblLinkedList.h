@@ -2,145 +2,128 @@
 #include <iostream>
 using namespace std;
 
-template <class T> class clsDblLinkedList {
-private:
-    struct Node{
+template <class T>
+class clsDblLinkedList {
+public:
+    class Node{
+    public:
         T Data;
         Node* Next;
         Node* Previous;
     };
-    Node* Head;
-    Node* Tail;
-public:
+    Node* Head = NULL;
 
-    clsDblLinkedList(){
-        Head = nullptr;
-        Tail = nullptr;
-    }
     void InsertAtBegin(T Value){
-        Node * NewNode = new Node {Value, nullptr, nullptr};
-        if (Head == nullptr) {
-            Head = Tail = NewNode;
-            return;
-        }
+        Node * NewNode = new Node();
+        NewNode->Data = Value;
         NewNode->Next = Head;
-        Head->Previous = NewNode;
-        Head = NewNode;
-
+        NewNode->Previous = NULL;
+        if (Head != NULL) {
+            Head->Previous = NewNode;
+        }
+            Head = NewNode;
     };
     void PrintList(){
         Node * Temp = Head;
-        while(Temp != nullptr){
+        while(Temp != NULL){
             cout << Temp->Data << " ";
             Temp = Temp->Next;
         }
+        cout << endl;
     }
     Node * Find(T Target) {
         Node * Temp = Head;
-        while (Temp!= nullptr) {
-            if (Temp-> Data == Target) {
+        while (Temp!= NULL) {
+            if (Temp->Data == Target) {
                 return Temp;
             }
             Temp = Temp->Next;
         }
-        return nullptr;
+        return NULL;
     }
     void InsertAfter(Node * Target, T Value) {
-        if (Target == nullptr) {
+        if (Target == NULL) {
             return;
         }
-        NewNode = new Node {Value, nullptr, nullptr};
-        if (Target -> Next == nullptr) {
-            //the new node will become the last node so it will be the tail
-            Target-> Next = NewNode;
-            NewNode -> Previous = Target;
-            NewNode -> Next = nullptr;
-            Tail = NewNode;
-            return;
+        Node * NewNode = new Node();
+        NewNode->Data = Value;
+        NewNode->Next = Target->Next;
+        NewNode->Previous = Target;
+        if (Target->Next != NULL) {
+            Target->Next->Previous = NewNode;
         }
-        // inserting between to nodes
-        Node * Temp = Target->Next;
-        Target -> Next = NewNode;
-        Temp-> Previous = NewNode;
-        NewNode -> Next = Temp;
-        NewNode -> Previous = Target;
+        Target->Next = NewNode;
     }
     void InsertAtEnd(T Value) {
-        if (Head == nullptr) {
-            NewNode = new Node {Value, nullptr, nullptr};
-            Head = Tail = NewNode;
-            return;
+        Node * NewNode = new Node();
+        NewNode->Data = Value;
+        NewNode->Next = NULL;
+        if (Head == NULL) {
+            NewNode->Previous = NULL;
+            Head = NewNode;
         }
-        NewNode = new Node {Value, nullptr, nullptr};
-        NewNode -> Next = nullptr;
-        NewNode -> Previous = Tail;
-        Tail-> Next = NewNode;
-        Tail = NewNode;
+        else {
+            Node * Temp = Head;
+            while (Temp->Next != NULL) {
+                Temp = Temp->Next;
+            }
+            Temp->Next = NewNode;
+            NewNode->Previous = Temp;
+            NewNode->Next = NULL;
+        }
     }
-    void DeleteNode(Node * Target) {
-        if (Target == nullptr) {
+    void DeleteNode(Node *& Target) {
+        if ( Head == NULL || Target == NULL) {
             return;
         }
-        //One node case
-        if (Target -> Previous == nullptr && Target -> Next == nullptr) {
-            Head = Tail = nullptr;
-            delete Target;
-            Target = nullptr;
-            return;
+        if (Head == Target) {
+
+            Head = Target->Next;
+
         }
-        //Tail case
-        if (Target -> Next == nullptr) {
-            Target -> Previous -> Next = nullptr;
-            Tail = Target -> Previous;
-            delete Target;
-            Target = nullptr;
-            return;
+        if (Target -> Next != NULL) {
+
+            Target->Next->Previous = Target->Previous;
+
         }
         //Head case
-        if (Target -> Previous == nullptr) {
-            Target -> Next -> Previous = nullptr;
-            Head = Target -> Next;
-            delete Target;
-            Target = nullptr;
-            return;
+        if (Target -> Previous != NULL) {
+
+            Target->Previous->Next = Target->Next;
+
         }
-        Target -> Previous -> Next = Target -> Next;
-        Target -> Next -> Previous = Target -> Previous;
         delete Target;
-        Target = nullptr;
+        Target = NULL;
     }
-    void DeleteFirstNode(Node * Target) {
-        if (Target == nullptr || Target -> Previous != nullptr ) {
+    void DeleteFirstNode() {
+        if (Head == NULL) {
             return;
         }
-        // One node case
-        if (Target -> Next == nullptr) {
-            delete Target;
-            Head = Tail = nullptr;
-            return;
+        Node * Temp = Head;
+        Head = Head->Next;
+        if (Head != NULL) {
+            Head->Previous = NULL;
         }
-        Target -> Next -> Previous = nullptr;
-        Head = Target -> Next;
-        delete Target;
-        Target = nullptr;
+        delete Temp;
+        Temp = NULL;
     }
-    void DeleteLastNode(Node * Target) {
-        //Check if it is the tail and not a null
-        if (Target == nullptr || Target -> Next != nullptr) {
-            return;
+    void DeleteLastNode() {
+       if (Head == NULL) {
+           return;
+       }
+       if (Head->Next == NULL) {
+           delete Head;
+           Head = NULL;
+           return;
+       }
+        Node * Current = Head;
+        while (Current->Next->Next != NULL) {
+            Current = Current->Next;
         }
-        // One Node list case
-        if (Target -> Previous == nullptr && Target -> Next == nullptr) {
-            Head = Tail = nullptr;
-            delete Target;
-            Target = nullptr;
-            return;
-        }
-        //multi node
-        Tail = Target -> Previous;
-        Target -> Previous -> Next = nullptr;
-        delete Target;
-        Target = nullptr;
+        Node * Temp = Current->Next;
+        Current->Next = NULL;
+        delete Temp;
+        Temp = NULL;
     }
 };
 
