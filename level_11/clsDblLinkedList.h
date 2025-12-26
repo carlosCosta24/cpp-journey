@@ -130,13 +130,17 @@ public:
             return;
         }
         // One Node list case
-        if (Target -> Previous == nullptr && Target -> Next != nullptr) {
+        if (Target -> Previous == nullptr && Target -> Next == nullptr) {
             Head = Tail = nullptr;
             delete Target;
             Target = nullptr;
             return;
         }
-
+        //multi node
+        Tail = Target -> Previous;
+        Target -> Previous -> Next = nullptr;
+        delete Target;
+        Target = nullptr;
     }
 };
 
