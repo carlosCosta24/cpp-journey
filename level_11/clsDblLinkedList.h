@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <stddef.h>
+using namespace std;
 
 template <class T> class clsDblLinkedList {
 private:
@@ -31,7 +31,7 @@ public:
     void PrintList(){
         Node * Temp = Head;
         while(Temp != nullptr){
-            std::cout << Temp->Data << " ";
+            cout << Temp->Data << " ";
             Temp = Temp->Next;
         }
     }
