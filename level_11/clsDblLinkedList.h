@@ -121,6 +121,7 @@ public:
        if (Head->Next == NULL) {
            delete Head;
            Head = NULL;
+           _Size = 0;
            return;
        }
         Node * Current = Head;
@@ -136,7 +137,16 @@ public:
     int Size() {
         return _Size;
     }
+    bool IsEmpty() {
+        return (_Size == 0 ? true: false) ;
+    }
+    void CLear() {
+        while(_Size > 0){
+            DeleteFirstNode();
+        }
+    }
 };
+
 
 
 
