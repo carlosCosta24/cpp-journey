@@ -158,6 +158,19 @@ public:
             Head = Temp->Previous;
         }
     }
+    Node* GetNode(T Index) {
+        Node * Temp = Head;
+        int i = 0;
+        if (Index > _Size -1 || Index < 0) {
+
+            return nullptr;
+        }
+        while (Temp != nullptr && i < Index) {
+            Temp = Temp->Next;
+            i ++;
+        }
+        return Temp;
+    }
 };
 
 
