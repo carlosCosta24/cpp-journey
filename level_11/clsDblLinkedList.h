@@ -171,6 +171,13 @@ public:
         }
         return Temp;
     }
+    T GetItem(int Index) {
+        Node * Temp = GetNode(Index);
+        if (Temp == nullptr) {
+            return NULL;
+        }
+        return Temp->Data;
+    }
 };
 
 

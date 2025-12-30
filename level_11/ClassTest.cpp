@@ -13,9 +13,9 @@ int main(){
 
     clsDblLinkedList<int> ::Node * N;
     N = MyDblLinkedList.GetNode(3);
-    cout << N->Data << endl;
-    cout << N->Previous->Data<<endl;
-    cout << N->Next->Data<<endl;
+
+    cout << MyDblLinkedList.GetItem(1);
+
     return 0;
 
 }
