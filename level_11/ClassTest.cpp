@@ -11,10 +11,8 @@ int main(){
     MyDblLinkedList.InsertAtBegin(2);
     MyDblLinkedList.InsertAtBegin(1);
 
-    clsDblLinkedList<int> ::Node * N;
-    N = MyDblLinkedList.GetNode(3);
-
-    cout << MyDblLinkedList.GetItem(1);
+    MyDblLinkedList.UpdateItem(1, 600);
+    MyDblLinkedList.PrintList();
 
     return 0;
 

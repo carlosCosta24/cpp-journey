@@ -178,6 +178,14 @@ public:
         }
         return Temp->Data;
     }
+    bool UpdateItem(int Index, T Value) {
+        Node * Temp = GetNode(Index);
+        if (Temp != nullptr) {
+            Temp->Data = Value;
+            return true;
+        }
+        return false;
+    }
 };
 
 
