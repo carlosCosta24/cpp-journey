@@ -186,6 +186,14 @@ public:
         }
         return false;
     }
+    bool InsertAfter(int Index, T Value) {
+        Node * TargetNode = GetNode(Index);
+        if (TargetNode == nullptr) {
+            return false;
+        }
+        InsertAfter(TargetNode, Value);
+        return true;
+    }
 };
 
 

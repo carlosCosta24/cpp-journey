@@ -11,7 +11,7 @@ int main(){
     MyDblLinkedList.InsertAtBegin(2);
     MyDblLinkedList.InsertAtBegin(1);
 
-    MyDblLinkedList.UpdateItem(1, 600);
+    MyDblLinkedList.InsertAfter(1, 600);
     MyDblLinkedList.PrintList();
 
     return 0;
