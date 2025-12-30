@@ -28,6 +28,10 @@ public:
     };
     void PrintList(){
         Node * Temp = Head;
+        if (_Size == 0) {
+            cout << "Emtpy List" << endl;
+            return;
+        }
         while(Temp != NULL){
             cout << Temp->Data << " ";
             Temp = Temp->Next;
@@ -140,7 +144,7 @@ public:
     bool IsEmpty() {
         return (_Size == 0 ? true: false) ;
     }
-    void CLear() {
+    void Clear() {
         while(_Size > 0){
             DeleteFirstNode();
         }
