@@ -41,13 +41,11 @@ class clsDynamicArray{
     }
     void Resize(int NewSize) {
         if (NewSize < 0) {
-            _Size = 0 ;
-            return ;
+            NewSize = 0 ;
         }
         TempArray = new T[NewSize];
         if (NewSize < _Size) {
             _Size = NewSize;
-            return;
         }
         for (int i = 0; i < _Size; i++) {
             TempArray[i] = Array[i];
@@ -56,4 +54,29 @@ class clsDynamicArray{
         delete [] Array;
         Array = TempArray;
     }
+    T GetItem(int Index) {
+        if (Index < 0 || Index >= _Size) {
+            return T();
+        }
+        return Array[Index];
+    }
+
+    void Reverse() {
+        if (_Size == 0 || _Size == 1) {
+            return;
+        }
+        TempArray = new T[_Size];
+        for (int i = _Size-1; i >=0; i--) {
+             TempArray[i] = Array[_Size-1-i];
+        }
+        delete[] Array;
+        Array = TempArray;;
+    }
+    void CLear() {
+        _Size = 0;
+        TempArray = new T[0];
+        delete [] Array;
+        Array = TempArray;
+    }
+
 };

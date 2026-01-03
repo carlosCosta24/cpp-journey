@@ -13,18 +13,19 @@ int main() {
 
     cout << "Is Empty: " << MyDaynamicArray.IsEmpty() << endl;
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
-
     MyDaynamicArray.PrintList();
 
-    MyDaynamicArray.Resize(1);
-    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
-    cout << "Array items: " << endl;
+    MyDaynamicArray.Reverse();
+    cout << "Array After reverse: " << endl;
     MyDaynamicArray.PrintList();
 
-    MyDaynamicArray.Resize(8);
-    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
-    cout << "Array items: " << endl;
+    cout << MyDaynamicArray.GetItem(0) << endl;
+
+    MyDaynamicArray.CLear();
+    cout << "Array After CLear: " << endl;
     MyDaynamicArray.PrintList();
+
+
 
 
 
