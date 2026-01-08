@@ -19,14 +19,8 @@ int main() {
     cout << "Array After reverse: " << endl;
     MyDaynamicArray.PrintList();
 
-    cout << MyDaynamicArray.GetItem(0) << endl;
-
-    MyDaynamicArray.CLear();
-    cout << "Array After CLear: " << endl;
-    MyDaynamicArray.PrintList();
-
     MyDaynamicArray.DeleteItemAt(2);
-    cout << "Array After DeleteItemAt: " << endl;
+    cout << "Array After DeleteItemAt: 2" << endl;
     MyDaynamicArray.PrintList();
 
 

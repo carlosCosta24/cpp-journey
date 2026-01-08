@@ -19,7 +19,7 @@ class clsDynamicArray{
     }
     ~clsDynamicArray() {
         delete[] Array;
-        delete [] TempArray;
+
     }
     bool SetItem(int Index, T Item) {
          if (Index < 0 || Index >= _Size) {
