@@ -16,10 +16,27 @@ int main() {
     cout << "Array Items: " ; MyDaynamicArray.PrintList();
 
 
-    MyDaynamicArray.InsertAt(3, 200);
-    cout << "Array items after Inserting 200 at index 3" << endl;
+    MyDaynamicArray.InsertArBegin(200);
+    cout << "Array items after Inserting 200 at Beginning: " << endl;
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
     cout << "Array Items : " ; MyDaynamicArray.PrintList();
+
+    MyDaynamicArray.InsertBefore(1, 500);
+    cout << "Array items after Inserting 500 before index 1: " << endl;
+    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
+    cout << "Array Items : " ; MyDaynamicArray.PrintList();
+
+    MyDaynamicArray.InsertAfter(3, 600);
+    cout << "Array items after Inserting 600 after index 3: " << endl;
+    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
+    cout << "Array Items : " ; MyDaynamicArray.PrintList();
+
+    MyDaynamicArray.InsertAtEnd(400);
+    cout << "Array items after Inserting 400 at end: " << endl;
+    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
+    cout << "Array Items : " ; MyDaynamicArray.PrintList();
+
+
 
 
 

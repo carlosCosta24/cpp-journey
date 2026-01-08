@@ -141,4 +141,25 @@ class clsDynamicArray{
         Array = TempArray;
         return true;
     }
+    void InsertArBegin(T Value) {
+        InsertAt(0,Value);
+    }
+    bool InsertAtEnd(T Value) {
+        return InsertAt(_Size, Value);
+    }
+    bool InsertBefore(int Index, T Value) {
+        if (Index < 1 ) {
+            return InsertAt(0, Value);
+        }else {
+            return InsertAt(Index - 1, Value);
+        }
+    }
+    bool InsertAfter(int Index, T Value) {
+        if (Index >= _Size) {
+            return InsertAt(_Size -1, Value);
+        }else {
+
+            return InsertAt(Index + 1, Value);
+        }
+    }
 };
