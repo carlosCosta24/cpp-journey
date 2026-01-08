@@ -15,15 +15,9 @@ int main() {
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
     cout << "Array Items: " ; MyDaynamicArray.PrintList();
 
-    int INdex = MyDaynamicArray.Find(3);
-    if (INdex == -1) {
-        cout << "Item was not found :-("<<endl;
-    }else {
-        cout << "3 Is found at index: " << INdex << endl;
-    }
 
-    MyDaynamicArray.DeleteItem(3);
-    cout << "Array items after deleting 3" << endl;
+    MyDaynamicArray.InsertAt(3, 200);
+    cout << "Array items after Inserting 200 at index 3" << endl;
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
     cout << "Array Items : " ; MyDaynamicArray.PrintList();
 

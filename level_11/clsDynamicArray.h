@@ -124,4 +124,21 @@ class clsDynamicArray{
         DeleteItemAt(Index);
         return true;
     }
+    bool InsertAt(int Index, T Value) {
+        if (Index > _Size || Index < 0) {
+            return false;
+        }
+        _Size ++;
+        TempArray = new T[_Size];
+        for (int i = 0 ; i < Index; i++) {
+            TempArray[i] = Array[i];
+        }
+        TempArray[Index] = Value;
+        for (int j = Index + 1 ; j < _Size ; j ++) {
+            TempArray[j] = Array[j - 1];
+        }
+        delete [] Array;
+        Array = TempArray;
+        return true;
+    }
 };
