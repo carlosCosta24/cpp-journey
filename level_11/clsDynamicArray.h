@@ -96,5 +96,17 @@ class clsDynamicArray{
         Array = TempArray;
         return true;
     }
+    void DeleteFirstItem() {
+        if (_Size == 0) {
+            return;
+        }
+        DeleteItemAt(0);
+    }
+    void DeleteLastItem() {
+        if (_Size == 0) {
+            return;
+        }
+        DeleteItemAt(_Size - 1);
+    }
 
 };

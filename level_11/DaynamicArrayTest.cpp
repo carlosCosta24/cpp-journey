@@ -15,12 +15,12 @@ int main() {
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
     MyDaynamicArray.PrintList();
 
-    MyDaynamicArray.Reverse();
-    cout << "Array After reverse: " << endl;
+    MyDaynamicArray.DeleteFirstItem();
+    cout << "Array After Deleting First Item: " << endl;
     MyDaynamicArray.PrintList();
 
-    MyDaynamicArray.DeleteItemAt(2);
-    cout << "Array After DeleteItemAt: 2" << endl;
+    MyDaynamicArray.DeleteLastItem();
+    cout << "Array After Delete Last Item: " << endl;
     MyDaynamicArray.PrintList();
 
 
