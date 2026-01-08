@@ -25,6 +25,10 @@ int main() {
     cout << "Array After CLear: " << endl;
     MyDaynamicArray.PrintList();
 
+    MyDaynamicArray.DeleteItemAt(2);
+    cout << "Array After DeleteItemAt: " << endl;
+    MyDaynamicArray.PrintList();
+
 
 
 
