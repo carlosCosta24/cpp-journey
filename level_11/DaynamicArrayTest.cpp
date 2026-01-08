@@ -13,15 +13,19 @@ int main() {
 
     cout << "Is Empty: " << MyDaynamicArray.IsEmpty() << endl;
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
-    MyDaynamicArray.PrintList();
+    cout << "Array Items: " ; MyDaynamicArray.PrintList();
 
-    MyDaynamicArray.DeleteFirstItem();
-    cout << "Array After Deleting First Item: " << endl;
-    MyDaynamicArray.PrintList();
+    int INdex = MyDaynamicArray.Find(3);
+    if (INdex == -1) {
+        cout << "Item was not found :-("<<endl;
+    }else {
+        cout << "3 Is found at index: " << INdex << endl;
+    }
 
-    MyDaynamicArray.DeleteLastItem();
-    cout << "Array After Delete Last Item: " << endl;
-    MyDaynamicArray.PrintList();
+    MyDaynamicArray.DeleteItem(3);
+    cout << "Array items after deleting 3" << endl;
+    cout << "Array Size: " << MyDaynamicArray.Size() << endl;
+    cout << "Array Items : " ; MyDaynamicArray.PrintList();
 
 
 

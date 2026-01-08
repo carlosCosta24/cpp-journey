@@ -108,5 +108,20 @@ class clsDynamicArray{
         }
         DeleteItemAt(_Size - 1);
     }
-
+    int Find(T Value) {
+        for (int i = 0; i < _Size; i++) {
+            if (Array[i] == Value) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    bool DeleteItem(T Value) {
+        int Index = Find(Value);
+        if (_Size == 0 || Index == -1) {
+            return false;
+        }
+        DeleteItemAt(Index);
+        return true;
+    }
 };
