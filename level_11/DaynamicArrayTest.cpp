@@ -36,12 +36,5 @@ int main() {
     cout << "Array Size: " << MyDaynamicArray.Size() << endl;
     cout << "Array Items : " ; MyDaynamicArray.PrintList();
 
-
-
-
-
-
-
-
-
+    return 0;
 }

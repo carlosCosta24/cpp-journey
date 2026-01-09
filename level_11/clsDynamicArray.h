@@ -73,7 +73,7 @@ class clsDynamicArray{
         delete[] Array;
         Array = TempArray;;
     }
-    void CLear() {
+    void Clear() {
         _Size = 0;
         TempArray = new T[0];
         delete [] Array;
