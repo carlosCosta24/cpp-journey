@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    clsMyQueueArr <int> myQueue;
+    clsMyQueueArr<int> myQueue;
 
     myQueue.Push(1);
     myQueue.Push(2);
@@ -19,15 +19,9 @@ int main() {
     myQueue.Print();
     cout << endl;
 
-    cout << "Queue Front: ";
-    myQueue.Front();
-    cout << endl;
-    cout << "Queue Back: ";
-    myQueue.Back();
-    cout << endl;
-    cout << "Queue Size: " ;
-    myQueue.Size();
-    cout << endl;
+    cout << "Queue Front: " << myQueue.Front() << endl;
+    cout << "Queue Back: " << myQueue.Back() << endl;
+    cout << "Queue Size: "<< myQueue.Size() << endl;
 
     cout << "Item on the 2 Index: ";
     cout << myQueue.GetItem(1)  << endl;
