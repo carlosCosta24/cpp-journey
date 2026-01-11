@@ -11,7 +11,7 @@ private:
 public:
 
     void SetValue(string New) {
-        _MyTempStack.push(_S);
+        _MyMainStack.push(_S);
         _S = New;
     }
     string Get() {
