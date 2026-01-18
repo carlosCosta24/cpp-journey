@@ -1,103 +1,166 @@
 #pragma once
-#include "clsMyQueueArr.h"
+#include "queue"
+#include "stack"
 #include <iostream>
 #include "clsDate.h"
 using namespace std;
 
 
 class clsQueueLine {
-    private:
-    class clsTicket {
-    public:
-        clsMyDate IssueDate;
-        int Order;
-        int ServeTime;
-        string Id;
-    };
-    //date and time class
-    clsMyDate _Date = clsMyDate();
-    string _pref;
-    int _Time;
-    clsMyQueueArr<clsTicket> _Queue;
-    int _QueueLength = 0;
-    int _Served = 0;
-    int _Waiting = 0;
+private:
     int _TicketsCount = 0;
+    int _ServingTime = 0 ;
+    string _pref = "";
+
+    class clsTicket {
+    private:
+        short _Order = 0;
+        string _pref;
+        string _DateTime;
+        short _WaitingClients;
+        short _WaitingTime = 0;
+        short _ExpectedServingTime;
+        public:
+        clsTicket(string Pref, short Number, short WatingClients, short WatingTime) {
+            clsMyDate Date;
+            _pref = Pref;
+            _Order = Number;
+            _DateTime = to_string(Date.GetDay()) + "/"
+            + to_string(Date.GetMonth()) + "/"
+            + to_string(Date.GetYear())
+            + " - " + to_string(Date.GetHour())
+            + ":" + to_string(Date.GetMinute())
+            + ":" + to_string(Date.GetSecond());;
+            _WaitingClients = WatingClients;
+            _WaitingTime = WatingTime;
+
+        }
+        string Pref() {
+            return _pref;
+        }
+        short Order() {
+            return _Order;
+        }
+        string TicketName() {
+            return _pref + " " + to_string(_Order);
+        }
+        string TicketDate() {
+            return _DateTime;
+        }
+        short WatingClients() {
+            return _WaitingClients;
+        }
+        short ExpectedServingTime() {
+            return _WaitingTime * _WaitingClients;
+        }
+        void Print() {
+            cout << "\t\t\t\************************************";
+            cout << "\t\t\t\ " << TicketName();
+            cout << "\t\t\t\ " << TicketDate();
+            cout << "\t\t\t\ " << "Waiting Clients: " << WatingClients();
+            cout << "\t\t\t\ " << "Serve in Time: "
+            << ExpectedServingTime()
+            << "Minutes." << endl;
+            cout << "\t\t\t\************************************";
+        }
+    };
 
     public:
-    clsQueueLine(string Pref, int WaitingTime) {
+
+    queue<clsTicket> Queue;
+    clsQueueLine(string Pref, short WaitingTime) {
         _pref = Pref;
-        _Time = WaitingTime;
+        _TicketsCount = 0;
+        _ServingTime = WaitingTime;
     };
     //IssueTicket Method
     void IssueTicket() {
-        clsTicket Ticket;
-        Ticket.Id = to_string(_QueueLength) + " " + _pref;
-        Ticket.IssueDate = to_string(_Date.GetDay()) + "/"
-        + to_string(_Date.GetMonth()) + "/"
-        + to_string(_Date.GetYear())
-        + " - " + to_string(_Date.GetHour())
-        + ":" + to_string(_Date.GetMinute())
-        + ":" + to_string(_Date.GetSecond());
-        Ticket.Order = _QueueLength + 1;
-        Ticket.ServeTime = Ticket.Order * _Time;
-        _Queue.Push(Ticket);
-        _QueueLength++;
-
+        _TicketsCount ++;
+        clsTicket Ticket(_pref, _TicketsCount, WaitingClients(), _ServingTime);
+        Queue.push(Ticket);
     };
+    short WaitingClients() {
+        return Queue.size();
+    }
     //PrintAllTickets
-    void TicketInfo(clsTicket Ticket) {
-        cout << Ticket.Id << endl;
-        cout << Ticket.IssueDate << endl;
-        cout << "Waiting Clients: " << Ticket.QueueLength -1 << endl;
-        cout << "Serving Time: " << Ticket.ServeTime << " Minutes."<< endl;
-    }
-    void QueueInfo() {
-        cout << "Prefix: " << _pref << endl;
-        cout << "Total Tickets : " << _QueueLength << endl;
-        cout << "Served Clients: " << _Served << endl;
-        cout << "Waiting Clients: " << _Waiting << endl;
-    }
-    void PrintInfo() {
-        cout << "*******************************";
-        cout << "\t\t\t\t Queue Infor ";
-        cout << "*******************************";
-        QueueInfo();
-        clsMyQueueArr <clsTicket> Tickets = _Queue;
-        if (Tickets.empty()) {
-            TicketInfo(Tickets.front());
-            Tickets.pop();
+    string WhoIsNext() {
+        if (Queue.empty()) {
+            return "No client to serve";
         }
+        else {
+            return Queue.front().TicketName();
+        }
+    }
+    bool ServeNext() {
+        if (Queue.empty()) {
+            return false;
+        }else {
+            Queue.pop();
+            return true;
+        }
+    }
+    short ServedClients() {
+        return _TicketsCount - WaitingClients();
+    }
+
+
+    void PrintInfo() {
+        cout << "*************************************"<<endl;
+        cout << "\t\t Queue Info "<<endl;
+        cout << "*************************************"<<endl;
+        cout << "\t\tPrefix: " << _pref << endl;
+        cout << "\t\tTotal Tickets : " << _TicketsCount << endl;
+        cout << "\t\tServed Clients: " << ServedClients() << endl;
+        cout << "\t\tWaiting Clients: " << WaitingClients() << endl;
+        cout << "*************************************"<<endl;
     }
     //PrintTicketsLineRTL
     void PrintTicketsLineRTL() {
-        clsMyQueueArr <clsTicket> Tickets;
 
-        while (Tickets.Size() != 0) {
-            TicketInfo(Tickets.Front().Id);
-            cout << "--> ";
-            Tickets.Pop();
+        if (Queue.empty()) {
+            cout << "Tickets: No current tickets";
+        }else {
+            cout << "Tickets: ";
         }
+
+            queue <clsTicket> Tickets = Queue;
+            while (!Tickets.empty()) {
+                clsTicket Ticket = Tickets.front();
+                cout << Ticket.TicketName() << " <-- ";
+                Tickets.pop();
+            }
     }
     //PrintTicketsLineLTR
     void PrintTicketsLineLTR() {
-        clsMyQueueArr <clsTicket> Tickets;
-        Tickets.Reverse();
-        while (Tickets.Size() != 0) {
-            TicketInfo(Tickets.Front().Id);
-            cout << "<-- ";
-            Tickets.Pop();
+        queue <clsTicket> Tickets = Queue;
+        stack <clsTicket> ReversedTickets;
+        if (Queue.empty()) {
+          cout << "Tickets: No current tickets";
         }
-    }
-    //ServeNextClient
-    void ServeNewClient() {
-        if (_QueueLength == 0) {
-            return;
+        else {
+            cout << "Tickets: ";
         }
-            _Queue.Pop();
-            _QueueLength--;
-            _Served++;
-            _Waiting
+        while (!Tickets.empty()) {
+            ReversedTickets.push(Tickets.front());
+            Tickets.pop();
+        }
+        while (!ReversedTickets.empty()) {
+            cout << ReversedTickets.top().TicketName() << " --> ";
+            ReversedTickets.pop();
+        }
+        cout << endl;
     }
 
+    void PrintAllTickets() {
+            cout << "\t\t\t\t   ----Tickets----";
+        if (Queue.empty()) {
+            cout << "\t\tNo current tickets";
+        }else {
+            queue <clsTicket> Tickets = Queue;
+            while (!Tickets.empty()) {
+                Tickets.front().Print();
+                Tickets.pop();
+            }
+        }
+    }
 };
