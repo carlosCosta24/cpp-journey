@@ -4,30 +4,22 @@ using System.Dynamic;
 namespace FirstConsoleProj
 {
     internal class Program { 
-        //structures
-
-        struct stStudent
-        {
-            public string FirstName;
-            public string LastName;
-        }
-
         static void Main(string[] args)
         {
 
-        // Creating struct
-        stStudent Student;
+            // dynamic types
+            dynamic DynamicVar = 10;
+            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
 
-        Student.FirstName = "Carlos";
-        Student.LastName = "Costa";
- 
-            Console.WriteLine("\nExample: ");
+            DynamicVar = "Carlos costa";
+            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
 
-            Console.WriteLine(Student.FirstName);
-            Console.WriteLine(Student.LastName);
+            DynamicVar = true;
+            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
 
+            DynamicVar = DateTime.Now;
+            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
 
-     
 
             Console.ReadKey();
 
