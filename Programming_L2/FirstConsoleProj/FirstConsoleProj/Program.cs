@@ -50,12 +50,43 @@ namespace FirstConsoleProj
             DateTime newDate = Date.Add(ts);
             Console.WriteLine(newDate);
 
+            // subtract Dates
+            DateTime FirstDate = new DateTime(26, 2, 20);
+            DateTime SecondDate = new DateTime(25, 10, 2);
+            TimeSpan Result = FirstDate.Subtract(SecondDate);
+            Console.WriteLine($"Result: {Result}");
+
+            Console.WriteLine(FirstDate + ts);
+            Console.WriteLine(FirstDate - ts);
+            Console.WriteLine(FirstDate == SecondDate);
+            Console.WriteLine(FirstDate != SecondDate);
+            Console.WriteLine(FirstDate > SecondDate);
+            Console.WriteLine(FirstDate < SecondDate);
+            Console.WriteLine(FirstDate >= SecondDate);
+            Console.WriteLine(FirstDate <= SecondDate);
+
+            //Converting string to date 
+            Console.WriteLine("\n Convert string to date: ");
+            var str = "10/22/2025";
+            DateTime MyDate;
+
+            var IsValid = DateTime.TryParse(str, out MyDate);
+
+            if (IsValid)
+            {
+                Console.WriteLine(MyDate);
+            }
+            else {
+                Console.WriteLine($"The date {str} is not valid date!!");
+            }
 
 
 
 
 
-            Console.ReadKey();
+
+
+                Console.ReadKey();
 
 
         }
