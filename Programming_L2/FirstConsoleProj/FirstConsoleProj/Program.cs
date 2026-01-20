@@ -7,40 +7,16 @@ namespace FirstConsoleProj
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("this write line fun");
-            Console.Write("this is a line without any space ");
-            Console.Write("and will be printed togther");
-            //formated string
-            Console.WriteLine(" ");
-            Console.WriteLine("{0} {1}", "Carols", "Costa");
 
-            Console.WriteLine("Useful Escape Characters: \n");
+            string Name = "Carlos costa";
+            Console.WriteLine($"My name is: {Name}");
 
-            Console.WriteLine("NewLine:");
-            Console.WriteLine("Welcome to \n newline");
+            int i = 0; int j = 1;
+            Console.WriteLine($"X + Y = {i + j}");
 
-            //tab
-            Console.WriteLine("Tab");
-            Console.WriteLine("Welcome to \tthe tap");
+            double pi = 3.14D;
 
-            //Backspace
-            Console.WriteLine("Backspace");
-            Console.WriteLine("Welcome to \b this is the backspace");
-
-            //singel quote
-            Console.WriteLine("Single quote");
-            Console.WriteLine("Welcome to the \' my space \' ");
-
-            //Double quote
-            Console.WriteLine("Single quote");
-            Console.WriteLine("Welcome to the \" my space \" ");
-
-            //Backslash
-            Console.WriteLine("Backslash");
-            Console.WriteLine("Welcome this is a \\ backslash");
-
-            //alert
-            Console.WriteLine("\a");
+            Console.WriteLine($"Double var: Pi : {pi}");
 
             Console.ReadKey();
 
