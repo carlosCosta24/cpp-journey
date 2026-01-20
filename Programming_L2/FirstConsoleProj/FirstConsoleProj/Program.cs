@@ -7,18 +7,20 @@ namespace FirstConsoleProj
         static void Main(string[] args)
         {
 
-            // dynamic types
-            dynamic DynamicVar = 10;
-            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
+            // date and time
+            DateTime dt = new DateTime();
 
-            DynamicVar = "Carlos costa";
-            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
+            DateTime dt1 = new DateTime(2023, 12, 12);
 
-            DynamicVar = true;
-            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
+            DateTime dt2 = new DateTime(2025, 12, 30, 5, 10, 26);
 
-            DynamicVar = DateTime.Now;
-            Console.WriteLine("Value: {0}, Type {1}", DynamicVar, DynamicVar.GetType());
+            DateTime dt3 = DateTime.Now;
+
+
+            Console.WriteLine(dt);       
+            Console.WriteLine(dt1);
+            Console.WriteLine(dt2);
+            Console.WriteLine(dt3);
 
 
             Console.ReadKey();
