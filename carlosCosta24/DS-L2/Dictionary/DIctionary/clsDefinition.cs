@@ -14,10 +14,10 @@ namespace DIctionary
             {
                 { 1, "Apple"},
                 { 2, "Orange"},
-                { 3, "PinApple"},
+                { 3, "PineApple"},
                 { 4, "kwie"},
                 { 5, "WaterMelon"},
-                { 6, "Grap"},
+                { 6, "Grape"},
 
             };
             Console.WriteLine("Printing Dictionary Items: \n");
