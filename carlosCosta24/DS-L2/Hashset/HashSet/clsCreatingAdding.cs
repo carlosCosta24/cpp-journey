@@ -7,7 +7,7 @@ namespace HashSet
     {
         public HashSet<string> Employes = new HashSet<string>
         {
-            "Calros",
+            "Carlos",
             "Aloha",
             "Max", 
         };
