@@ -1,30 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 
+
 namespace HashSet
 {
     public class clsRemove
     {
+        public HashSet<string> Fruits = new HashSet<string>{ "Orange", "Mango", "Apple", "Grape", "Fig"};
 
-        public int[] DuplicatedNumbers = new int[] { 1, 2, 2, 3, 6, 5, 8, 9, 7, 8, 5, 4 };
 
-        public void RemoveDuplicates()
+        public void RemovingItems()
         {
-            //Remove Duplicates using HashSet
-            HashSet<int> UniqueNumbers = new HashSet<int>(DuplicatedNumbers);
+            Console.WriteLine("Print HashSet Items: \n");
+            foreach (var item in Fruits) 
+            {
+                Console.WriteLine($"Item Name: {item}");
+            }
+            Console.WriteLine("\n");
 
-            Console.WriteLine("Printing Number Set: \n");
-            foreach (int i in DuplicatedNumbers)
+            Console.WriteLine("Remove Apple From HashSet: \n");
+            Fruits.Remove("Apple");
+            foreach (var item in Fruits)
             {
-                Console.WriteLine(i);
+                Console.WriteLine($"Item Name: {item}");
             }
-            Console.WriteLine("Printing Number Set After Removing Duplicates: \n");
-            foreach (int Item in UniqueNumbers)
-            {
-                Console.WriteLine(Item);
-            }
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Clear HashSet Items: \n");
+
+            Fruits.Clear();
+
+            Console.WriteLine("HashSet Count: " + Fruits.Count.ToString());
+
             Console.ReadKey();
-
-        }
+        } 
     }
 }
