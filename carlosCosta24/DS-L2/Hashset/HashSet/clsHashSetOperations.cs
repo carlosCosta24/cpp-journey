@@ -83,6 +83,28 @@ namespace HashSet
             }
             Console.ReadKey();
         }
-        
+        public void SymmetricDifference() 
+        {
+            Console.WriteLine("Print set1 items: \n");
+            foreach (int i in set1)
+            {
+                Console.WriteLine(i);
+            }
+
+            Console.WriteLine("Print set2 items: \n");
+            foreach (int i in set2)
+            {
+                Console.WriteLine(i);
+            }
+
+            set1.SymmetricExceptWith(set2);
+
+            Console.WriteLine("Print symmetric difference of 2 sets: \n");
+            foreach (int i in set1)
+            {
+                Console.WriteLine(i);
+            }
+            Console.ReadKey();
+        }
     }
 }
