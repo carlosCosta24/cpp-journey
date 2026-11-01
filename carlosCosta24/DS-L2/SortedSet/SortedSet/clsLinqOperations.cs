@@ -52,5 +52,24 @@ namespace SortedSet
             Console.ReadKey();
 
         }
+        public void PrintSquareOfOddElements() 
+        {
+            Console.WriteLine("Printing SortedSet Elements: \n");
+            foreach (int i in sortedSet)
+            {
+                Console.WriteLine($"Element: {i}");
+            }
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Squaring Every Odd Element In The Set: \n");
+            var SquaredSet = sortedSet.Where(x => x % 2 != 0).Select(x => x * x);
+            foreach (int i in SquaredSet)
+            {
+                Console.WriteLine($"Element: {i}");
+            }
+            Console.WriteLine("\n");
+
+            Console.ReadKey();
+        }
     }
 }
