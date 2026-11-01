@@ -73,6 +73,15 @@ namespace SortedSet
 
 
             );
+            Console.WriteLine("Is Set1 Equal Set2: ");
+            Console.WriteLine
+            (
+                set1.SetEquals(set2)
+                ? "Yes"
+                : "No"
+
+
+            );
             Console.ReadKey();
         }
     }
