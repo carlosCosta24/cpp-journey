@@ -17,14 +17,14 @@ namespace SortedSet
             {"Grape", 50 }
         };
 
-        public void OperationResult() 
+        public void OperationResult()
         {
 
-            var Query = from kpv in FruitBasket 
-            where kpv.Value > 5 select kpv;
+            var Query = from kpv in FruitBasket
+                        where kpv.Value > 5 select kpv;
             Console.WriteLine("Query Result: \n");
 
-            foreach (var item in Query) 
+            foreach (var item in Query)
             {
                 Console.WriteLine($"Name: {item.Key}, Count: {item.Value}");
             }
@@ -46,6 +46,22 @@ namespace SortedSet
             {
                 Console.WriteLine($"Name: {item.Key} , Count:  {item.Value}");
             }
+
+            //grouping 
+            Console.WriteLine("\n");
+            Console.WriteLine("Group of fruits with long names: ");
+            var FruitWithLongNames = FruitBasket.GroupBy(Kpv => Kpv.Key.Length > 5);
+            foreach (var Category in FruitWithLongNames)
+            {
+                Console.WriteLine(Category.Key ? "Long Names: " : "Short Names: ");  
+                foreach (var Item in Category) 
+                {
+                    Console.WriteLine($"\t{Item.Key}");
+
+                }
+
+            }
+
 
             Console.ReadKey();
 
