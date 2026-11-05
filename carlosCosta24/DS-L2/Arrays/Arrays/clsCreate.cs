@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Arrays
+{
+    public class clsCreate
+    {
+        public int[] NumbersArray = new int[5];
+        public string [] NamesArray = new string[5];
+
+        public void ArraysInfoPrinter() 
+        {
+            NumbersArray[0] = 0;
+            NumbersArray[1] = 10;
+            NumbersArray[2] = 20;
+            NumbersArray[3] = 30;
+            NumbersArray[4] = 40;
+
+            NamesArray[0] = "Carlos";
+            NamesArray[1] = "Ricardo";
+            NamesArray[2] = "Aloha";
+            NamesArray[3] = "Koda";
+            NamesArray[4] = "Yasmin";
+
+            Console.WriteLine("Printing Numbers Array: \n");
+            for (int i = 0; i < NumbersArray.Length; i++) 
+            {
+                Console.WriteLine($"Element At Index: {i}: {NumbersArray[i]}");
+            }
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Printing Names Array: \n");
+            for (int i = 0; i < NamesArray.Length; i++)
+            {
+                Console.WriteLine($"Element At Index: {i}: {NamesArray[i]}");
+            }
+            Console.WriteLine("\n");
+
+            Console.ReadKey();
+        }
+    }
+}
