@@ -41,5 +41,31 @@ namespace Arrays
 
             Console.ReadKey();
         }
+        public void Operations()
+        {
+            Console.WriteLine("Modifing Number Array: ");
+            NumbersArray[0] = 500;
+            Console.WriteLine("Printing Numbers Array: \n");
+            for (int i = 0; i < NumbersArray.Length; i++)
+            {
+                Console.WriteLine($"Element At Index: {i}: {NumbersArray[i]}");
+            }
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Sorting Names Array: ");
+            Array.Sort(NamesArray);
+            Console.WriteLine("Printing Names Array: \n");
+            for (int i = 0; i < NamesArray.Length; i++)
+            {
+                Console.WriteLine($"Element At Index: {i}: {NamesArray[i]}");
+            }
+            Console.WriteLine("\n");
+
+            Console.WriteLine("Getting Index Of Koda in Names Array: ");
+            Console.WriteLine($"{Array.IndexOf(NamesArray, "Koda")}");
+
+            Console.ReadKey();
+
+        }
     }
 }
