@@ -9,6 +9,8 @@ namespace JaggedArrays
     public class clsCreate
     {
         public int[][] NewJaggedArray = new int [3][];
+        public int[][] Matrix = new int[3][];
+
 
         public void Print() 
         {
@@ -21,6 +23,22 @@ namespace JaggedArrays
                 for (int j = 0; j < NewJaggedArray[i].Length; j++) 
                 {
                     Console.WriteLine($"Item {j + 1} in Array Number {i + 1} is: {NewJaggedArray[i][j]}\n");
+                }
+            }
+
+            Console.ReadKey();
+        }
+        public void MatrixPrint()
+        {
+            Matrix[0] = new int[] { 10, 20, 30 };
+            Matrix[1] = new int[] { 1, 50 };
+            Matrix[2] = new int[] { 100, 202, 304 };
+
+            for (int i = 0; i < Matrix.Length; i++)
+            {
+                for (int j = 0; j < Matrix[i].Length; j++)
+                {
+                    Console.WriteLine($"Row: {j + 1}, Column {i + 1} is: {Matrix[i][j]}\n");
                 }
             }
 
