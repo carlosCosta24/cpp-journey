@@ -14,15 +14,15 @@ namespace ICollections_Interface
         public int Capacity => Elements.Length;
         public bool IsReadOnly => false;
 
-        void Resize(int NewCapacity)
+        private void Resize(int NewCapacity)
         {
-            if (NewCapacity < _Count) 
-            {
-                throw new ArgumentException("Can't Resize To Smaller Array");
-            }
             if (NewCapacity < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(NewCapacity),"Can't Resize To -Ve Capacity");
+            }
+            if (NewCapacity < _Count) 
+            {
+                throw new ArgumentException("Can't Resize To Smaller Array");
             }
             T[] NewArray = new T[NewCapacity];
             Array.Copy(Elements, NewArray, Elements.Length);
@@ -76,7 +76,10 @@ namespace ICollections_Interface
         public void Clear()
         {
 
-            Elements = new T[] { };
+            for (int i = 0; i < _Count; i++) 
+            {
+                Elements[i] = default(T);
+            }
             _Count = 0;
         }
 
@@ -96,13 +99,13 @@ namespace ICollections_Interface
 
         public void CopyTo(T[] array, int ArrayIndex)
         {
-            if (ArrayIndex > array.Length) 
-            {
-                throw new ArgumentOutOfRangeException(nameof(ArrayIndex));
-            }
             if (array == null) 
             {
                 throw new  ArgumentNullException(nameof(array));
+            }
+            if (ArrayIndex > array.Length) 
+            {
+                throw new ArgumentOutOfRangeException(nameof(ArrayIndex));
             }
             if (ArrayIndex < 0) 
             {
@@ -110,10 +113,13 @@ namespace ICollections_Interface
             }
             if (_Count >  (array.Length - ArrayIndex))
             {
-                throw new ArgumentException("Invalid Access (Out Of Range Access)!");
+                throw new ArgumentException("Destination array is not large enough.");
             }
-
-            Elements.CopyTo(array, ArrayIndex);
+            for (int i = 0; i < _Count; i++) 
+            {
+                array[ArrayIndex + i] = Elements[i];
+            }
+            
         }
 
         public IEnumerator<T> GetEnumerator()
