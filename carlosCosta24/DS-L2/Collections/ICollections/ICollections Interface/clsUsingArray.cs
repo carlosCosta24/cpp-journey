@@ -47,18 +47,24 @@ namespace ICollections_Interface
         }
         public bool Remove(T Item)
         {
-            int TargetIndex = Array.IndexOf(Elements, Item);
+           
+            int TargetIndex = -1;
+            for (int i = 0; i < _Count; i++) 
+            {
+                if (EqualityComparer<T>.Default.Equals(Elements[i], Item)) 
+                {
+                    TargetIndex = i;
+                    break;
+                }
+                
+            }
             if (TargetIndex != -1)
             {
-                T[] Temporary = new T[_Count - 1];
-                //Copy first portion
-                Array.Copy(Elements, 0, Temporary, 0, TargetIndex);
-                //copy second portion
-                Array.Copy(Elements, TargetIndex + 1, Temporary, TargetIndex, Elements.Length - TargetIndex - 1);
-
-
-                Elements = Temporary;
-
+                for (int i = TargetIndex ; i < _Count -1; i++) 
+                {
+                    Elements[i] = Elements[i +1];
+                }
+                Elements[_Count-1] = default(T);
                 _Count--;
                 return true;
             }
