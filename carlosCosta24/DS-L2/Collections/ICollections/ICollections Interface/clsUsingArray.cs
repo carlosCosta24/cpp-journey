@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace ICollections_Interface
 {
@@ -13,13 +14,34 @@ namespace ICollections_Interface
         public int Capacity => Elements.Length;
         public bool IsReadOnly => false;
 
+        void Resize(int NewCapacity)
+        {
+            if (NewCapacity < _Count) 
+            {
+                throw new ArgumentException("Can't Resize To Smaller Array");
+            }
+            if (NewCapacity < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(NewCapacity),"Can't Resize To -Ve Capacity");
+            }
+            T[] NewArray = new T[NewCapacity];
+            Array.Copy(Elements, NewArray, Elements.Length);
+            Elements = NewArray;
+        }
         public void Add(T NewElement)
         {
-            
-            T[] NewArray = new T[_Count + 1];
-            Elements.CopyTo(NewArray, 0);
-            NewArray[_Count] = NewElement;
-            Elements = NewArray;
+            if (_Count == Capacity) 
+            {
+                if (Capacity == 0)
+                {
+                    Resize(2);
+                }
+                else 
+                {
+                    Resize(Capacity * 2);
+                }
+            }
+            Elements[_Count] = NewElement;
 
             _Count++;
         }
@@ -59,6 +81,22 @@ namespace ICollections_Interface
 
         public void CopyTo(T[] array, int ArrayIndex)
         {
+            if (ArrayIndex > array.Length) 
+            {
+                throw new ArgumentOutOfRangeException(nameof(ArrayIndex));
+            }
+            if (array == null) 
+            {
+                throw new  ArgumentNullException(nameof(array));
+            }
+            if (ArrayIndex < 0) 
+            {
+                throw new ArgumentOutOfRangeException(nameof(ArrayIndex));
+            }
+            if (_Count >  (array.Length - ArrayIndex))
+            {
+                throw new ArgumentException("Invalid Access (Out Of Range Access)!");
+            }
 
             Elements.CopyTo(array, ArrayIndex);
         }
