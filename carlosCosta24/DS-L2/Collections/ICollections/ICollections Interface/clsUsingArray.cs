@@ -82,7 +82,16 @@ namespace ICollections_Interface
 
         public bool Contains(T Target)
         {
-            return Elements.Contains(Target);
+            
+            for (int i = 0; i < _Count; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(Elements[i], Target))
+                {
+                    return true;
+                }
+
+            }
+            return false;
         }
 
         public void CopyTo(T[] array, int ArrayIndex)
@@ -109,7 +118,11 @@ namespace ICollections_Interface
 
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)Elements).GetEnumerator();
+            for (int i = 0; i < _Count; i++) 
+            {
+                yield return Elements[i];
+            }
+            
         }
 
         IEnumerator IEnumerable.GetEnumerator()
